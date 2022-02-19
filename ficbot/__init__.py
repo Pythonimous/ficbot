@@ -1,1 +1,2 @@
-from .data import get_char_pages
+from .data import download_data
+from .features import mapper
