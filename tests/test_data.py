@@ -1,6 +1,6 @@
-from .context import ficbot
-
 import unittest
+
+from .context import ficbot
 
 
 class DownloadTestCase(unittest.TestCase):
@@ -23,5 +23,5 @@ class DownloadTestCase(unittest.TestCase):
         ]
 
     def test_beautify(self):
-        descriptions_beautified = [ficbot.data.get_char_pages.beautify_bio(bio) for bio in self.descriptions_dirty]
+        descriptions_beautified = [ficbot.data.download_data.beautify_bio(bio) for bio in self.descriptions_dirty]
         self.assertEqual(descriptions_beautified, self.descriptions_clean, 'Bios not beautified as expected.')
