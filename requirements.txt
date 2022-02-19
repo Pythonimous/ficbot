@@ -7,3 +7,4 @@ beautifulsoup4~=4.9.0
 jikanpy~=4.3.2
 selenium~=3.141.0
 tqdm~=4.59.0
+numpy~=1.16.4
