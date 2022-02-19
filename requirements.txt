@@ -1,0 +1,9 @@
+ImageHash~=4.2.1
+pandas~=0.24.2
+requests~=2.25.1
+Pillow~=8.2.0
+bs4~=0.0.1
+beautifulsoup4~=4.9.0
+jikanpy~=4.3.2
+selenium~=3.141.0
+tqdm~=4.59.0
