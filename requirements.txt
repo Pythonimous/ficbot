@@ -1,3 +1,4 @@
+wheel~=0.36.2
 ImageHash~=4.2.1
 pandas~=0.24.2
 requests~=2.25.1
