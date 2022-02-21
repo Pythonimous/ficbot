@@ -1,10 +1,12 @@
 ImageHash~=4.2.1
 pandas~=0.24.2
-requests~=2.25.1
+requests~=2.27.1
 Pillow~=8.2.0
 bs4~=0.0.1
-beautifulsoup4~=4.9.0
+beautifulsoup4~=4.10.0
 jikanpy~=4.3.2
 selenium~=3.141.0
 tqdm~=4.59.0
-numpy~=1.16.4
+numpy~=1.19.5
+
+tensorflow~=2.6.2

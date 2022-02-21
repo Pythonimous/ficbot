@@ -1,2 +1,2 @@
-from .data import download_data
+from .data import download_data, tf_loaders
 from .features import mapper
