@@ -40,6 +40,8 @@ class ImgNameGenerator(ImageLoader, NameLoader, tf.keras.utils.Sequence):
                  img_folder: str,
                  batch_size: int = 1,
                  image_shape: tuple = (224, 224, 3),
+                 start_token: str = "@",
+                 end_token: str = "$",
                  maxlen: int = 3,
                  step: int = 1,
                  shuffle: bool = True):
@@ -47,6 +49,7 @@ class ImgNameGenerator(ImageLoader, NameLoader, tf.keras.utils.Sequence):
         self.df = df.copy()
         self.img_col = img_col
         self.name_col = name_col
+        self.df[name_col] = self.df[self.name_col].map(lambda x: start_token * maxlen + x + end_token)
         self.img_folder = img_folder
         self.batch_size = batch_size
         self.img_shape = image_shape
@@ -54,7 +57,7 @@ class ImgNameGenerator(ImageLoader, NameLoader, tf.keras.utils.Sequence):
         self.step = step
         self.shuffle = shuffle
 
-        self.vectorizer = SequenceVectorizer(df[name_col].tolist())
+        self.vectorizer = SequenceVectorizer(self.df[name_col].tolist())
         super().__init__(self.vectorizer)
 
     def on_epoch_end(self):

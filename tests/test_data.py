@@ -47,7 +47,7 @@ class TfLoadersTestCase(unittest.TestCase):
                                                                           maxlen=self.maxlen)
 
     def test_img_name_loader(self):
-        n_sequences = len(self.df.eng_name[0]) - 3
+        n_sequences = len(self.df.eng_name[0]) + 1
         vocab_size = self.tf_img_name_loader.vectorizer.get_vocab_size()
         X, y = self.tf_img_name_loader.__getitem__(0)
         X_img_batch, X_seq_batch = X

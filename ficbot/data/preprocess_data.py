@@ -8,7 +8,6 @@ def img_name_data(df_path, img_path, save_path):
     mal_w_images = mal_characters[mal_characters.img_index != "-1"]  # only rows with images
     mal_img_name = mal_w_images[["eng_name", "img_index"]].reset_index(drop=True)  # only name + image rows
 
-    mal_img_name["eng_name"] = mal_img_name["eng_name"].map(lambda x: "@" + x + "$")  # start token + name + end token
     mal_img_name["image"] = mal_img_name["img_index"].map(lambda x: x + ".jpg")
     del mal_img_name["img_index"]
 
