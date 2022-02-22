@@ -2,6 +2,10 @@ import tensorflow as tf
 from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.applications.vgg16 import preprocess_input
 
+physical_devices = tf.config.list_physical_devices('GPU')
+if physical_devices:
+    tf.config.experimental.set_memory_growth(physical_devices[0], enable=True)
+
 
 def simple_image_name_model(maxlen, vocab_size, *, loss, optimizer):
     image_input = tf.keras.Input(shape=(224, 224, 3), name="IMAGE_INPUT")

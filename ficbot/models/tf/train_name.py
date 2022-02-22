@@ -6,6 +6,10 @@ import os
 import pandas as pd
 import pickle
 
+physical_devices = tf.config.list_physical_devices('GPU')
+if physical_devices:
+    tf.config.experimental.set_memory_growth(physical_devices[0], enable=True)
+
 
 def train_simple_model(data_path, img_folder, checkpoint_folder, img_col, name_col,
                        *, maxlen, loss, optimizer, epochs, batch_size: int = 1):
