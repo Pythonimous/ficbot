@@ -8,7 +8,7 @@ import pickle
 
 
 def train_simple_model(data_path, img_folder, checkpoint_folder, img_col, name_col,
-                       *, maxlen, loss, optimizer, epochs, batch_size: int = 1):
+                       *, maxlen, loss, optimizer, epochs, batch_size: int = 1, colab_tpu=False):
     mal_data = pd.read_csv(data_path)
     loader = ImgNameLoader(mal_data, img_col, name_col,
                            img_folder=img_folder,
@@ -33,6 +33,14 @@ def train_simple_model(data_path, img_folder, checkpoint_folder, img_col, name_c
 
     untrained_model_path = os.path.join(checkpoint_folder, f"simple_untrained.hdf5")
     generator_model.save(untrained_model_path)
+    if colab_tpu:
+        TPU_WORKER = 'grpc://' + os.environ['COLAB_TPU_ADDR']
+        tf.logging.set_verbosity(tf.logging.INFO)
+
+        generator_model = tf.contrib.tpu.keras_to_tpu_model(
+            generator_model,
+            strategy=tf.contrib.tpu.TPUDistributionStrategy(
+                tf.contrib.cluster_resolver.TPUClusterResolver(TPU_WORKER)))
     generator_model.fit(loader, epochs=epochs, callbacks=callbacks, verbose=1)
 
     return generator_model
