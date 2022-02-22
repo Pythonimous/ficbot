@@ -4,10 +4,6 @@ from ficbot.data.loaders.tf_loaders import ImageLoader
 
 import pickle
 
-physical_devices = tf.config.list_physical_devices('GPU')
-if physical_devices:
-    tf.config.experimental.set_memory_growth(physical_devices[0], enable=True)
-
 
 def sample(preds, temperature=1.0):
     """ Helper function to sample an index from a probability array """
