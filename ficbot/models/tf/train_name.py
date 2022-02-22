@@ -23,7 +23,7 @@ def train_simple_model(data_path, img_folder, checkpoint_folder, img_col, name_c
         pickle.dump(maps, mp)
 
     generator_model = simple_image_name_model(maxlen, vocab_size,
-                                              loss=loss, optimizer=optimizer)
+                                              loss=loss, optimizer=optimizer, colab_tpu=colab_tpu)
 
     checkpoint_path = os.path.join(checkpoint_folder, "simple_best_weights.hdf5")
     checkpoint = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, monitor='loss',
@@ -33,14 +33,7 @@ def train_simple_model(data_path, img_folder, checkpoint_folder, img_col, name_c
 
     untrained_model_path = os.path.join(checkpoint_folder, f"simple_untrained.hdf5")
     generator_model.save(untrained_model_path)
-    if colab_tpu:
-        TPU_WORKER = 'grpc://' + os.environ['COLAB_TPU_ADDR']
-        tf.logging.set_verbosity(tf.logging.INFO)
 
-        generator_model = tf.contrib.tpu.keras_to_tpu_model(
-            generator_model,
-            strategy=tf.contrib.tpu.TPUDistributionStrategy(
-                tf.contrib.cluster_resolver.TPUClusterResolver(TPU_WORKER)))
     generator_model.fit(loader, epochs=epochs, callbacks=callbacks, verbose=1)
 
     return generator_model
