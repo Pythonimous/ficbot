@@ -1,2 +1,3 @@
-from .data import download_data, tf_loaders
-from .features import mapper
+from .data import download_data
+from .data.loaders import tf_loaders
+from .features import vectorizer

@@ -2,7 +2,7 @@ import tensorflow as tf
 import numpy as np
 import os
 
-from ficbot.features.mapper import SequenceVectorizer
+from ficbot.features.vectorizer import SequenceVectorizer
 
 
 class ImageLoader(object):
@@ -17,7 +17,7 @@ class ImageLoader(object):
         image_arr = tf.keras.preprocessing.image.img_to_array(image)
 
         image_arr = tf.image.resize(image_arr, (target_size[0], target_size[1])).numpy()
-        return image_arr/225.
+        return image_arr
 
 
 class NameLoader(object):
@@ -34,7 +34,7 @@ class NameLoader(object):
         return vector_sequences, vector_next
 
 
-class ImgNameGenerator(ImageLoader, NameLoader, tf.keras.utils.Sequence):
+class ImgNameLoader(ImageLoader, NameLoader, tf.keras.utils.Sequence):
 
     def __init__(self, df, img_col, name_col, *,
                  img_folder: str,
@@ -56,6 +56,7 @@ class ImgNameGenerator(ImageLoader, NameLoader, tf.keras.utils.Sequence):
         self.maxlen = maxlen
         self.step = step
         self.shuffle = shuffle
+        self.n = len(self.df)
 
         self.vectorizer = SequenceVectorizer(self.df[name_col].tolist())
         super().__init__(self.vectorizer)
@@ -67,16 +68,20 @@ class ImgNameGenerator(ImageLoader, NameLoader, tf.keras.utils.Sequence):
     def __get_data(self, batches):
         name_batch = batches[self.name_col]
         img_batch = batches[self.img_col]
-
         img_paths = [os.path.join(self.img_folder, img_name) for img_name in img_batch]
 
-        X_img_batch = np.asarray([self._get_image(img_path, self.img_shape) for img_path in img_paths])
-        X_seq_batch, y_batch = [], []
-        for name in name_batch:
+        X_img_batch, X_seq_batch, y_batch = [], [], []
+
+        for idx in range(len(name_batch)):
+            name = name_batch.iloc[idx]
+            image = self._get_image(img_paths[idx], self.img_shape)
             X_seq, y = self._get_sequences(name, maxlen=self.maxlen)
-            X_seq_batch.append(X_seq)
-            y_batch.append(y)
-        X_seq_batch, y_batch = np.asarray(X_seq_batch), np.asarray(y_batch)
+            for sequence_idx in range(len(X_seq)):
+                X_img_batch.append(image)
+                X_seq_batch.append(X_seq[sequence_idx])
+                y_batch.append(y[sequence_idx])
+
+        X_img_batch, X_seq_batch, y_batch = np.asarray(X_img_batch), np.asarray(X_seq_batch), np.asarray(y_batch)
 
         return tuple([X_img_batch, X_seq_batch]), y_batch
 
@@ -85,3 +90,6 @@ class ImgNameGenerator(ImageLoader, NameLoader, tf.keras.utils.Sequence):
         batches = self.df[index * self.batch_size:(index + 1) * self.batch_size]
         X, y = self.__get_data(batches)
         return X, y
+
+    def __len__(self):
+        return self.n // self.batch_size

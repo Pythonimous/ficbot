@@ -39,19 +39,21 @@ class TfLoadersTestCase(unittest.TestCase):
         self.img_folder = os.path.join(self.current_dir, "test_files/data/tf_loaders/images")
         self.image_shape = (224, 224, 3)
         self.maxlen = 3
-        self.batch_size = 1
-        self.tf_img_name_loader = ficbot.data.tf_loaders.ImgNameGenerator(self.df, "image", "eng_name",
-                                                                          batch_size=self.batch_size,
-                                                                          img_folder=self.img_folder,
-                                                                          image_shape=self.image_shape,
-                                                                          maxlen=self.maxlen)
+        self.batch_size = 5
+        self.tf_img_name_loader = ficbot.data.loaders.tf_loaders.ImgNameLoader(self.df, "image", "eng_name",
+                                                                               batch_size=self.batch_size,
+                                                                               img_folder=self.img_folder,
+                                                                               image_shape=self.image_shape,
+                                                                               maxlen=self.maxlen)
 
     def test_img_name_loader(self):
-        n_sequences = len(self.df.eng_name[0]) + 1
+        n_sequences = 0
+        for i in range(self.batch_size):
+            n_sequences += len(self.df.eng_name[i]) + 1
         vocab_size = self.tf_img_name_loader.vectorizer.get_vocab_size()
         X, y = self.tf_img_name_loader.__getitem__(0)
         X_img_batch, X_seq_batch = X
-        expected_img_batch_shape = (self.batch_size, ) + self.image_shape
+        expected_img_batch_shape = (n_sequences, ) + self.image_shape
         self.assertEqual(X_img_batch.shape, expected_img_batch_shape)
-        self.assertEqual(X_seq_batch.shape, (self.batch_size, n_sequences, self.maxlen, vocab_size))
-        self.assertEqual(y.shape, (self.batch_size, n_sequences, vocab_size))
+        self.assertEqual(X_seq_batch.shape, (n_sequences, self.maxlen, vocab_size))
+        self.assertEqual(y.shape, (n_sequences, vocab_size))
