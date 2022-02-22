@@ -150,3 +150,6 @@ dmypy.json
 /build
 /dist
 /ficbot.egg-info
+
+# Colab notebooks
+/notebooks/2.0-kin-colab-simple-experiment.ipynb
