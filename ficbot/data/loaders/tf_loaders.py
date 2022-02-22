@@ -11,12 +11,15 @@ class ImageLoader(object):
         super().__init__(*args, **kwargs)  # forwards all unused arguments
 
     @staticmethod
-    def _get_image(path, target_size):
+    def _get_image(path, target_size, preprocess_for: str = "vgg16"):
 
         image = tf.keras.preprocessing.image.load_img(path)
         image_arr = tf.keras.preprocessing.image.img_to_array(image)
 
         image_arr = tf.image.resize(image_arr, (target_size[0], target_size[1])).numpy()
+        if preprocess_for is not None:
+            preprocessing = getattr(tf.keras.applications, preprocess_for)
+            image_arr = preprocessing.preprocess_input(image_arr)
         return image_arr
 
 

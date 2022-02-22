@@ -30,4 +30,3 @@ if __name__ == "__main__":
                         "image", "eng_name",
                         maxlen=3, epochs=10,
                         batch_size=2)
-
