@@ -22,8 +22,21 @@ def train_simple_model(data_path, img_folder, checkpoint_folder, img_col, name_c
     with open(map_path, "wb") as mp:
         pickle.dump(maps, mp)
 
-    generator_model = simple_image_name_model(maxlen, vocab_size,
-                                              loss=loss, optimizer=optimizer, colab_tpu=colab_tpu)
+    if colab_tpu:
+        tpu = tf.distribute.cluster_resolver.TPUClusterResolver()
+        print('Running on TPU ', tpu.cluster_spec().as_dict()['worker'])
+
+        tf.config.experimental_connect_to_cluster(tpu)
+        tf.tpu.experimental.initialize_tpu_system(tpu)
+
+        strategy = tf.distribute.experimental.TPUStrategy(tpu)
+        print("REPLICAS: ", strategy.num_replicas_in_sync)
+        with strategy.scope():
+            generator_model = simple_image_name_model(maxlen, vocab_size,
+                                                      loss=loss, optimizer=optimizer, colab_tpu=colab_tpu)
+    else:
+        generator_model = simple_image_name_model(maxlen, vocab_size,
+                                                  loss=loss, optimizer=optimizer, colab_tpu=colab_tpu)
 
     checkpoint_path = os.path.join(checkpoint_folder, "simple_best_weights.hdf5")
     checkpoint = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, monitor='loss',

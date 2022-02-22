@@ -11,17 +11,7 @@ def simple_image_name_model(maxlen, vocab_size, *, loss, optimizer, colab_tpu=Fa
     concatenated_features = tf.keras.layers.Concatenate(axis=1)([image_features, lstm])
     output = tf.keras.layers.Dense(vocab_size, activation="softmax")(concatenated_features)
     model = tf.keras.Model(inputs=[image_input, name_input], outputs=output, name="SimpleImageNameModel")
-    if colab_tpu:
-        tpu = tf.distribute.cluster_resolver.TPUClusterResolver()
-        print('Running on TPU ', tpu.cluster_spec().as_dict()['worker'])
-
-        tf.config.experimental_connect_to_cluster(tpu)
-        tf.tpu.experimental.initialize_tpu_system(tpu)
-
-        strategy = tf.distribute.experimental.TPUStrategy(tpu)
-        print("REPLICAS: ", strategy.num_replicas_in_sync)
-        with strategy.scope():
-            model.compile(loss=loss, optimizer=optimizer)
+    model.compile(loss=loss, optimizer=optimizer)
     return model
 
 
