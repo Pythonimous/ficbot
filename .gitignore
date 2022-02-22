@@ -138,6 +138,7 @@ dmypy.json
 
 # Photos
 /data/raw/images
+/data/raw/images.tar.gz
 
 # Backup scripts
 /ficbot/backup
