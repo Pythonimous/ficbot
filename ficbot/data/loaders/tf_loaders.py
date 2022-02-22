@@ -11,13 +11,13 @@ class ImageLoader(object):
         super().__init__(*args, **kwargs)  # forwards all unused arguments
 
     @staticmethod
-    def _get_image(path, target_size, preprocess_for: str = "vgg16"):
+    def get_image(path, target_size, preprocess_for = "vgg16"):
 
         image = tf.keras.preprocessing.image.load_img(path)
         image_arr = tf.keras.preprocessing.image.img_to_array(image)
 
         image_arr = tf.image.resize(image_arr, (target_size[0], target_size[1])).numpy()
-        if preprocess_for is not None:
+        if preprocess_for:
             preprocessing = getattr(tf.keras.applications, preprocess_for)
             image_arr = preprocessing.preprocess_input(image_arr)
         return image_arr
@@ -77,7 +77,7 @@ class ImgNameLoader(ImageLoader, NameLoader, tf.keras.utils.Sequence):
 
         for idx in range(len(name_batch)):
             name = name_batch.iloc[idx]
-            image = self._get_image(img_paths[idx], self.img_shape)
+            image = self.get_image(img_paths[idx], self.img_shape)
             X_seq, y = self._get_sequences(name, maxlen=self.maxlen)
             for sequence_idx in range(len(X_seq)):
                 X_img_batch.append(image)

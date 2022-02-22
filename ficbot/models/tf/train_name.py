@@ -1,12 +1,14 @@
 from ficbot.models.tf.model_name import simple_image_name_model
 from ficbot.data.loaders.tf_loaders import ImgNameLoader
 import tensorflow as tf
+import os
 
 import pandas as pd
+import pickle
 
 
-def train_model(data_path, img_folder, img_col, name_col, *,
-                maxlen, epochs, batch_size: int = 1):
+def train_simple_model(data_path, img_folder, checkpoint_folder, img_col, name_col,
+                       *, maxlen, loss, optimizer, epochs, batch_size: int = 1):
     mal_data = pd.read_csv(data_path)
     loader = ImgNameLoader(mal_data, img_col, name_col,
                            img_folder=img_folder,
@@ -14,19 +16,35 @@ def train_model(data_path, img_folder, img_col, name_col, *,
                            batch_size=batch_size)
     vocab_size = loader.vectorizer.get_vocab_size()
 
-    generator_model = simple_image_name_model(maxlen, vocab_size)
-    optimizer = tf.keras.optimizers.RMSprop(learning_rate=0.01)
-    generator_model.compile(loss="categorical_crossentropy", optimizer=optimizer)
+    char_idx, idx_char = loader.vectorizer.get_maps()
+    maps = {"char_idx": char_idx, "idx_char": idx_char}
+    map_path = os.path.join(checkpoint_folder, "name_maps.pkl")
+    with open(map_path, "wb") as mp:
+        pickle.dump(maps, mp)
 
-    for epoch in range(epochs):
-        generator_model.fit(loader, epochs=1)
-        return generator_model
+    generator_model = simple_image_name_model(maxlen, vocab_size,
+                                              loss=loss, optimizer=optimizer)
+
+    checkpoint_path = os.path.join(checkpoint_folder, "simple_best_weights.hdf5")
+    checkpoint = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, monitor='loss',
+                                                    verbose=1, save_best_only=True,
+                                                    save_weights_only=False, mode='min')
+    callbacks = [checkpoint]
+
+    untrained_model_path = os.path.join(checkpoint_folder, f"simple_untrained.hdf5")
+    generator_model.save(untrained_model_path)
+    generator_model.fit(loader, epochs=epochs, callbacks=callbacks, verbose=1)
+
+    return generator_model
 
 
 if __name__ == "__main__":
 
-    model = train_model("../../../data/interim/img_name.csv",
-                        "../../../data/raw/images",
-                        "image", "eng_name",
-                        maxlen=3, epochs=10,
-                        batch_size=2)
+    model = train_simple_model("../../../data/interim/img_name.csv",
+                               "../../../data/raw/images",
+                               "../../../models/name_generation/tf/checkpoints",
+                               "image", "eng_name",
+                               maxlen=3, epochs=1,
+                               loss="categorical_crossentropy",
+                               optimizer="adam",
+                               batch_size=1)

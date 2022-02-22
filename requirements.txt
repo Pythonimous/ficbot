@@ -10,3 +10,4 @@ tqdm~=4.59.0
 numpy~=1.19.5
 
 tensorflow~=2.6.2
+setuptools~=59.5.0

@@ -35,6 +35,10 @@ class Mapper(object):
         """Return vocabulary size"""
         return len(self._token_n)
 
+    def get_maps(self):
+        """Return token_n and n_token maps"""
+        return self._token_n, self._n_token
+
 
 class SequenceVectorizer(Mapper):
 
