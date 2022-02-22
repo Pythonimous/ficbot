@@ -7,7 +7,10 @@ def simple_image_name_model(maxlen, vocab_size, *, loss, optimizer):
     image_input = tf.keras.Input(shape=(224, 224, 3), name="IMAGE_INPUT")
     image_features = VGG16(weights="imagenet", include_top=False, pooling='avg')(image_input)
     name_input = tf.keras.Input(shape=(maxlen, vocab_size), name="NAME_INPUT")
-    lstm = tf.keras.layers.LSTM(128)(name_input)
+    if tf.config.experimental.list_physical_devices('GPU'):
+        lstm = tf.keras.layers.CuDNNLSTM(128)(name_input)
+    else:
+        lstm = tf.keras.layers.LSTM(128)(name_input)
     concatenated_features = tf.keras.layers.Concatenate(axis=1)([image_features, lstm])
     output = tf.keras.layers.Dense(vocab_size, activation="softmax")(concatenated_features)
     model = tf.keras.Model(inputs=[image_input, name_input], outputs=output, name="SimpleImageNameModel")
