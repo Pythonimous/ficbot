@@ -1,18 +1,21 @@
-import unittest
-import numpy as np
 import os
+import unittest
+
+import numpy as np
 
 from .context import ficbot
 
+
 class TokenizerTestCase(unittest.TestCase):
     """ Tests for tokenizer functions """
+
     def setUp(self):
         """
         Tokenizers and sample texts and words
         """
         self.current_dir = os.path.dirname(__file__)
 
-        self.char_mapper = ficbot.features.mapper.Mapper(char_level=True)
+        self.char_mapper = ficbot.features.vectorizer.Mapper(char_level=True)
 
         self.char_example = "José Raúl Capablanca$"
 
@@ -32,21 +35,21 @@ class TokenizerTestCase(unittest.TestCase):
 
         self.maxlen = 3
         self.seq_name_sequences = ["min", "ina", "nam", "amo", "mot",
-                                           "oto", "to ", "o n", " no", "no ",
-                                           "o y", " yo", "yos", "osh", "shi",
-                                           "hit", "its", "tsu", "sun", "une"]
+                                   "oto", "to ", "o n", " no", "no ",
+                                   "o y", " yo", "yos", "osh", "shi",
+                                   "hit", "its", "tsu", "sun", "une"]
         self.seq_name_next = ["a", "m", "o", "t", "o",
-                                      " ", "n", "o", " ", "y",
-                                      "o", "s", "h", "i", "t",
-                                      "s", "u", "n", "e", "$"]
+                              " ", "n", "o", " ", "y",
+                              "o", "s", "h", "i", "t",
+                              "s", "u", "n", "e", "$"]
 
-        seq_example_vectors = os.path.join(self.current_dir, "test_files/features_vectorize_char.npy")
+        seq_example_vectors = os.path.join(self.current_dir, "test_files/features/vectorize_char.npy")
         with open(seq_example_vectors, 'rb') as f:
             self.seq_name_sequences_vector = np.load(f)
             self.seq_name_next_vector = np.load(f)
 
-        self.char_sequenizer = ficbot.features.mapper.SequenceVectorizer(self.seq_name_corpus,
-                                                                         char_level=True)
+        self.char_sequenizer = ficbot.features.vectorizer.SequenceVectorizer(self.seq_name_corpus,
+                                                                             char_level=True)
 
     def test_tokenize_characters(self):
         example_clean, char_map_test, n_map_test = self.char_mapper.create_text_map(self.char_example)

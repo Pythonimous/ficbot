@@ -137,7 +137,19 @@ dmypy.json
 /.pytest_cache
 
 # Photos
-/data/interim/images
+/data/raw/images
+/data/raw/images.tar.gz
 
 # Backup scripts
 /ficbot/backup
+
+# Checkpoints
+/models/name_generation/tf/checkpoints
+
+# Setup.py files
+/build
+/dist
+/ficbot.egg-info
+
+# Colab notebooks
+/checkpoints
