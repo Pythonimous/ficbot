@@ -33,10 +33,10 @@ def train_simple_model(data_path, img_folder, checkpoint_folder, img_col, name_c
         print("REPLICAS: ", strategy.num_replicas_in_sync)
         with strategy.scope():
             generator_model = simple_image_name_model(maxlen, vocab_size,
-                                                      loss=loss, optimizer=optimizer, colab_tpu=colab_tpu)
+                                                      loss=loss, optimizer=optimizer)
     else:
         generator_model = simple_image_name_model(maxlen, vocab_size,
-                                                  loss=loss, optimizer=optimizer, colab_tpu=colab_tpu)
+                                                  loss=loss, optimizer=optimizer)
 
     checkpoint_path = os.path.join(checkpoint_folder, "simple_best_weights.hdf5")
     checkpoint = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, monitor='loss',
