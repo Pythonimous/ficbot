@@ -8,6 +8,7 @@ jikanpy
 selenium
 tqdm
 numpy
+num2words
 
 tensorflow
 setuptools

@@ -25,8 +25,64 @@ class DownloadTestCase(unittest.TestCase):
         ]
 
     def test_beautify(self):
-        descriptions_beautified = [ficbot.data.download_data.beautify_bio(bio) for bio in self.descriptions_dirty]
+        descriptions_beautified = [ficbot.data.download.beautify_bio(bio) for bio in self.descriptions_dirty]
         self.assertEqual(descriptions_beautified, self.descriptions_clean, 'Bios not beautified as expected.')
+
+
+class PreprocessTestCase(unittest.TestCase):
+    """ Tests for different preprocessing functions """
+
+    def test_replace_text_numbers(self):
+
+        self.assertEqual(ficbot.data.preprocessing.replace_text_numbers("Mayu Watanabe CG-3"),
+                         "Mayu Watanabe CG-three")
+        self.assertEqual(ficbot.data.preprocessing.replace_text_numbers("Pour Lui 13-sei"),
+                         "Pour Lui thirteen-sei")
+        self.assertEqual(ficbot.data.preprocessing.replace_text_numbers("Asuka Kuramochi the 9th"),
+                         "Asuka Kuramochi the ninth")
+        self.assertEqual(ficbot.data.preprocessing.replace_text_numbers("Yui Yokoyama the 7.5th"),
+                         "Yui Yokoyama the seven point fifth")
+        self.assertEqual(ficbot.data.preprocessing.replace_text_numbers("02"),
+                         "zero two")
+        self.assertEqual(ficbot.data.preprocessing.replace_text_numbers(".01"),
+                         ".zero one")
+        self.assertEqual(ficbot.data.preprocessing.replace_text_numbers("The 03 is a lie"),
+                         "The zero three is a lie")
+
+    def test_clean_text_from_symbols(self):
+
+        self.assertEqual(ficbot.data.preprocessing.clear_text("Ángela Salas Larrazábal"),
+                         "Angela Salas Larrazabal"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text("Simo Häyhä"),
+                         "Simo Haeyhae"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text("Christine Waldegård"),
+                         "Christine Waldegaard"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text("Selim Vergès"),
+                         "Selim Verges"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text("Padmé Amidala"),
+                         "Padme Amidala"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text("Pierre Tempête de Neige"),
+                         "Pierre Tempete de Neige"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text("Chloë Maxwell"),
+                         "Chloe Maxwell"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text("Bernardo Dión"),
+                         "Bernardo Dion"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text("Gérôme Hongou"),
+                         "Geroome Hongou"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text("Arad Mölders"),
+                         "Arad Moelders"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text("Tor Nørretranders"),
+                         "Tor Noerretranders"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text("Jürgen von Klügel"),
+                         "Juergen von Kluegel"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text("Œlaf"),
+                         "Oelaf"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text("Daša Urban"),
+                         "Dasha Urban")
+        self.assertEqual(ficbot.data.preprocessing.clear_text("02,';'1"),
+                         "Zero two one")
+        self.assertEqual(ficbot.data.preprocessing.clear_text("Åll your 1.2 bases are. SO bel']ong to-us 13"),
+                         "Aall your one point two bases are. SO bel ong to-us thirteen")
 
 
 class TfLoadersTestCase(unittest.TestCase):
