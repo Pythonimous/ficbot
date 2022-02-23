@@ -11,7 +11,7 @@ class ImageLoader(object):
         super().__init__(*args, **kwargs)  # forwards all unused arguments
 
     @staticmethod
-    def get_image(path, target_size, preprocess_for = "vgg16"):
+    def get_image(path, target_size, preprocess_for="mobilenet"):
 
         image = tf.keras.preprocessing.image.load_img(path)
         image_arr = tf.keras.preprocessing.image.img_to_array(image)

@@ -21,7 +21,7 @@ def generate_name(image_path, model_path, maps_path, *,
     maxlen = name_model.get_layer("NAME_INPUT").output_shape[0][1]
     preprocessing_algorithm = ""
     for layer in name_model.layers:
-        if layer.name in {"vgg16", "vgg19", "resnet50"}:
+        if layer.name in {"vgg16", "vgg19", "resnet50", "mobilenet"}:
             preprocessing_algorithm = layer.name
             break
     image_dim = name_model.get_layer("IMAGE_INPUT").output_shape[0][1:]
@@ -37,7 +37,7 @@ def generate_name(image_path, model_path, maps_path, *,
     generated = ""
     name = start_token * maxlen
 
-    while not generated.endswith(end_token) and len(generated) <= 100:
+    while not (generated.endswith(start_token) or generated.endswith(end_token)) and len(generated) <= 50:
         x_pred_text = np.zeros((1, maxlen, len(idx_char)))
         for t, char in enumerate(name):
             x_pred_text[0, t, char_idx[char]] = 1.0
@@ -47,6 +47,11 @@ def generate_name(image_path, model_path, maps_path, *,
         name = name[1:] + next_char
         generated += next_char
 
+    if generated[-1] in {start_token, end_token}:
+        generated = generated[:-1]
+
+    generated = [word.capitalize() for word in generated.split()]
+    generated = ' '.join(generated)
     return generated
 
 

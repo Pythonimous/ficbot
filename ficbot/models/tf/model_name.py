@@ -1,10 +1,14 @@
 import tensorflow as tf
-from tensorflow.keras.applications.vgg16 import VGG16
+from tensorflow.keras.applications import MobileNet
 
 
 def simple_image_name_model(maxlen, vocab_size, *, loss, optimizer):
     image_input = tf.keras.Input(shape=(224, 224, 3), name="IMAGE_INPUT")
-    image_features = VGG16(weights="imagenet", include_top=False, pooling='avg')(image_input)
+
+    transfer_layer = MobileNet(weights="imagenet", include_top=False, pooling='avg')
+    transfer_layer.trainable = False  # freeze weights for feature extraction
+
+    image_features = transfer_layer(image_input)
     name_input = tf.keras.Input(shape=(maxlen, vocab_size), name="NAME_INPUT")
     lstm = tf.keras.layers.LSTM(128)(name_input)
     concatenated_features = tf.keras.layers.Concatenate(axis=1)([image_features, lstm])
