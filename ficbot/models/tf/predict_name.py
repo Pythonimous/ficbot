@@ -56,7 +56,7 @@ def generate_name(image_path, model_path, maps_path, *,
 
 
 if __name__ == "__main__":
-    generated_name = generate_name("../../../tests/test_files/data/tf_loaders/images/example.jpg",
-                                   "../../../models/name_generation/tf/checkpoints/simple_untrained.hdf5",
-                                   "../../../models/name_generation/tf/checkpoints/name_maps.pkl")
+    generated_name = generate_name("../../../example/name/1.jpg",
+                                   "../../../example/name/simple_best_weights.hdf5",
+                                   "../../../example/name/name_maps.pkl")
     print(generated_name)

@@ -10,8 +10,8 @@ def simple_image_name_model(maxlen, vocab_size, *, loss, optimizer):
 
     image_features = transfer_layer(image_input)
     name_input = tf.keras.Input(shape=(maxlen, vocab_size), name="NAME_INPUT")
-    lstm = tf.keras.layers.LSTM(128)(name_input)
-    concatenated_features = tf.keras.layers.Concatenate(axis=1)([image_features, lstm])
+    rnn = tf.keras.layers.LSTM(128)(name_input)
+    concatenated_features = tf.keras.layers.Concatenate(axis=1)([image_features, rnn])
     output = tf.keras.layers.Dense(vocab_size, activation="softmax")(concatenated_features)
     model = tf.keras.Model(inputs=[image_input, name_input], outputs=output, name="SimpleImageNameModel")
     model.compile(loss=loss, optimizer=optimizer)
