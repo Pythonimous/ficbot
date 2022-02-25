@@ -15,7 +15,7 @@ def create_simple_name_model(*, maxlen, vocab_size, loss, optimizer):
     return model
 
 
-def load_from_checkpoint(*, checkpoint_path, data_path, model_type, loader_type, **kwargs):  #img_col, name_col, img_folder, loader_type, maps_path):
+def load_from_checkpoint(*, checkpoint_path, data_path, model_type, loader_type, **kwargs):
 
     model_types = {"img-name"}
     assert model_type in model_types, f"No such model yet.\nAvailable models: {', '.join(list(model_types))}."
@@ -48,7 +48,7 @@ def load_from_checkpoint(*, checkpoint_path, data_path, model_type, loader_type,
     return model, loader
 
 
-def train_model(model, checkpoint_folder, *, epochs: int = 1):
+def train_model(model, loader, checkpoint_folder, *, epochs: int = 1):
 
     checkpoint_path = os.path.join(checkpoint_folder, "simple.{epoch:02d}-{val_loss:.2f}.hdf5")
     checkpoint = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, monitor='loss',
