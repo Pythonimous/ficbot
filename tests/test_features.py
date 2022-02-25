@@ -33,7 +33,6 @@ class TokenizerTestCase(unittest.TestCase):
         self.seq_name = "Minamoto no Yoshitsune$"
         self.seq_name_corpus = ["Minamoto no Yoshitsune$"]
 
-        self.maxlen = 3
         self.seq_name_sequences = ["min", "ina", "nam", "amo", "mot",
                                    "oto", "to ", "o n", " no", "no ",
                                    "o y", " yo", "yos", "osh", "shi",
@@ -42,6 +41,10 @@ class TokenizerTestCase(unittest.TestCase):
                               " ", "n", "o", " ", "y",
                               "o", "s", "h", "i", "t",
                               "s", "u", "n", "e", "$"]
+
+        self.ood_name = "Benkei"
+        self.ood_name_sequences = ["?en", "en?", "n?e"]
+        self.ood_name_next = ["?", "e", "i"]
 
         seq_example_vectors = os.path.join(self.current_dir, "test_files/features/vectorize_char.npy")
         with open(seq_example_vectors, 'rb') as f:
@@ -61,6 +64,11 @@ class TokenizerTestCase(unittest.TestCase):
                                                                                    maxlen=3)
         self.assertListEqual(self.seq_name_sequences, name_sequences_test)
         self.assertListEqual(self.seq_name_next, name_next_chars_test)
+
+        ood_sequences_test, ood_next_chars_test = self.char_sequenizer.sequenize(self.ood_name,
+                                                                                 maxlen=3)
+        self.assertListEqual(self.ood_name_sequences, ood_sequences_test)
+        self.assertListEqual(self.ood_name_next, ood_next_chars_test)
 
     def test_vectorize_text(self):
         name_sequences_vector_test, name_next_vector_test = self.char_sequenizer.vectorize(self.seq_name,

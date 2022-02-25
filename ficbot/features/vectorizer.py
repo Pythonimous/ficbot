@@ -17,6 +17,8 @@ class Mapper(object):
         text = text.lower()
         if not self.char_level:
             text = text.split()
+        else:
+            text = list(text)
         return text
 
     def create_text_map(self, text: str, ood_token: str = "?"):
@@ -99,6 +101,8 @@ class SequenceVectorizer(Mapper):
         for i in range(len(text)):
             if text[i] not in self._token_n:
                 text[i] = self.ood_token
+        if self.char_level:
+            text = ''.join(text)
         sequences = []
         next_chars = []
         for i in range(0, len(text) - maxlen, step):

@@ -28,7 +28,7 @@ def load_image_for_model(image_path, model):
 
 
 def generate_name(image_path, model_path, maps_path, *,
-                  diversity: float = 1.2, start_token: str = "@", end_token: str = "$"):
+                  diversity: float = 1.2, start_token: str = "@", end_token: str = "$", ood_token: str = "?"):
     name_model = tf.keras.models.load_model(model_path)
 
     image_features = load_image_for_model(image_path, name_model)
@@ -47,9 +47,13 @@ def generate_name(image_path, model_path, maps_path, *,
         x_pred_text = np.zeros((1, maxlen, len(idx_char)))
         for t, char in enumerate(name):
             x_pred_text[0, t, char_idx[char]] = 1.0
+
         preds = name_model.predict([image_features, x_pred_text], verbose=0)[0]
-        next_index = sample(preds, diversity)
-        next_char = idx_char[next_index]
+        next_char = ood_token
+        while next_char == ood_token:  # in case next_char is ood token, we sample (and then resample) until it isn't
+            next_index = sample(preds, diversity)
+            next_char = idx_char[next_index]
+
         name = name[1:] + next_char
         generated += next_char
 
