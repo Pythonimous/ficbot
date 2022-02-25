@@ -145,6 +145,7 @@ dmypy.json
 
 # Checkpoints
 /models/name_generation/tf/checkpoints
+/example/name/simple_weights_e*
 
 # Setup.py files
 /build

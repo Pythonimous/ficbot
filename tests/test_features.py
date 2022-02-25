@@ -48,7 +48,7 @@ class TokenizerTestCase(unittest.TestCase):
             self.seq_name_sequences_vector = np.load(f)
             self.seq_name_next_vector = np.load(f)
 
-        self.char_sequenizer = ficbot.features.vectorizer.SequenceVectorizer(self.seq_name_corpus,
+        self.char_sequenizer = ficbot.features.vectorizer.SequenceVectorizer(corpus=self.seq_name_corpus,
                                                                              char_level=True)
 
     def test_tokenize_characters(self):
@@ -57,13 +57,13 @@ class TokenizerTestCase(unittest.TestCase):
         self.assertDictEqual(self.n_map, n_map_test)
 
     def test_sequenize_text(self):
-        name_sequences_test, name_next_chars_test = self.char_sequenizer.sequenize_text(self.seq_name,
-                                                                                        maxlen=3)
+        name_sequences_test, name_next_chars_test = self.char_sequenizer.sequenize(self.seq_name,
+                                                                                   maxlen=3)
         self.assertListEqual(self.seq_name_sequences, name_sequences_test)
         self.assertListEqual(self.seq_name_next, name_next_chars_test)
 
     def test_vectorize_text(self):
-        name_sequences_vector_test, name_next_vector_test = self.char_sequenizer.vectorize_text(self.seq_name,
-                                                                                                maxlen=3)
+        name_sequences_vector_test, name_next_vector_test = self.char_sequenizer.vectorize(self.seq_name,
+                                                                                           maxlen=3)
         np.testing.assert_array_equal(self.seq_name_sequences_vector, name_sequences_vector_test)
         np.testing.assert_array_equal(self.seq_name_next_vector, name_next_vector_test)
