@@ -23,12 +23,12 @@ class TokenizerTestCase(unittest.TestCase):
                          "b": 3, "c": 4, "j": 5,
                          "l": 6, "n": 7, "o": 8,
                          "p": 9, "r": 10, "s": 11,
-                         "é": 12, "ú": 13}
+                         "é": 12, "ú": 13, "?": 14}
         self.n_map = {0: " ", 1: "$", 2: "a",
                       3: "b", 4: "c", 5: "j",
                       6: "l", 7: "n", 8: "o",
                       9: "p", 10: "r", 11: "s",
-                      12: "é", 13: "ú"}
+                      12: "é", 13: "ú", 14: "?"}
 
         self.seq_name = "Minamoto no Yoshitsune$"
         self.seq_name_corpus = ["Minamoto no Yoshitsune$"]

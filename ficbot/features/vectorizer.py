@@ -19,21 +19,25 @@ class Mapper(object):
             text = text.split()
         return text
 
-    def create_text_map(self, text: str):
+    def create_text_map(self, text: str, ood_token: str = "?"):
         """Build {int: token} and {token: int} maps from a single text"""
         text = self._tokenize_text(text)
-        tokens = sorted(list(set(text)))
+        text_set = set(text)
+        assert ood_token not in text_set, "Out of Dictionary token is not unique! Choose a different one."
+        tokens = sorted(list(text_set))
 
         self._token_n = {token: n for n, token in enumerate(tokens)}
         self._n_token = {n: token for n, token in enumerate(tokens)}
+        self._token_n[ood_token] = len(self._token_n)
+        self._n_token[len(self._n_token)] = ood_token
         return text, self._token_n, self._n_token
 
-    def create_corpus_map(self, corpus):
+    def create_corpus_map(self, corpus, *, ood_token: str = "?"):
         """Build {int: token} and {token: int} maps from a collection of texts"""
         if not isinstance(corpus, list):
             corpus = list(corpus)
         corpus = ' '.join(corpus)
-        return self.create_text_map(corpus)
+        return self.create_text_map(corpus, ood_token=ood_token)
 
     def get_vocab_size(self) -> int:
         """Return vocabulary size"""
@@ -60,18 +64,19 @@ class SequenceVectorizer(Mapper):
 
     # * requires all the following arguments to be explicitly named on function call
 
-    def __init__(self, *, corpus=None, char_level: bool = True, maps = None):
+    def __init__(self, *, corpus=None, char_level: bool = True, maps=None, ood_token: str = "?"):
         """
 
         :param corpus: An iterable of texts
         :param char_level: Whether to do char-level or word-level tokenization
         :param maps: Tuple of (token_n, n_token) maps from token to int and int to token respectively.
                               Maps should be inverses of each other.
+        :param ood_token: How to mark out of dictionary words (characters)
         """
         super().__init__(char_level=char_level)
         assert any([corpus, maps]), "Neither corpus, nor maps have been provided."
         if maps is None:
-            self.create_corpus_map(corpus)
+            self.create_corpus_map(corpus, ood_token=ood_token)
         else:
             token_n, n_token = maps
             self.load_maps(token_n, n_token)
