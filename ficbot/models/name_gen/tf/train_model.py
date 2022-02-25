@@ -52,7 +52,7 @@ def train_model(model, loader, checkpoint_folder, *, epochs: int = 1):
 
     loader.vectorizer.save_maps(checkpoint_folder)
 
-    checkpoint_path = os.path.join(checkpoint_folder, "simple.{epoch:02d}-{val_loss:.2f}.hdf5")
+    checkpoint_path = os.path.join(checkpoint_folder, "simple.{epoch:02d}-{loss:.2f}.hdf5")
     checkpoint = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, monitor='loss',
                                                     verbose=1, save_best_only=False,
                                                     save_weights_only=False, mode='min')
