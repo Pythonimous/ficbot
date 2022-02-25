@@ -22,7 +22,7 @@ def load_from_checkpoint(*, checkpoint_path, data_path, model_type, loader_type,
 
     model = tf.keras.models.load_model(checkpoint_path)
 
-    if model_type == "img_name":
+    if model_type == "img-name":
         with open(kwargs["maps_path"], 'rb') as mp:
             maps = pickle.load(mp)
         vectorizer = SequenceVectorizer(maps=maps)
@@ -50,6 +50,8 @@ def load_from_checkpoint(*, checkpoint_path, data_path, model_type, loader_type,
 
 def train_model(model, loader, checkpoint_folder, *, epochs: int = 1):
 
+    loader.vectorizer.save_maps(checkpoint_folder)
+
     checkpoint_path = os.path.join(checkpoint_folder, "simple.{epoch:02d}-{val_loss:.2f}.hdf5")
     checkpoint = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, monitor='loss',
                                                     verbose=1, save_best_only=False,
@@ -60,15 +62,16 @@ def train_model(model, loader, checkpoint_folder, *, epochs: int = 1):
 
 if __name__ == "__main__":
 
+    checkpoint_folder = os.path.join("../../../../models/name_generation/tf/checkpoints", str(int(time.time())))
+
+    if not os.path.isdir(checkpoint_folder):
+        os.mkdir(checkpoint_folder)
+
     loader = create_loader("../../../../data/interim/img_name.csv",
                            loader="ImgNameLoader",
                            img_folder="../../../../data/raw/images",
                            img_col="image", name_col="eng_name",
                            maxlen=3, batch_size=1)
-
-    checkpoint_folder = os.path.join("../../../../models/name_generation/tf/checkpoints", str(int(time.time())))
-    if not os.path.isdir(checkpoint_folder):
-        os.mkdir(checkpoint_folder)
 
     loader.vectorizer.save_maps(checkpoint_folder)
 
@@ -77,4 +80,4 @@ if __name__ == "__main__":
 
     model = create_simple_name_model(maxlen=maxlen, vocab_size=vocab_size,
                                      loss="categorical_crossentropy", optimizer="adam")
-    train_model(model, checkpoint_folder, epochs=1)
+    train_model(model, loader, checkpoint_folder, epochs=1)

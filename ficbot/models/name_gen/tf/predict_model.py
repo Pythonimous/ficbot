@@ -63,7 +63,7 @@ def generate_name(image_path, model_path, maps_path, *,
 
 if __name__ == "__main__":
     generated_name = generate_name("../../../../example/name/example.jpg",
-                                   "../../../../example/name/simple_weights_e3.hdf5",
+                                   "../../../../example/name/tf_simple_best_weights.hdf5.hdf5",
                                    "../../../../example/name/maps.pkl",
                                    diversity=1)
     print(generated_name)

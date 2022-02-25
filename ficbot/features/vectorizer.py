@@ -45,13 +45,13 @@ class Mapper(object):
 
     def save_maps(self, save_folder):
         map_path = os.path.join(save_folder, "maps.pkl")
-        maps = (self._token_n, self._n_token)
+        maps = [self._token_n, self._n_token]
         with open(map_path, "wb") as mp:
             pickle.dump(maps, mp)
 
     def load_maps(self, token_n, n_token):
         """ Initializes mapper from n_token and token_n maps """
-        assert token_n == {value: key for value, key in n_token}, "Indicing maps are not inverses of each other"
+        assert token_n == {value: key for key, value in n_token.items()}, "Indicing maps are not inverses of each other"
         self._token_n = token_n
         self._n_token = n_token
 
@@ -60,7 +60,7 @@ class SequenceVectorizer(Mapper):
 
     # * requires all the following arguments to be explicitly named on function call
 
-    def __init__(self, *, corpus=None, char_level: bool = True, maps: tuple = None):
+    def __init__(self, *, corpus=None, char_level: bool = True, maps = None):
         """
 
         :param corpus: An iterable of texts
@@ -73,8 +73,8 @@ class SequenceVectorizer(Mapper):
         if maps is None:
             self.create_corpus_map(corpus)
         else:
-            n_token, token_n = maps
-            self.load_maps(n_token, token_n)
+            token_n, n_token = maps
+            self.load_maps(token_n, n_token)
 
     def sequenize(self, text: Union[str, List[str]], *, maxlen: int, step: int = 1):
         """Basic text preprocessing function.
