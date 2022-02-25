@@ -1,5 +1,11 @@
+ImageHash
 pandas
+requests
 Pillow
+bs4
+beautifulsoup4
+jikanpy
+selenium
 tqdm
 numpy
 num2words
