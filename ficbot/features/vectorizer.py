@@ -75,6 +75,7 @@ class SequenceVectorizer(Mapper):
         """
         super().__init__(char_level=char_level)
         assert any([corpus, maps]), "Neither corpus, nor maps have been provided."
+        self.ood_token = ood_token
         if maps is None:
             self.create_corpus_map(corpus, ood_token=ood_token)
         else:
@@ -95,6 +96,9 @@ class SequenceVectorizer(Mapper):
 
         """
         text = self._tokenize_text(text)
+        for i in range(len(text)):
+            if text[i] not in self._token_n:
+                text[i] = self.ood_token
         sequences = []
         next_chars = []
         for i in range(0, len(text) - maxlen, step):
