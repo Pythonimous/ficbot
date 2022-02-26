@@ -3,7 +3,7 @@ import unittest
 
 import numpy as np
 
-from .context import ficbot
+import ficbot
 
 
 class TokenizerTestCase(unittest.TestCase):

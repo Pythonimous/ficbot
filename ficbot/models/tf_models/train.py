@@ -1,4 +1,4 @@
-from ficbot.models.name_gen.tf.build_model import SimpleImageNameModel
+from ficbot.models.tf_models.generate.models import SimpleModel
 from ficbot.data.loaders.tf_loaders import create_loader
 from ficbot.features.vectorizer import SequenceVectorizer
 import tensorflow as tf
@@ -10,7 +10,7 @@ import pickle
 
 def create_simple_name_model(*, maxlen, vocab_size, loss, optimizer):
 
-    model = SimpleImageNameModel(maxlen=maxlen, vocab_size=vocab_size)
+    model = SimpleModel(maxlen=maxlen, vocab_size=vocab_size)
     model.compile(loss=loss, optimizer=optimizer)
     return model
 
@@ -25,23 +25,17 @@ def load_from_checkpoint(*, checkpoint_path, data_path, model_type, loader_type,
     if model_type == "img-name":
         with open(kwargs["maps_path"], 'rb') as mp:
             maps = pickle.load(mp)
-        vectorizer = SequenceVectorizer(maps=maps)
+        kwargs["vectorizer"] = SequenceVectorizer(maps=maps)
 
-        preprocessing_algorithm = "mobilenet"
         for layer in model.layers:
             if layer.name in {"vgg16", "vgg19", "resnet50", "mobilenet"}:
-                preprocessing_algorithm = layer.name
+                kwargs["preprocessing_algorithm"] = layer.name
                 break
 
-        maxlen = model.get_layer("NAME_INPUT").output_shape[0][1]
+        kwargs["maxlen"] = model.get_layer("NAME_INPUT").output_shape[0][1]
 
-        loader = create_loader(data_path, loader=loader_type,
-                               vectorizer=vectorizer,
-                               transfer_net=preprocessing_algorithm,
-                               img_folder=kwargs["img_folder"],
-                               img_col=kwargs["img_col"],
-                               name_col=kwargs["name_col"],
-                               maxlen=maxlen, batch_size=kwargs["batch_size"])
+        loader = create_loader(data_path, loader=loader_type, **kwargs)
+
     else:
         loader = None
 
@@ -62,7 +56,7 @@ def train_model(model, loader, checkpoint_folder, *, epochs: int = 1):
 
 if __name__ == "__main__":
 
-    checkpoint_folder = os.path.join("../../../../models/name_generation/tf/checkpoints", str(int(time.time())))
+    checkpoint_folder = os.path.join("../../../models/name_generation/tf/checkpoints", str(int(time.time())))
 
     if not os.path.isdir(checkpoint_folder):
         os.mkdir(checkpoint_folder)
@@ -83,12 +77,12 @@ if __name__ == "__main__":
     """
 
     model, loader = load_from_checkpoint(
-        maps_path="../../../../models/name_generation/tf/checkpoints/1645790858/maps.pkl",
-        checkpoint_path="../../../../models/name_generation/tf/checkpoints/1645790858/simple.04-2.02.hdf5",
-        data_path="../../../../data/interim/img_name.csv",
+        maps_path="../../../models/name_generation/tf/checkpoints/1645790858/maps.pkl",
+        checkpoint_path="../../../models/name_generation/tf/checkpoints/1645790858/simple.04-2.02.hdf5",
+        data_path="../../../data/interim/img_name.csv",
         model_type="img-name",
         loader_type="ImgNameLoader",
-        img_folder="../../../../data/raw/images",
+        img_folder="../../../data/raw/images",
         img_col="image", name_col="eng_name",
         batch_size=1)
 

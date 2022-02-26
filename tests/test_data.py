@@ -1,16 +1,14 @@
-import unittest
 import os
+import unittest
+
 import pandas as pd
 
-from .context import ficbot
+import ficbot
 
 
 class DownloadTestCase(unittest.TestCase):
     """ Tests for link and character page download functions """
     def setUp(self):
-        """
-        Character descriptions which should be beautified
-        """
         self.descriptions_dirty = [
             "Here's a description.\n(Source: Somewebsite)",
             "\n\nHere's another description.\n\nHere's one more.",
@@ -31,6 +29,17 @@ class DownloadTestCase(unittest.TestCase):
 
 class PreprocessTestCase(unittest.TestCase):
     """ Tests for different preprocessing functions """
+    def setUp(self):
+        self.corpus_dirty = [
+            "aabb'.,1 ccddee99",
+            "ccddeeffgg hJAKLm",
+            "åchen."
+        ]
+        self.corpus_clean = [
+            "Aabb . one ccddeeninety nine",
+            "Ccddeeffgg hJAKLm",
+            "Aachen."
+        ]
 
     def test_replace_text_numbers(self):
 
@@ -42,6 +51,8 @@ class PreprocessTestCase(unittest.TestCase):
                          "Asuka Kuramochi the ninth")
         self.assertEqual(ficbot.data.preprocessing.replace_text_numbers("Yui Yokoyama the 7.5th"),
                          "Yui Yokoyama the seven point fifth")
+        self.assertEqual(ficbot.data.preprocessing.replace_text_numbers("1.5"),
+                         "one point five")
         self.assertEqual(ficbot.data.preprocessing.replace_text_numbers("02"),
                          "zero two")
         self.assertEqual(ficbot.data.preprocessing.replace_text_numbers(".01"),
@@ -51,38 +62,41 @@ class PreprocessTestCase(unittest.TestCase):
 
     def test_clean_text_from_symbols(self):
 
-        self.assertEqual(ficbot.data.preprocessing.clear_text("Ángela Salas Larrazábal"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text_characters("Ángela Salas Larrazábal"),
                          "Angela Salas Larrazabal"),
-        self.assertEqual(ficbot.data.preprocessing.clear_text("Simo Häyhä"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text_characters("Simo Häyhä"),
                          "Simo Haeyhae"),
-        self.assertEqual(ficbot.data.preprocessing.clear_text("Christine Waldegård"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text_characters("Christine Waldegård"),
                          "Christine Waldegaard"),
-        self.assertEqual(ficbot.data.preprocessing.clear_text("Selim Vergès"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text_characters("Selim Vergès"),
                          "Selim Verges"),
-        self.assertEqual(ficbot.data.preprocessing.clear_text("Padmé Amidala"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text_characters("Padmé Amidala"),
                          "Padme Amidala"),
-        self.assertEqual(ficbot.data.preprocessing.clear_text("Pierre Tempête de Neige"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text_characters("Pierre Tempête de Neige"),
                          "Pierre Tempete de Neige"),
-        self.assertEqual(ficbot.data.preprocessing.clear_text("Chloë Maxwell"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text_characters("Chloë Maxwell"),
                          "Chloe Maxwell"),
-        self.assertEqual(ficbot.data.preprocessing.clear_text("Bernardo Dión"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text_characters("Bernardo Dión"),
                          "Bernardo Dion"),
-        self.assertEqual(ficbot.data.preprocessing.clear_text("Gérôme Hongou"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text_characters("Gérôme Hongou"),
                          "Geroome Hongou"),
-        self.assertEqual(ficbot.data.preprocessing.clear_text("Arad Mölders"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text_characters("Arad Mölders"),
                          "Arad Moelders"),
-        self.assertEqual(ficbot.data.preprocessing.clear_text("Tor Nørretranders"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text_characters("Tor Nørretranders"),
                          "Tor Noerretranders"),
-        self.assertEqual(ficbot.data.preprocessing.clear_text("Jürgen von Klügel"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text_characters("Jürgen von Klügel"),
                          "Juergen von Kluegel"),
-        self.assertEqual(ficbot.data.preprocessing.clear_text("Œlaf"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text_characters("Œlaf"),
                          "Oelaf"),
-        self.assertEqual(ficbot.data.preprocessing.clear_text("Daša Urban"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text_characters("Daša Urban"),
                          "Dasha Urban")
-        self.assertEqual(ficbot.data.preprocessing.clear_text("02,';'1"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text_characters("02,';'1"),
                          "Zero two one")
-        self.assertEqual(ficbot.data.preprocessing.clear_text("Åll your 1.2 bases are. SO bel']ong to-us 13"),
+        self.assertEqual(ficbot.data.preprocessing.clear_text_characters("Åll your 1.2 bases are. SO bel']ong to-us 13"),
                          "Aall your one point two bases are. SO bel ong to-us thirteen")
+
+    def test_clear_corpus(self):
+        self.assertListEqual(ficbot.data.preprocessing.clear_corpus_characters(self.corpus_dirty, 1), self.corpus_clean)
 
 
 class TfLoadersTestCase(unittest.TestCase):
