@@ -11,7 +11,6 @@ import pandas as pd
 import requests
 from PIL import Image
 from bs4 import BeautifulSoup
-from jikanpy import Jikan
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from tqdm import tqdm
@@ -103,7 +102,7 @@ def download_links(data_path):
     mal_characters.to_csv(data_path, index_label=False)
 
 
-def download_characters(data_path, img_dir, config, jikan_api):
+def download_characters(data_path, img_dir, config):
 
     mal_characters = pd.read_csv(data_path).fillna('')
 
@@ -119,14 +118,15 @@ def download_characters(data_path, img_dir, config, jikan_api):
 
         while True:  # basic retry iteration after an exception (in this case, URLError)
             try:
-                character_index = row.mal_link.split('/')[-2]
-                character = jikan_api.character(character_index)
+                character_id = row.mal_link.split('/')[-2]
+                character = requests.get(f'https://api.jikan.moe/v4/characters/{character_id}').json()['data']
                 mal_characters.at[index, 'eng_name'] = character['name']
                 mal_characters.at[index, 'kanji_name'] = character['name_kanji']
                 mal_characters.at[index, 'bio'] = beautify_bio(character['about'])
 
-                if character['image_url'].endswith('.jpg'):
-                    mal_characters.at[index, 'img_link'] = character['image_url']
+                image_url = character['images']['jpg']['image_url']
+                if image_url.endswith('.jpg'):
+                    mal_characters.at[index, 'img_link'] = image_url
                     mal_characters.at[index, 'img_index'] = get_image(row['img_link'], img_dir, config)
                 else:
                     mal_characters.at[index, 'img_index'] = "-1"
@@ -161,8 +161,6 @@ def main(get_links, data_path, img_dir, config_path, log_path):
     with open(config_path) as extract_config:
         config = json.load(extract_config)
 
-    jikan = Jikan()
-
     if not os.path.isdir(img_dir):
         os.mkdir(img_dir)
 
@@ -172,13 +170,13 @@ def main(get_links, data_path, img_dir, config_path, log_path):
         print('Extracting links finished! Launch the script without --get_links next.')
     else:
         print('Extracting character data!')
-        download_characters(data_path, img_dir, config, jikan)
+        download_characters(data_path, img_dir, config)
         print('All done!')
 
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='This script downloads MyAnimeList data '
-                                                 'from character links using jikanpy wrapper for Jikan API.')
+                                                 'from character links using v4 of Jikan API.')
     parser.add_argument('--get_links', action='store_false',
                         help='download character links first')
 

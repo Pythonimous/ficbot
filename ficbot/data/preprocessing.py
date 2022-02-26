@@ -42,7 +42,7 @@ def replace_text_numbers(text):
     return text.strip()
 
 
-def clear_text(text, exception_set=None):
+def clear_text_characters(text, exception_set=None):
     """
     Clears text from all non-alphanumeric characters not in exception_set.
     Transforms non-latin characters to latin alternatives.
@@ -93,7 +93,7 @@ def clear_text(text, exception_set=None):
     return text
 
 
-def clear_corpus(corpus, exclude_threshold: int = 100):
+def clear_corpus_characters(corpus, exclude_threshold: int = 100):
     """Clears corpus texts from all infrequent non-alphanumeric characters
     (frequency below threshold). Transforms all non-latin characters to
     latin alternatives, replaces numbers with words.
@@ -106,7 +106,7 @@ def clear_corpus(corpus, exclude_threshold: int = 100):
                             if (char_counts[char] > exclude_threshold
                                 and not char.isalnum())}
     for i in range(len(corpus)):
-        corpus[i] = clear_text(corpus[i], exception_characters)
+        corpus[i] = clear_text_characters(corpus[i], exception_characters)
     return corpus
 
 
@@ -119,7 +119,7 @@ def img_name_data(df_path, save_path):
     mal_img_name["image"] = mal_img_name["img_index"].map(lambda x: x + ".jpg")
     del mal_img_name["img_index"]
 
-    mal_img_name["eng_name"] = clear_corpus(mal_img_name["eng_name"], 100)
+    mal_img_name["eng_name"] = clear_corpus_characters(mal_img_name["eng_name"], 100)
 
     mal_img_name.to_csv(save_path, index_label=False)
 

@@ -1,0 +1,14 @@
+ImageHash
+pandas
+requests
+Pillow
+bs4
+beautifulsoup4
+selenium
+tqdm
+numpy
+num2words
+
+tensorflow
+setuptools
+keras
