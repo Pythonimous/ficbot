@@ -1,4 +1,3 @@
-from ficbot.models.tf_models.generate.models import SimpleModel
 from ficbot.data.loaders.tf_loaders import create_loader
 from ficbot.features.vectorizer import SequenceVectorizer
 import tensorflow as tf
@@ -6,13 +5,6 @@ import os
 import time
 
 import pickle
-
-
-def create_simple_name_model(*, maxlen, vocab_size, loss, optimizer):
-
-    model = SimpleModel(maxlen=maxlen, vocab_size=vocab_size)
-    model.compile(loss=loss, optimizer=optimizer)
-    return model
 
 
 def load_from_checkpoint(*, checkpoint_path, data_path, model_type, loader_type, **kwargs):
@@ -44,6 +36,11 @@ def load_from_checkpoint(*, checkpoint_path, data_path, model_type, loader_type,
 
 def train_model(model, loader, checkpoint_folder, *, epochs: int = 1):
 
+    checkpoint_folder = os.path.join(checkpoint_folder, str(int(time.time())))
+
+    if not os.path.isdir(checkpoint_folder):
+        os.mkdir(checkpoint_folder)
+
     loader.vectorizer.save_maps(checkpoint_folder)
 
     checkpoint_path = os.path.join(checkpoint_folder, "simple.{epoch:02d}-{loss:.2f}.hdf5")
@@ -56,30 +53,15 @@ def train_model(model, loader, checkpoint_folder, *, epochs: int = 1):
 
 if __name__ == "__main__":
 
-    checkpoint_folder = os.path.join("../../../models/name_generation/tf/checkpoints", str(int(time.time())))
+    checkpoint_folder = os.path.join("../../models/name_generation/tf/checkpoints", str(int(time.time())))
 
     if not os.path.isdir(checkpoint_folder):
         os.mkdir(checkpoint_folder)
-    """
-    loader = create_loader("../../../../data/interim/img_name.csv",
-                           loader="ImgNameLoader",
-                           img_folder="../../../../data/raw/images",
-                           img_col="image", name_col="eng_name",
-                           maxlen=3, batch_size=1)
-
-    loader.vectorizer.save_maps(checkpoint_folder)
-
-    maxlen = loader.get_maxlen()
-    vocab_size = loader.vectorizer.get_vocab_size()
-
-    model = create_simple_name_model(maxlen=maxlen, vocab_size=vocab_size,
-                                     loss="categorical_crossentropy", optimizer="adam")
-    """
 
     model, loader = load_from_checkpoint(
-        maps_path="../../../models/name_generation/tf/checkpoints/1645790858/maps.pkl",
-        checkpoint_path="../../../models/name_generation/tf/checkpoints/1645790858/simple.04-2.02.hdf5",
-        data_path="../../../data/interim/img_name.csv",
+        maps_path="../../models/name_generation/tf/checkpoints/1645790858/maps.pkl",
+        checkpoint_path="../../models/name_generation/tf/checkpoints/1645790858/simple.04-2.02.hdf5",
+        data_path="../../data/interim/img_name.csv",
         model_type="img-name",
         loader_type="ImgNameLoader",
         img_folder="../../../data/raw/images",
