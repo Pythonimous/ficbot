@@ -7,8 +7,6 @@ from ficbot.tf_models.name.generation import generate_name as tf_generate_name
 from ficbot.data.loaders import tf_loaders
 
 
-
-
 def get_model_class(framework, model_key):
     models = {
         "tf": {
@@ -35,7 +33,7 @@ def get_model_class(framework, model_key):
     return model, loader
 
 
-def choose_model(arguments):
+def get_model(arguments):
 
     framework = arguments.framework
 
@@ -43,46 +41,48 @@ def choose_model(arguments):
         model_key = arguments.model
         return get_model_class(framework, model_key)
 
+
+def choose_model(arguments):
+
+    inputs = list(set(arguments.inputs))
+    outputs = list(set(arguments.outputs))
+
+    input_candidates = {
+        "name": set(),
+        "bio": set(),
+        "image": {"simple_img_name"}
+    }
+
+    output_candidates = {
+        "name": {"simple_img_name"},
+        "bio": set(),
+        "image": set()
+    }
+
+    all_models = ["simple_img_name"]
+    candidates = set(all_models)
+    candidate_descriptions = {
+        "simple_img_name": "Simple img -> name model.\n"
+                           "Train: uses char sequenized names + corresponding images as input "
+                           "to predict the next character of a name.\n"
+                           "Generate: Uses single image as an input."
+    }
+
+    for input in inputs:
+        candidates.intersection_update(input_candidates[input])
+    for output in outputs:
+        candidates.intersection_update(output_candidates[output])
+
+    if not candidates:
+        print("\nNo model with such capabilities yet :)\nCurrently available models:")
+        candidates = all_models
     else:
-        inputs = list(set(arguments.inputs))
-        outputs = list(set(arguments.outputs))
+        print("\nModels for your specifications:")
 
-        input_candidates = {
-            "name": set(),
-            "bio": set(),
-            "img": {"simple_img_name"}
-        }
+    for candidate in list(candidates):
+        print(f"{candidate}: {candidate_descriptions[candidate]}\n")
 
-        output_candidates = {
-            "name": {"simple_img_name"},
-            "bio": set(),
-            "img": set()
-        }
-
-        all_models = ["simple_img_name"]
-        candidates = set(all_models)
-        candidate_descriptions = {
-            "simple_img_name": "Simple img -> name model.\n"
-                               "Train: uses char sequenized names + corresponding images as input"
-                               "to predict the next character of a name.\n"
-                               "Generate: Uses single image as an input."
-        }
-
-        for input in inputs:
-            candidates.intersection_update(input_candidates[input])
-        for output in outputs:
-            candidates.intersection_update(output_candidates[output])
-
-        if not candidates:
-            print("\nNo model with such capabilities yet :)\nCurrently available models:")
-            candidates = all_models
-        else:
-            print("\nModels for your specifications:")
-
-        for candidate in list(candidates):
-            print(f"{candidate}: {candidate_descriptions[candidate]}\n")
-
-        sys.exit()
+    sys.exit()
 
 
 def model_train_new(model, loader, arguments):
@@ -112,6 +112,7 @@ def model_train_checkpoint():
 def model_generate(arguments):
     if arguments.framework == "tf":
         # TODO: automatically detect framework. maybe write a common generate_name function for both tf and torch?
+        # TODO: there will be more functions and input -> output configurations, so write a more flexible framework here
         name = tf_generate_name(arguments.image_path,
                                 arguments.model_path,
                                 arguments.maps_path,
@@ -124,15 +125,19 @@ def model_generate(arguments):
 
 def main(arguments):
 
-    if arguments.train:
+    if arguments.inputs:
+        choose_model(arguments)
 
-        model, loader = choose_model(arguments)
-
+    elif arguments.train:
         if not arguments.checkpoint:
-            model_train_new(model, loader, arguments)
+            model, loader = get_model(arguments)
+
+            if not arguments.checkpoint:
+                model_train_new(model, loader, arguments)
         else:
             # TODO: model_train_checkpoint(loader, arguments)
-            pass
+            print("Load from checkpoint not implemented yet. Sorry :)")
+            sys.exit()
     else:
         model_generate(arguments)
 
@@ -148,9 +153,9 @@ def parse_arguments():
     parser.add_argument('--model', nargs="?",
                         help='model class to use. when in doubt, use --input and --output commands,'
                              'and this script will decide for you.')
-    parser.add_argument('--inputs', choices=['name', 'img', 'bio'],
+    parser.add_argument('--inputs', choices=['name', 'image', 'bio'],
                         nargs='*', help='inputs the model should accept')
-    parser.add_argument('--outputs', choices=['name', 'img', 'bio'],
+    parser.add_argument('--outputs', choices=['name', 'image', 'bio'],
                         nargs='*', help='outputs the model should generate')
 
     train_group = parser.add_argument_group('Train', 'Training parameters')
