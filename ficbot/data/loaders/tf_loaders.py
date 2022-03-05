@@ -48,7 +48,7 @@ class ImgNameLoader(ImageLoader, NameLoader, tf.keras.utils.Sequence):
     def __init__(self, df, img_col, name_col, *,
                  batch_size: int = 1,
 
-                 img_folder: str,
+                 img_dir: str,
                  image_shape: tuple = (224, 224, 3),
                  transfer_net: str = "mobilenet",
 
@@ -67,7 +67,7 @@ class ImgNameLoader(ImageLoader, NameLoader, tf.keras.utils.Sequence):
 
         self.batch_size = batch_size
 
-        self.img_folder = img_folder
+        self.img_dir = img_dir
         self.img_shape = image_shape
         self.transfer_net = transfer_net
 
@@ -90,7 +90,7 @@ class ImgNameLoader(ImageLoader, NameLoader, tf.keras.utils.Sequence):
     def __get_data(self, batches):
         name_batch = batches[self.name_col]
         img_batch = batches[self.img_col]
-        img_paths = [os.path.join(self.img_folder, img_name) for img_name in img_batch]
+        img_paths = [os.path.join(self.img_dir, img_name) for img_name in img_batch]
 
         X_img_batch, X_seq_batch, y_batch = [], [], []
 
@@ -120,7 +120,7 @@ class ImgNameLoader(ImageLoader, NameLoader, tf.keras.utils.Sequence):
         return self.n // self.batch_size
 
 
-def create_loader(data_path, *, loader, **kwargs):
+def create_loader(data_path, *, load_for, **kwargs):
     """ Assistant function to create a loader from given data.
     Args:
         data_path (string): Path to the dataframe
@@ -129,11 +129,11 @@ def create_loader(data_path, *, loader, **kwargs):
                   (check desired loader __init__ for details)
     """
     dataframe = pd.read_csv(data_path)
-    loaders = {"ImgNameLoader"}
-    assert loader in loaders, f"No such loader.\nAvailable loaders: {', '.join(list(loaders))}."
-    if loader == "ImgNameLoader":
+    loaders = {"simple_img_name"}
+    assert load_for in loaders, f"No such loader.\nAvailable loaders: {', '.join(list(loaders))}."
+    if load_for == "simple_img_name":
         return ImgNameLoader(dataframe, kwargs["img_col"], kwargs["name_col"],
-                             img_folder=kwargs["img_folder"], batch_size=kwargs.get("batch_size", 1),
+                             img_dir=kwargs["img_dir"], batch_size=kwargs.get("batch_size", 1),
                              image_shape=kwargs.get("img_shape", (224, 224, 3)),
                              transfer_net=kwargs.get("transfer_net", "mobilenet"),
                              vectorizer=kwargs.get("vectorizer", None),

@@ -106,13 +106,13 @@ class TfLoadersTestCase(unittest.TestCase):
         self.current_dir = os.path.dirname(__file__)
         self.df_path = os.path.join(self.current_dir, "test_files/data/tf_loaders/img_name.csv")
         self.df = pd.read_csv(self.df_path)
-        self.img_folder = os.path.join(self.current_dir, "test_files/data/tf_loaders/images")
+        self.img_dir = os.path.join(self.current_dir, "test_files/data/tf_loaders/images")
         self.image_shape = (224, 224, 3)
         self.maxlen = 3
         self.batch_size = 5
         self.tf_img_name_loader = ficbot.data.loaders.tf_loaders.ImgNameLoader(self.df, "image", "eng_name",
                                                                                batch_size=self.batch_size,
-                                                                               img_folder=self.img_folder,
+                                                                               img_dir=self.img_dir,
                                                                                image_shape=self.image_shape,
                                                                                maxlen=self.maxlen)
 
