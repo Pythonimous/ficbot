@@ -53,12 +53,11 @@ if __name__ == "__main__":
         os.mkdir(checkpoint_folder)
 
     model, loader = load_from_checkpoint(
-        maps_path="../../models/name_generation/tf/checkpoints/1645790858/maps.pkl",
-        checkpoint_path="../../models/name_generation/tf/checkpoints/1645790858/simple.04-2.02.hdf5",
+        maps_path="../../example/name/maps.pkl",
+        checkpoint_path="../../example/name/tf_simple_average.hdf5",
         data_path="../../data/interim/img_name.csv",
-        model_type="img-name",
-        loader_type="ImgNameLoader",
-        img_dir="../../../data/raw/images",
+        model_name="simple_img_name",
+        img_dir="../../data/raw/images",
         img_col="image", name_col="eng_name",
         batch_size=1)
 
