@@ -56,8 +56,7 @@ if __name__ == "__main__":
         maps_path="../../models/name_generation/tf/checkpoints/1645790858/maps.pkl",
         checkpoint_path="../../models/name_generation/tf/checkpoints/1645790858/simple.04-2.02.hdf5",
         data_path="../../data/interim/img_name.csv",
-        model_type="img-name",
-        loader_type="ImgNameLoader",
+        model_name="simple_img_name",
         img_dir="../../../data/raw/images",
         img_col="image", name_col="eng_name",
         batch_size=1)
