@@ -15,6 +15,6 @@ setup(
    packages=['ficbot'],
    install_requires=['wheel', 'setuptools', 'numpy', 'cython',
                      'Pillow', 'ImageHash',
-                     'requests', 'bs4', 'beautifulsoup4', 'jikanpy', 'selenium',
+                     'requests', 'bs4', 'beautifulsoup4', 'selenium',
                      'tqdm',  'pandas', 'tensorflow']
 )

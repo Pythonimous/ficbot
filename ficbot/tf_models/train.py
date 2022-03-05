@@ -7,29 +7,23 @@ import time
 import pickle
 
 
-def load_from_checkpoint(*, checkpoint_path, data_path, model_type, loader_type, **kwargs):
-
-    model_types = {"img-name"}
-    assert model_type in model_types, f"No such model yet.\nAvailable models: {', '.join(list(model_types))}."
+def load_from_checkpoint(*, checkpoint_path, data_path, model_name, **kwargs):
 
     model = tf.keras.models.load_model(checkpoint_path)
 
-    if model_type == "img-name":
+    if "name" in model_name:
         with open(kwargs["maps_path"], 'rb') as mp:
             maps = pickle.load(mp)
         kwargs["vectorizer"] = SequenceVectorizer(maps=maps)
-
-        for layer in model.layers:
-            if layer.name in {"vgg16", "vgg19", "resnet50", "mobilenet"}:
-                kwargs["preprocessing_algorithm"] = layer.name
-                break
-
         kwargs["maxlen"] = model.get_layer("NAME_INPUT").output_shape[0][1]
 
-        loader = create_loader(data_path, loader=loader_type, **kwargs)
+    if "image" in model_name:
+        for layer in model.layers:
+            if layer.name in {"vgg16", "vgg19", "resnet50", "mobilenet"}:
+                kwargs["transfer_net"] = layer.name
+                break
 
-    else:
-        loader = None
+    loader = create_loader(data_path, load_for=model_name, **kwargs)
 
     return model, loader
 
@@ -64,7 +58,7 @@ if __name__ == "__main__":
         data_path="../../data/interim/img_name.csv",
         model_type="img-name",
         loader_type="ImgNameLoader",
-        img_folder="../../../data/raw/images",
+        img_dir="../../../data/raw/images",
         img_col="image", name_col="eng_name",
         batch_size=1)
 

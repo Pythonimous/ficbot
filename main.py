@@ -95,7 +95,7 @@ def model_train_new(model, loader, arguments):
         train_model = tf_train.train_model  # torch_train.train_model
 
     if arguments.model == "simple_img_name":
-        loader = create_loader(arguments.data_path, loader=loader, img_folder=arguments.img_dir,
+        loader = create_loader(arguments.data_path, loader=loader, img_dir=arguments.img_dir,
                                img_col=arguments.img_col, name_col=arguments.name_col,
                                maxlen=arguments.maxlen, batch_size=arguments.batch_size)
         vocab_size = loader.vectorizer.get_vocab_size()
@@ -104,9 +104,15 @@ def model_train_new(model, loader, arguments):
         train_model(simple_img_name, loader, arguments.checkpoint_dir, epochs=arguments.epochs)
 
 
-def model_train_checkpoint():
-    # TODO write the body, refactor checkpoint load, so far it is atrocious
-    pass
+def model_train_checkpoint(arguments):
+    if arguments.framework == "tf":
+        model, loader = tf_train.load_from_checkpoint(checkpoint_path=arguments.checkpoint,
+                                                      data_path=arguments.data_path,
+                                                      model_name=arguments.model,
+                                                      img_dir=arguments.img_dir, batch_size=arguments.batch_size,
+                                                      maps_path=arguments.maps,
+                                                      name_col=arguments.name_col, img_col=arguments.img_col)
+        tf_train.train_model(model, loader, arguments.checkpoint_dir, epochs=arguments.epochs)
 
 
 def model_generate(arguments):
@@ -131,13 +137,9 @@ def main(arguments):
     elif arguments.train:
         if not arguments.checkpoint:
             model, loader = get_model(arguments)
-
-            if not arguments.checkpoint:
-                model_train_new(model, loader, arguments)
+            model_train_new(model, loader, arguments)
         else:
-            # TODO: model_train_checkpoint(loader, arguments)
-            print("Load from checkpoint not implemented yet. Sorry :)")
-            sys.exit()
+            model_train_checkpoint(arguments)
     else:
         model_generate(arguments)
 
@@ -146,17 +148,18 @@ def parse_arguments():
     parser = argparse.ArgumentParser(prog='Ficbot', description='Your friendly neighborhood fanfic writing assistant! '
                                                                 'Boost your imagination with a bit of AI magic.')
 
-    parser.add_argument('--train', action='store_true',
-                      help='train a new generation model from scratch or checkpoint')
-    parser.add_argument('--framework', choices=['tf', 'torch'],
-                        help='model from which framework to use')
-    parser.add_argument('--model', nargs="?",
-                        help='model class to use. when in doubt, use --input and --output commands,'
-                             'and this script will decide for you.')
-    parser.add_argument('--inputs', choices=['name', 'image', 'bio'],
-                        nargs='*', help='inputs the model should accept')
-    parser.add_argument('--outputs', choices=['name', 'image', 'bio'],
-                        nargs='*', help='outputs the model should generate')
+    general_group = parser.add_argument_group('General', 'General parameters')
+    general_group.add_argument('--train', action='store_true',
+                               help='train a new generation model from scratch or checkpoint')
+    general_group.add_argument('--framework', choices=['tf', 'torch'],
+                               help='model from which framework to use')
+    general_group.add_argument('--model', nargs="?",
+                               help='model class to use. when in doubt, use --input and --output commands,'
+                               'and this script will decide for you.')
+    general_group.add_argument('--inputs', choices=['name', 'image', 'bio'],
+                               nargs='*', help='inputs the model should accept')
+    general_group.add_argument('--outputs', choices=['name', 'image', 'bio'],
+                               nargs='*', help='outputs the model should generate')
 
     train_group = parser.add_argument_group('Train', 'Training parameters')
 

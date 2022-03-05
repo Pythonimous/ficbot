@@ -6,9 +6,9 @@ Ficbot is a machine learning-based system that provides various tools to make a 
 
 The main driving force behind this project was the availability of similarly structured anime character data on websites like [MyAnimeList](https://myanimelist.net/).
 
-Moreover, despite different anime studios having different artistic styles, the anime style allows anime character images to make a roughly homogenous dataset and use these images to help different generation tasks (maybe, even train a GAN? :)
+Moreover, despite different anime studios having different artistic styles, the anime style itself allows character images to make a roughly homogenous dataset, which can be used to help different generation tasks (maybe, even train a GAN? :)
 
-You may experiment with the models using terminal, or demo notebooks from this [folder](https://github.com/Pythonimous/ficbot/tree/main/notebooks)
+You may experiment with the models using terminal, or demo notebooks from **this [folder](https://github.com/Pythonimous/ficbot/tree/main/notebooks)**.
 ## Features
 - Image -> Name generator
 
@@ -42,7 +42,7 @@ python3 main.py --train --framework tf --model simple_img_name --data_path data/
 ```
 ### Train model from checkpoint
 ```bash
-python3 main.py --train --checkpoint example/name/tf_simple_average.hdf5 --maps example/name/maps.pkl --data_path data/interim/img_name.csv --name_col eng_name --img_col image --img_dir data/raw/images --checkpoint_dir checkpoints --batch_size 16 --epochs 5 --maxlen 3
+python3 main.py --train --framework tf --model simple_img_name --checkpoint example/name/tf_simple_average.hdf5 --maps example/name/maps.pkl --data_path data/interim/img_name.csv --name_col eng_name --img_col image --img_dir data/raw/images --checkpoint_dir checkpoints --batch_size 16 --epochs 5 --maxlen 3
 ```
 
 ## Currently in progress
