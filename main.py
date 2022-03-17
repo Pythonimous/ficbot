@@ -122,6 +122,7 @@ def model_generate(arguments):
         name = tf_generate_name(arguments.image_path,
                                 arguments.model_path,
                                 arguments.maps_path,
+                                min_name_length=arguments.min_name_length,
                                 diversity=arguments.diversity)
         # TODO: add custom start / end / ood token support
     else:
@@ -190,6 +191,8 @@ def parse_arguments():
                                 help='path to maps for generation (if applicable to a model)')
     generate_group.add_argument('--image_path', default='example/name/example.jpg',
                                 help='image path for generation')
+    generate_group.add_argument('--min_name_length', type=int, default=2,
+                                help='minimum name length in words')
     generate_group.add_argument('--diversity', type=float, default=1.0,
                                 help='generation sampling diversity, the higher the more diverse')
 

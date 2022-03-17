@@ -30,7 +30,7 @@ pip3 install -r requirements.txt
 ## Usage example
 ### Simple Image -> Name generation
 ```bash
-python3 main.py --framework tf --image_path example/name/example.jpg --model_path example/name/tf_simple_average.hdf5 --maps_path example/name/maps.pkl --diversity 1.0
+python3 main.py --framework tf --image_path example/name/example.jpg --model_path example/name/tf_simple_average.hdf5 --maps_path example/name/maps.pkl --min_name_length 2 --diversity 1.0
 ```
 ### Selecting model by inputs and outputs
 ```bash
@@ -44,9 +44,6 @@ python3 main.py --train --framework tf --model simple_img_name --data_path data/
 ```bash
 python3 main.py --train --framework tf --model simple_img_name --checkpoint example/name/tf_simple_average.hdf5 --maps example/name/maps.pkl --data_path data/interim/img_name.csv --name_col eng_name --img_col image --img_dir data/raw/images --checkpoint_dir checkpoints --batch_size 16 --epochs 5 --maxlen 3
 ```
-
-## Currently in progress
-- Simple Flask app + interface to use models in two clicks instead of a terminal command
 
 ## Dataset
 The original dataset has been crawled from MyAnimeList.net using Selenium and publicly available Python wrapper for [Jikan API](https://jikan.moe/).

@@ -28,7 +28,7 @@ def load_image_for_model(image_path, model):
 
 
 def generate_name(image_path, model_path, maps_path, *,
-                  diversity: float = 1.2, start_token: str = "@", end_token: str = "$", ood_token: str = "?"):
+                  min_name_length: int = 2, diversity: float = 1.2, start_token: str = "@", end_token: str = "$", ood_token: str = "?"):
     name_model = tf.keras.models.load_model(model_path)
 
     image_features = load_image_for_model(image_path, name_model)
@@ -53,6 +53,8 @@ def generate_name(image_path, model_path, maps_path, *,
         while next_char == ood_token:  # in case next_char is ood token, we sample (and then resample) until it isn't
             next_index = sample(preds, diversity)
             next_char = idx_char[next_index]
+        if next_char == end_token and generated.count(' ') < min_name_length - 1:
+            next_char = " "
 
         name = name[1:] + next_char
         generated += next_char
