@@ -1,4 +1,4 @@
-from ficbot.data.loaders.tf_loaders import create_loader
+from ficbot.data.loaders import create_loader
 from ficbot.features.vectorizer import SequenceVectorizer
 import tensorflow as tf
 import os

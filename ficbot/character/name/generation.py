@@ -1,6 +1,6 @@
 import numpy as np
 import tensorflow as tf
-from ficbot.data.loaders.tf_loaders import ImageLoader
+from ficbot.data.loaders import ImageLoader
 
 import pickle
 
@@ -69,7 +69,7 @@ def generate_name(image_path, model_path, maps_path, *,
 
 if __name__ == "__main__":
     generated_name = generate_name("../../../example/name/example.jpg",
-                                   "../../../example/name/tf_simple_strict.hdf5",
+                                   "../../../example/name/simple_strict.hdf5",
                                    "../../../example/name/maps.pkl",
                                    diversity=1.2)
     print(generated_name)

@@ -30,19 +30,19 @@ pip3 install -r requirements.txt
 ## Usage example
 ### Simple Image -> Name generation
 ```bash
-python3 main.py --framework tf --image_path example/name/example.jpg --model_path example/name/tf_simple_average.hdf5 --maps_path example/name/maps.pkl --min_name_length 2 --diversity 1.0
+python3 main.py --image_path example/name/example.jpg --model_path example/name/simple_average.hdf5 --maps_path example/name/maps.pkl --min_name_length 2 --diversity 1.0
 ```
 ### Selecting model by inputs and outputs
 ```bash
-python3 main.py --framework tf --inputs image --outputs name
+python3 main.py --inputs image --outputs name
 ```
 ### Train model from scratch
 ```bash
-python3 main.py --train --framework tf --model simple_img_name --data_path data/interim/img_name.csv --name_col eng_name --img_col image --img_dir data/raw/images --checkpoint_dir checkpoints --batch_size 16 --epochs 5 --maxlen 3 --optimizer adam
+python3 main.py --train --model simple_img_name --data_path data/interim/img_name.csv --name_col eng_name --img_col image --img_dir data/raw/images --checkpoint_dir checkpoints --batch_size 16 --epochs 5 --maxlen 3 --optimizer adam
 ```
 ### Train model from checkpoint
 ```bash
-python3 main.py --train --framework tf --model simple_img_name --checkpoint example/name/tf_simple_average.hdf5 --maps example/name/maps.pkl --data_path data/interim/img_name.csv --name_col eng_name --img_col image --img_dir data/raw/images --checkpoint_dir checkpoints --batch_size 16 --epochs 5 --maxlen 3
+python3 main.py --train --model simple_img_name --checkpoint example/name/simple_average.hdf5 --maps example/name/maps.pkl --data_path data/interim/img_name.csv --name_col eng_name --img_col image --img_dir data/raw/images --checkpoint_dir checkpoints --batch_size 16 --epochs 5 --maxlen 3
 ```
 
 ## Dataset
