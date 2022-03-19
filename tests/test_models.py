@@ -2,7 +2,7 @@ import unittest
 
 import keras
 
-from ficbot.tf_models.name.models import SimpleModel
+from ficbot.character.name.models import SimpleModel
 
 
 class TfModelsTestCase(unittest.TestCase):

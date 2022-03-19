@@ -1,45 +1,34 @@
 import argparse
 import sys
 
-from ficbot.tf_models import train as tf_train
-from ficbot.tf_models.name.models import SimpleModel
-from ficbot.tf_models.name.generation import generate_name as tf_generate_name
-from ficbot.data.loaders import tf_loaders
+from ficbot.character import train
+from ficbot.character.name.models import SimpleModel
+from ficbot.character.name.generation import generate_name
+from ficbot.data import loaders
 
 
-def get_model_class(framework, model_key):
+def get_model_class(model_key):
     models = {
-        "tf": {
-            "simple_img_name": SimpleModel
-        },
-        "torch": {
-        }
+        "simple_img_name": SimpleModel
     }
     loaders = {
-        "tf": {
-            "simple_img_name": "ImgNameLoader"
-        },
-        "torch": {
-
-            }
+        "simple_img_name": "ImgNameLoader"
     }
 
-    model = models[framework].get(model_key, None)
+    model = models.get(model_key, None)
 
     if not model:
-        sys.exit("Model not yet implemented in this framework! Please choose a different framework.")
+        sys.exit("Such model doesn't exist!")
 
-    loader = loaders[framework][model_key]
+    loader = loaders[model_key]
     return model, loader
 
 
 def get_model(arguments):
 
-    framework = arguments.framework
-
     if arguments.model:
         model_key = arguments.model
-        return get_model_class(framework, model_key)
+        return get_model_class(model_key)
 
 
 def choose_model(arguments):
@@ -87,12 +76,8 @@ def choose_model(arguments):
 
 def model_train_new(model, loader, arguments):
 
-    if arguments.framework == "tf":
-        create_loader = tf_loaders.create_loader
-        train_model = tf_train.train_model
-    else:
-        create_loader = tf_loaders.create_loader  # torch_loaders.create_loader
-        train_model = tf_train.train_model  # torch_train.train_model
+    create_loader = loaders.create_loader
+    train_model = train.train_model
 
     if arguments.model == "simple_img_name":
         loader = create_loader(arguments.data_path, loader=loader, img_dir=arguments.img_dir,
@@ -105,27 +90,22 @@ def model_train_new(model, loader, arguments):
 
 
 def model_train_checkpoint(arguments):
-    if arguments.framework == "tf":
-        model, loader = tf_train.load_from_checkpoint(checkpoint_path=arguments.checkpoint,
-                                                      data_path=arguments.data_path,
-                                                      model_name=arguments.model,
-                                                      img_dir=arguments.img_dir, batch_size=arguments.batch_size,
-                                                      maps_path=arguments.maps,
-                                                      name_col=arguments.name_col, img_col=arguments.img_col)
-        tf_train.train_model(model, loader, arguments.checkpoint_dir, epochs=arguments.epochs)
+    model, loader = train.load_from_checkpoint(checkpoint_path=arguments.checkpoint,
+                                               data_path=arguments.data_path,
+                                               model_name=arguments.model,
+                                               img_dir=arguments.img_dir, batch_size=arguments.batch_size,
+                                               maps_path=arguments.maps,
+                                               name_col=arguments.name_col, img_col=arguments.img_col)
+    train.train_model(model, loader, arguments.checkpoint_dir, epochs=arguments.epochs)
 
 
 def model_generate(arguments):
-    if arguments.framework == "tf":
-        # TODO: automatically detect framework. maybe write a common generate_name function for both tf and torch?
-        # TODO: there will be more functions and input -> output configurations, so write a more flexible framework here
-        name = tf_generate_name(arguments.image_path,
-                                arguments.model_path,
-                                arguments.maps_path,
-                                diversity=arguments.diversity)
-        # TODO: add custom start / end / ood token support
-    else:
-        name = None
+    name = generate_name(arguments.image_path,
+                         arguments.model_path,
+                         arguments.maps_path,
+                         min_name_length=arguments.min_name_length,
+                         diversity=arguments.diversity)
+    # TODO: add custom start / end / ood token support
     print("Generated name: ", name)
 
 
@@ -151,8 +131,6 @@ def parse_arguments():
     general_group = parser.add_argument_group('General', 'General parameters')
     general_group.add_argument('--train', action='store_true',
                                help='train a new generation model from scratch or checkpoint')
-    general_group.add_argument('--framework', choices=['tf', 'torch'],
-                               help='model from which framework to use')
     general_group.add_argument('--model', nargs="?",
                                help='model class to use. when in doubt, use --input and --output commands,'
                                'and this script will decide for you.')
@@ -184,12 +162,14 @@ def parse_arguments():
                              help='optimizer to use during training')
 
     generate_group = parser.add_argument_group('Generate', 'Generation parameters')
-    generate_group.add_argument('--model_path', default='example/name/tf_simple_average.hdf5',
+    generate_group.add_argument('--model_path', default='example/name/simple_average.hdf5',
                                 help='model path for generation')
     generate_group.add_argument('--maps_path', default='example/name/maps.pkl',
                                 help='path to maps for generation (if applicable to a model)')
     generate_group.add_argument('--image_path', default='example/name/example.jpg',
                                 help='image path for generation')
+    generate_group.add_argument('--min_name_length', type=int, default=2,
+                                help='minimum name length in words')
     generate_group.add_argument('--diversity', type=float, default=1.0,
                                 help='generation sampling diversity, the higher the more diverse')
 
