@@ -42,7 +42,20 @@ class ImgNameLoader(ImageLoader, NameLoader, tf.keras.utils.Sequence):
 
     Attributes:
         df (Pandas dataframe): dataframe with a name column
-
+        img_col (str): Label of a column with image names
+        name_col (str): Label of a column with character names
+        batch-size (int): Batch size
+        img_dir (str): Path to a directory with images
+        img_shape (tuple): Desired image shape for the pretrained algorithm
+        transfer_net (str): What pretrained network to use for transfer learning.
+            Currently available: [mobilenet]
+        vectorizer (features.vectorizer.SequenceVectorizer object):
+            a preinitializer name vectorizer using existing maps (optional)
+        start_token (str): a token to denote a beginning of a name
+        end_token (str): a token to denote an end of a name
+        maxlen (str): what length the sequences should be
+        step (str): what step the sequenizer should take
+        shuffle (bool): whether to shuffle the data after each epoch
     """
 
     def __init__(self, df, img_col, name_col, *,
