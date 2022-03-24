@@ -2,6 +2,8 @@ import re
 from collections import defaultdict
 
 import pandas as pd
+  # TODO: num2words breaks deploy, do something with it
+'''
 from num2words import num2words
 
 
@@ -40,7 +42,7 @@ def replace_text_numbers(text):
             text = text[:num_from] + current_number + text[num_to + 1:]
             return replace_text_numbers(text)
     return text.strip()
-
+'''
 
 def clear_text_characters(text, exception_set=None):
     """
@@ -50,7 +52,7 @@ def clear_text_characters(text, exception_set=None):
     if exception_set is None:
         exception_set = {' ', '-', '.'}
 
-    text = replace_text_numbers(text)
+    # text = replace_text_numbers(text)
 
     text_clean = ''
     for char in text:
