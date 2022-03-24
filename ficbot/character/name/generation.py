@@ -16,6 +16,7 @@ def sample(preds, temperature=1.0):
 
 
 def load_image_for_model(image_path, model):
+    """ Load an iamge for a particular model and convert it into feature vector """
     preprocessing_algorithm = ""
     for layer in model.layers:
         if layer.name in {"vgg16", "vgg19", "resnet50", "mobilenet"}:
@@ -28,7 +29,9 @@ def load_image_for_model(image_path, model):
 
 
 def generate_name(image_path, model_path, maps_path, *,
-                  min_name_length: int = 2, diversity: float = 1.2, start_token: str = "@", end_token: str = "$", ood_token: str = "?"):
+                  min_name_length: int = 2, diversity: float = 1.2,
+                  start_token: str = "@", end_token: str = "$", ood_token: str = "?"):
+    """ Generate a name from an image using a pretrained model """
     name_model = tf.keras.models.load_model(model_path)
 
     image_features = load_image_for_model(image_path, name_model)

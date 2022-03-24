@@ -28,6 +28,7 @@ def beautify_bio(bio):
 
 
 def get_image(image_link, image_path, config):
+    """ Download an iamge and save it under a unique hash-name """
     image_content = requests.get(image_link, headers=config['headers']).content
     image_bytes = io.BytesIO(image_content)
     image = Image.open(image_bytes)
@@ -38,6 +39,7 @@ def get_image(image_link, image_path, config):
 
 
 def extract_links_from_page(source):
+    """ Extracts all character links from MAL html source """
     soup = BeautifulSoup(source, "html.parser")
     table = soup.find('table')
     row_hrefs = [row['href'] for row in table.findAll('a', href=True)]
@@ -49,7 +51,7 @@ def extract_links_from_page(source):
 
 
 def download_links(data_path):
-
+    """ Downloads all character links from MyAnimeList using Selenium """
     if os.path.exists(data_path):
         mal_characters = pd.read_csv(data_path)
         character_links = list(mal_characters.mal_link)
@@ -103,7 +105,7 @@ def download_links(data_path):
 
 
 def download_characters(data_path, img_dir, config):
-
+    """ Downloads all character data and images using JikanAPI for MAL """
     mal_characters = pd.read_csv(data_path).fillna('')
 
     session_count = 0
