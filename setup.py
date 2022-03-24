@@ -16,5 +16,5 @@ setup(
    install_requires=['wheel', 'setuptools', 'numpy', 'cython',
                      'Pillow', 'ImageHash',
                      'requests', 'bs4', 'beautifulsoup4', 'selenium',
-                     'tqdm',  'pandas', 'tensorflow']
+                     'tqdm',  'pandas', 'tensorflow-cpu']
 )
