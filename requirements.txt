@@ -9,7 +9,7 @@ tqdm~=4.62.3
 numpy~=1.19.5
 num2words~=0.5.10
 
-tensorflow~=2.6.2
+tensorflow-cpu~=2.6.2
 setuptools~=59.6.0
 keras~=2.6.0
 Flask~=2.0.3
