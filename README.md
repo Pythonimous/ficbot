@@ -8,16 +8,18 @@ The main driving force behind this project was the availability of similarly str
 
 Moreover, despite different anime studios having different artistic styles, the anime style itself allows character images to make a roughly homogenous dataset, which can be used to help different generation tasks (maybe, even train a GAN? :)
 
-You may experiment with the models using terminal, demo notebooks from **this [folder](https://github.com/Pythonimous/ficbot/tree/main/notebooks)**, or check out my Flask-based **[interface](https://github.com/Pythonimous/ficbot-web)**.
+You may experiment with the models using terminal, demo notebooks from **this [folder](https://github.com/Pythonimous/ficbot/tree/main/notebooks)**, or check out my [Flask-based](https://github.com/Pythonimous/ficbot-web) **[interface](https://ficbotweb.herokuapp.com/)**.
 ## Features
 - Image -> Name generator
 
-### Planned features
-- Name generators (from Bio, Image + Bio)
-- Bio generators (from Name, Image)
-- Image generators (from nothing, Name, Bio)
-- Anime filter (to turn yourself into OC!)
-- Complete OC generator (Nothing -> Name, Bio, Image) :)
+<h4>In development:</h4>
+<ul>
+   <li>Biography generation;</li>
+   <li>Image generation;</li>
+   <li>Full OC generation;</li>
+   <li>Image anime style transfer (turn yourself into OC? 😅)</li>
+</ul>
+<h4>Stay tuned for more!</h4>
 
 
 ## Installation
