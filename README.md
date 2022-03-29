@@ -17,7 +17,7 @@ You may experiment with the models using terminal, demo notebooks from **this [f
    <li>Biography generation;</li>
    <li>Image generation;</li>
    <li>Full OC generation;</li>
-   <li>Image anime style transfer (turn yourself into OC? 😅)</li>
+   <li>Image anime style transfer (turn yourself into OC?)</li>
 </ul>
 <h4>Stay tuned for more!</h4>
 
@@ -55,7 +55,7 @@ Raw version of the dataset available [**here**](http://www.kaggle.com/dataset/37
 This script requires character links to download character data. You can provide them yourself, or download them using the same script (use --help for more details)
 
 ## Testing
-In order to confirm that the scripts are functional after your requirements are installed, use:
+In order to confirm that the scripts are functional after your requirements have been installed, use:
 ```bash
 python3 -m unittest
 ```
