@@ -63,7 +63,7 @@ Test coverage is not complete. You can check test coverage using [**coverage**](
 ```bash
 pip3 install coverage
 ```
-Before generating the report, you need to run the tests using coverage:
+Before generating the report, you need to run the tests using coverage. Current coverage is **73%** (all non-ML code and some harder to test ML code, i.e. compilation):
 ```bash
 coverage run -m unittest
 ```
