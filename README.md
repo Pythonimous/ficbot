@@ -8,7 +8,7 @@ The main driving force behind this project was the availability of similarly str
 
 Moreover, despite different anime studios having different artistic styles, the anime style itself allows character images to make a roughly homogenous dataset, which can be used to help different generation tasks (maybe, even train a GAN? :)
 
-You may experiment with the models using terminal, demo notebooks from **this [folder](https://github.com/Pythonimous/ficbot/tree/main/notebooks)**, or check out my [Flask-based](https://github.com/Pythonimous/ficbot-web) **[interface](https://ficbotweb.herokuapp.com/)**.
+You may experiment with the models using terminal, demo notebooks from **this [folder](https://github.com/Pythonimous/ficbot/tree/main/notebooks)**, or check out my [Flask-based](https://github.com/Pythonimous/ficbot-web) **[interface](https://ficbotweb.com/)**.
 ## Features
 - Image -> Name generator
 
