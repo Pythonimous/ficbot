@@ -1,8 +1,8 @@
 # Ficbot
 
-An AI-powered Fan Fiction Writing Assistant.
+An AI-powered character-generating assistant!
 
-Ficbot is a machine learning-based system that provides various tools to make a good starting point for an aspiring writer when they need a character, but don't know where to start.
+Ficbot is a machine learning-based system that provides various tools to make a good starting point for aspiring writers who need a character but don't know where to start.
 
 The main driving force behind this project was the availability of similarly structured anime character data on websites like [MyAnimeList](https://myanimelist.net/).
 
