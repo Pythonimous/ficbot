@@ -114,8 +114,8 @@ class SequenceVectorizer(Mapper):
 
         text_sequences, text_next_chars = self.sequenize(text, maxlen=maxlen, step=step)
 
-        vector_seq = np.zeros((len(text_sequences), maxlen, self.get_vocab_size()), dtype=np.bool)
-        vector_next = np.zeros((len(text_sequences), self.get_vocab_size()), dtype=np.bool)
+        vector_seq = np.zeros((len(text_sequences), maxlen, self.get_vocab_size()), dtype=bool)
+        vector_next = np.zeros((len(text_sequences), self.get_vocab_size()), dtype=bool)
 
         for i, sequence in enumerate(text_sequences):
             for j, token in enumerate(sequence):
