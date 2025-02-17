@@ -3,7 +3,7 @@ import tensorflow as tf
 import numpy as np
 import os
 
-import ficbot
+import src
 
 
 class ImageLoader(object):
@@ -90,7 +90,7 @@ class ImgNameLoader(ImageLoader, NameLoader, tf.keras.utils.Sequence):
         self.n = len(self.df)
 
         if vectorizer is None:
-            self.vectorizer = ficbot.features.vectorizer.SequenceVectorizer(corpus=self.df[name_col].tolist(),
+            self.vectorizer = src.features.vectorizer.SequenceVectorizer(corpus=self.df[name_col].tolist(),
                                                                             ood_token="?")
         else:
             self.vectorizer = vectorizer

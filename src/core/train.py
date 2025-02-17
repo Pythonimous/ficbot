@@ -1,5 +1,5 @@
-from ficbot.data.loaders import create_loader
-from ficbot.features.vectorizer import SequenceVectorizer
+from src.core.loaders import create_loader
+from src.features.vectorizer import SequenceVectorizer
 import tensorflow as tf
 import os
 import time

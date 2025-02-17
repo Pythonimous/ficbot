@@ -2,7 +2,7 @@ import unittest
 
 import tensorflow as tf
 
-from ficbot.character.name.models import SimpleModel
+from src.core.name.models import SimpleModel
 
 
 class TfModelsTestCase(unittest.TestCase):

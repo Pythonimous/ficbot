@@ -1,10 +1,10 @@
 import argparse
 import sys
 
-from ficbot.character import train
-from ficbot.character.name.models import SimpleModel
-from ficbot.character.name.generation import generate_name
-from ficbot.data import loaders
+from src.core import train
+from src.core.name.models import SimpleModel
+from src.core.name.generation import generate_name
+from src.core import loaders
 
 
 def get_model_class(model_key):

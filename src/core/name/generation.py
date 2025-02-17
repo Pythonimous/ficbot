@@ -1,6 +1,6 @@
 import numpy as np
 import tensorflow as tf
-from ficbot.data.loaders import ImageLoader
+from src.core.loaders import ImageLoader
 
 import pickle
 
@@ -16,7 +16,7 @@ def sample(preds, temperature=1.0):
 
 
 def load_image_for_model(image_path, model):
-    """ Load an iamge for a particular model and convert it into feature vector """
+    """ Load an image for a particular model and convert it into feature vector """
     preprocessing_algorithm = ""
     for layer in model.layers:
         if layer.name in {"vgg16", "vgg19", "resnet50", "mobilenet"}:
