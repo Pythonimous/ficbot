@@ -1,3 +1,5 @@
+import os
+
 import re
 from collections import defaultdict
 
@@ -126,7 +128,10 @@ def img_name_data(df_path, save_path):
 
 
 def main():
-    img_name_data("../../data/raw/anime_characters.csv", "../../data/interim/img_name.csv")
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    input_path = os.path.join(current_dir, "../../data/raw/anime_characters.csv")
+    output_path = os.path.join(current_dir, "../../data/interim/img_name.csv")
+    img_name_data(input_path, output_path)
 
 
 if __name__ == "__main__":

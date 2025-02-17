@@ -2,14 +2,14 @@ import argparse
 import sys
 
 from src.core import train
-from src.core.name.models import SimpleModel
+from src.core.name.models import Img2Name
 from src.core.name.generation import generate_name
 from src.core import loaders
 
 
 def get_model_class(model_key):
     models = {
-        "simple_img_name": SimpleModel
+        "simple_img_name": Img2Name
     }
     loaders = {
         "simple_img_name": "ImgNameLoader"
@@ -80,7 +80,8 @@ def model_train_new(model, loader, arguments):
     train_model = train.train_model
 
     if arguments.model == "simple_img_name":
-        loader = create_loader(arguments.data_path, loader=loader, img_dir=arguments.img_dir,
+        loader = create_loader(arguments.data_path, loader=loader, load_for=arguments.model,
+                               img_dir=arguments.img_dir,
                                img_col=arguments.img_col, name_col=arguments.name_col,
                                maxlen=arguments.maxlen, batch_size=arguments.batch_size)
         vocab_size = loader.vectorizer.get_vocab_size()

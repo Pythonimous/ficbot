@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow.keras.applications import MobileNet
 
 
-class SimpleModel(object):
+class Img2Name(object):
 
     def __init__(self, *, maxlen, vocab_size):
         self.maxlen = maxlen
@@ -20,7 +20,7 @@ class SimpleModel(object):
         self.predict = tf.keras.layers.Dense(vocab_size, activation="softmax", name="PREDICTION")
 
     def __new__(cls, *, maxlen, vocab_size):
-        model = super(SimpleModel, cls).__new__(cls)
+        model = super(Img2Name, cls).__new__(cls)
         model.__init__(maxlen=maxlen, vocab_size=vocab_size)
         return model.__build()
 
@@ -29,11 +29,11 @@ class SimpleModel(object):
         name_features = self.rnn(self.name_input)
         x = self.concatenate([image_features, name_features])
         predictions = self.predict(x)
-        model = tf.keras.Model(inputs=[self.image_input, self.name_input], outputs=predictions, name="SimpleModel")
+        model = tf.keras.Model(inputs=[self.image_input, self.name_input], outputs=predictions, name="Img2Name")
         return model
 
 
 if __name__ == "__main__":
-    sample_model = SimpleModel(maxlen=3, vocab_size=420)
+    sample_model = Img2Name(maxlen=3, vocab_size=420)
     sample_model.compile(loss="categorical_crossentropy", optimizer="adam")
     print(sample_model.summary())

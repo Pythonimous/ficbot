@@ -1,0 +1,9 @@
+{
+    "python.defaultInterpreterPath": "/home/ophelion/.venvs/ficbot/bin/python3.12",
+    "python.testing.unittestEnabled": true,
+    "python.testing.pytestEnabled": false,
+    "terminal.integrated.env.linux": {
+        "PYTHONPATH": "${workspaceFolder}/src",
+        "FLASK_APP": "${workspaceFolder}/src"    
+    },
+}

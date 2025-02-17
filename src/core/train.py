@@ -30,6 +30,9 @@ def load_from_checkpoint(*, checkpoint_path, data_path, model_name, **kwargs):
 
 def train_model(model, loader, checkpoint_folder, *, epochs: int = 1):
 
+    if not os.path.isdir(checkpoint_folder):
+        os.mkdir(checkpoint_folder)
+
     checkpoint_folder = os.path.join(checkpoint_folder, str(int(time.time())))
 
     if not os.path.isdir(checkpoint_folder):
@@ -37,7 +40,7 @@ def train_model(model, loader, checkpoint_folder, *, epochs: int = 1):
 
     loader.vectorizer.save_maps(checkpoint_folder)
 
-    checkpoint_path = os.path.join(checkpoint_folder, "simple.{epoch:02d}-{loss:.2f}.hdf5")
+    checkpoint_path = os.path.join(checkpoint_folder, "simple.{epoch:02d}-{loss:.2f}.keras")
     checkpoint = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, monitor='loss',
                                                     verbose=1, save_best_only=False,
                                                     save_weights_only=False, mode='min')
