@@ -40,7 +40,7 @@ class PreprocessTestCase(unittest.TestCase):
             "Ccddeeffgg hJAKLm",
             "Aachen."
         ]
-    """
+
     def test_replace_text_numbers(self):
 
         self.assertEqual(ficbot.data.preprocessing.replace_text_numbers("Mayu Watanabe CG-3"),
@@ -97,7 +97,7 @@ class PreprocessTestCase(unittest.TestCase):
 
     def test_clear_corpus(self):
         self.assertListEqual(ficbot.data.preprocessing.clear_corpus_characters(self.corpus_dirty, 1), self.corpus_clean)
-    """
+
 
 class TfLoadersTestCase(unittest.TestCase):
     """ Tests for tensorflow loaders """

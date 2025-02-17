@@ -1,15 +1,15 @@
-ImageHash~=4.2.1
-pandas~=1.1.5
-requests~=2.27.1
-Pillow~=8.4.0
-bs4~=0.0.1
-beautifulsoup4~=4.10.0
-selenium==3.141.0
-tqdm~=4.62.3
-numpy~=1.19.5
-# num2words
+ImageHash
+pandas
+requests
+Pillow
+bs4
+beautifulsoup4
+selenium
+tqdm
+numpy
+num2words
 
-tensorflow~=2.6.2
-setuptools~=59.6.0
-keras~=2.6.0
-Flask~=2.0.3
+tensorflow
+setuptools
+keras
+Flask
