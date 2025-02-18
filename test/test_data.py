@@ -104,9 +104,9 @@ class TfLoadersTestCase(unittest.TestCase):
 
     def setUp(self):
         self.current_dir = os.path.dirname(__file__)
-        self.df_path = os.path.join(self.current_dir, "test_files/data/loaders/img_name.csv")
+        self.df_path = os.path.join(self.current_dir, "files/data/loaders/img_name.csv")
         self.df = pd.read_csv(self.df_path)
-        self.img_dir = os.path.join(self.current_dir, "test_files/data/loaders/images")
+        self.img_dir = os.path.join(self.current_dir, "files/data/loaders/images")
         self.image_shape = (224, 224, 3)
         self.maxlen = 3
         self.batch_size = 5

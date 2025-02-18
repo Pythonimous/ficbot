@@ -12,5 +12,7 @@ num2words
 tensorflow
 setuptools
 keras
-Flask
-gunicorn
+fastapi
+uvicorn
+httpx
+python-multipart

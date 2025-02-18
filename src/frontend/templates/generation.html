@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Favicon.ico -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', path='favicon/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', path='favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', path='favicon/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', path='favicon/site.webmanifest') }}">
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
@@ -69,7 +75,7 @@
         <div class="row d-flex mt-3">
             <div class="col-md-2">
                 <div class="row d-flex justify-content-center">
-                    <img src="static/images/example.jpg" class="img-char.img-fluid" id="charImage"
+                    <img src="{{ url_for('static', path='images/example.jpg') }}" class="img-char.img-fluid" id="charImage"
                          alt="Character Image">
                     <div class="form-group">
                         <label for="charImageFile">Upload character image:</label>
@@ -210,7 +216,7 @@
         </div>
 
         <footer class="footer py-3 bg-light">
-            <div class="footer-copyright text-center py-3">© 2022 Copyright:
+            <div class="footer-copyright text-center py-3">© 2025 Copyright:
                 <a href="https://github.com/Pythonimous/ficbot">Kirill Nikolaev</a>
             </div>
         </footer>
@@ -220,7 +226,7 @@
 
 <div id="loading">
     <div class="slds-is-relative">
-        <img id="loading-image" src="static/gifs/loading.gif" alt="Loading..." />
+        <img id="loading-image" src="{{ url_for('static', path='gifs/loading.gif') }}" alt="Loading..." />
     </div>
 </div>
 
@@ -283,7 +289,7 @@ function fileUploadError(text) {
             var formData = new FormData();
             formData.append('file', $("#charImageFile")[0].files[0])
             $.ajax({
-                url: '/upload_image/',
+                url: '/generate/upload_image/',
                 type: 'POST',
                 data: formData,
                 processData: false,  // tell jQuery not to process the data
@@ -318,7 +324,7 @@ function fileUploadError(text) {
 
             $.ajax({
                 type: 'POST',
-                url: '/name/',
+                url: '/generate/name/',
                 contentType: 'application/json;charset=UTF-8',
                 dataType: 'json',
                 data: JSON.stringify(r),

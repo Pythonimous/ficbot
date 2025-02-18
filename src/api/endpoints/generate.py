@@ -17,7 +17,7 @@ router = APIRouter()
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-template_dir = os.path.join(current_dir, '../../../frontend/templates')
+template_dir = os.path.join(current_dir, '../../frontend/templates')
 
 templates = Jinja2Templates(directory=template_dir)
 
@@ -31,7 +31,8 @@ async def render(request: Request):
     return templates.TemplateResponse("generation.html", {"request": request})
 
 
-@app.exception_handler(StarletteHTTPException)
+'''
+@router.exception_handler(StarletteHTTPException)
 async def too_large_exception_handler(request: Request, exc: StarletteHTTPException):
     """Handles file size limit exceeded (413 Payload Too Large)."""
     if exc.status_code == 413:
@@ -39,7 +40,7 @@ async def too_large_exception_handler(request: Request, exc: StarletteHTTPExcept
             "File is too large. Only .jpg, .png, .gif up to 2MB are allowed.", status_code=413
         )
     return await request.app.default_exception_handler(request, exc)
-
+'''
 
 @router.get("/upload_image/")
 async def upload_image_page(request: Request):
@@ -59,7 +60,8 @@ async def upload_image(file: UploadFile = File(...)):
 
     # Validate image integrity
     image_bytes = await file.read()  # Read image content
-    if file_ext != validate_image(image_bytes):
+
+    if validate_image(image_bytes) not in UPLOAD_EXTENSIONS:
         raise HTTPException(status_code=415, detail="Broken file: only valid .jpg, .png, .gif files are allowed. Please check your image and try again.")
 
     # Save the file
@@ -83,9 +85,9 @@ async def render_name_page(request: Request):
 async def generate_character_name(request_data: NameRequest):
     """Generates a name based on the request image."""
     # Construct file paths
-    img_path = os.path.join(os.getcwd(), request_data.imageSrc)
-    model_path = os.path.join(os.getcwd(), '../../../models/img_name/tf/img2name.keras')
-    maps_path = os.path.join(os.getcwd(), '../../../models/img_name/tf/maps.pkl')
+    img_path = os.path.join(current_dir, request_data.imageSrc)
+    model_path = os.path.join(current_dir, '../../../models/img_name/tf/img2name.keras')
+    maps_path = os.path.join(current_dir, '../../../models/img_name/tf/maps.pkl')
 
     # Ensure the image file exists
     if not os.path.exists(img_path):
