@@ -22,8 +22,8 @@ class TfModelsTestCase(unittest.TestCase):
         
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
-        image_path = os.path.join(current_dir, '../example/name/example.jpg')
-        model_path = os.path.join(current_dir, '../example/name/simple_strict.hdf5')
+        image_path = os.path.join(current_dir, '../example/name/1.jpg')
+        model_path = os.path.join(current_dir, '../example/name/img2name.keras')
         maps_path = os.path.join(current_dir, '../example/name/maps.pkl')
 
         generated_name = generate_name(image_path, model_path, maps_path, diversity=1.2)

@@ -14,7 +14,7 @@ def load_image_for_model(image_path, model):
         if layer.name in {"vgg16", "vgg19", "resnet50", "mobilenet"}:
             preprocessing_algorithm = layer.name
             break
-    image_dim = model.get_layer("IMAGE_INPUT").output_shape[0][1:]
+    image_dim = model.get_layer("IMAGE_INPUT").output.shape[1:]
     image_features = ImageLoader.get_image(image_path, image_dim, preprocessing_algorithm)
     image_features = np.expand_dims(image_features, axis=0)
     return image_features
@@ -28,7 +28,7 @@ def generate_name(image_path, model_path, maps_path, *,
 
     image_features = load_image_for_model(image_path, name_model)
 
-    maxlen = name_model.get_layer("NAME_INPUT").output_shape[0][1]
+    maxlen = name_model.get_layer("NAME_INPUT").output.shape[1]
 
     with open(maps_path, 'rb') as mp:
         maps = pickle.load(mp)
@@ -60,11 +60,3 @@ def generate_name(image_path, model_path, maps_path, *,
     generated = [word.capitalize() for word in generated.split()]
     generated = ' '.join(generated)
     return generated
-
-
-if __name__ == "__main__":
-    generated_name = generate_name("../../../example/name/example.jpg",
-                                   "../../../example/name/simple_strict.hdf5",
-                                   "../../../example/name/maps.pkl",
-                                   diversity=1.2)
-    print(generated_name)
