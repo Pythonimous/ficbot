@@ -13,3 +13,4 @@ tensorflow
 setuptools
 keras
 Flask
+gunicorn
