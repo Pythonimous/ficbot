@@ -9,8 +9,8 @@ _An AI-powered Anime Character Generator for Fan Fiction Writers_
 Ficbot is a **machine learning-based system** designed to help aspiring writers create characters effortlessly. It leverages **deep learning and NLP** to generate names, bios, and images for original characters (OCs).
 
 This project includes:  
-🇽 **Backend (FastAPI-based)**: Handles AI model inference, data processing, and API endpoints.  
-🇽 **Frontend (Formerly Flask, now refactored)**: Provides a web-based interface for interactive character generation.
+🇽 **Backend (TensorFlow, FastAPI)**: Handles AI model inference, data processing, and API endpoints.  
+🇽 **Frontend (Bootstrap)**: Provides a web-based interface for interactive character generation.
 
 👉 The project originated from **anime character data** on [MyAnimeList](https://myanimelist.net/) and was later expanded for more creative writing applications.
 
