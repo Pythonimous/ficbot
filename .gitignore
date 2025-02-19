@@ -136,9 +136,8 @@ dmypy.json
 # Pytest
 /.pytest_cache
 
-# Photos
-/data/raw/images
-/data/raw/images.tar.gz
+# Data
+/data
 
 # Backup scripts
 /ficbot/backup
