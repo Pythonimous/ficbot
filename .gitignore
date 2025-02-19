@@ -152,5 +152,8 @@ dmypy.json
 /dist
 /ficbot.egg-info
 
+# Vscode
+.vscode
+
 # Colab notebooks
 /checkpoints
