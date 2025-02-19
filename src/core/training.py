@@ -30,6 +30,16 @@ def load_from_checkpoint(*, checkpoint_path, data_path, model_name, **kwargs):
 
 def train_model(model, loader, checkpoint_folder, *, epochs: int = 1):
 
+    gpus = tf.config.list_physical_devices('GPU')
+    if gpus:
+        try:
+            for gpu in gpus:
+                tf.config.experimental.set_memory_growth(gpu, True)
+            tf.config.set_visible_devices(gpus[0], 'GPU')  # Use the first GPU
+            print("Using GPU:", gpus[0])
+        except RuntimeError as e:
+            print(e)
+
     if not os.path.isdir(checkpoint_folder):
         os.mkdir(checkpoint_folder)
 

@@ -5,7 +5,7 @@ with open("README.md", 'r') as f:
 
 setup(
    name='ficbot',
-   version='1.0',
+   version='1.1',
    description='An AI-powered Fan Fiction Writing Assistant.',
    license="BSD-3-Clause License",
    #long_description=long_description,

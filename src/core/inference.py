@@ -60,11 +60,3 @@ def generate_name(image_path, model_path, maps_path, *,
     generated = [word.capitalize() for word in generated.split()]
     generated = ' '.join(generated)
     return generated
-
-
-if __name__ == "__main__":
-    generated_name = generate_name("../../../example/name/example.jpg",
-                                   "../../../example/name/simple_strict.hdf5",
-                                   "../../../example/name/maps.pkl",
-                                   diversity=1.2)
-    print(generated_name)
