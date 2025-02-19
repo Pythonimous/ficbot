@@ -1,73 +1,124 @@
-# Ficbot
+# **Ficbot**
 
-An AI-powered character-generating assistant!
+_An AI-powered Anime Character Generator for Fan Fiction Writers_
 
-Ficbot is a machine learning-based system that provides various tools to make a good starting point for aspiring writers who need a character but don't know where to start.
+![Anime Character Generator](https://raw.githubusercontent.com/Pythonimous/Pythonimous/main/assets/gifs/namegen.gif)
 
-The main driving force behind this project was the availability of similarly structured anime character data on websites like [MyAnimeList](https://myanimelist.net/).
+## **📌 About the Project**
 
-Moreover, despite different anime studios having different artistic styles, the anime style itself allows character images to make a roughly homogenous dataset, which can be used to help different generation tasks (maybe, even train a GAN? :)
+Ficbot is a **machine learning-based system** designed to help aspiring writers create characters effortlessly. It leverages **deep learning and NLP** to generate names, bios, and images for original characters (OCs).
 
-You may experiment with the models using terminal, demo notebooks from **this [folder](https://github.com/Pythonimous/ficbot/tree/main/notebooks)**, or check out my [Flask-based](https://github.com/Pythonimous/ficbot-web) **[interface](https://ficbotweb.com/)**.
-## Features
-- Image -> Name generator
+This project includes:  
+🇽 **Backend (FastAPI-based)**: Handles AI model inference, data processing, and API endpoints.  
+🇽 **Frontend (Formerly Flask, now refactored)**: Provides a web-based interface for interactive character generation.
 
-<h4>In development:</h4>
-<ul>
-   <li>Biography generation;</li>
-   <li>Image generation;</li>
-   <li>Full OC generation;</li>
-   <li>Image anime style transfer (turn yourself into OC?)</li>
-</ul>
-<h4>Stay tuned for more!</h4>
+👉 The project originated from **anime character data** on [MyAnimeList](https://myanimelist.net/) and was later expanded for more creative writing applications.
 
+----------
 
-## Installation
+## **✨ Features**
 
-Install project requirements from [requirements.txt](https://github.com/Pythonimous/ficbot/blob/main/requirements.txt)
+### ✅ **Currently Available**
+
+-   **Image → Name Generator**: Upload an image, and the model suggests a fitting name for your character.
+
+### 🚀 **Planned Features**
+
+-   **Name Generators** (From Bio, Image + Bio).
+-   **Bio Generators** (From Name, Image).
+-   **Image Generators** (From scratch, Name, Bio).
+-   **Anime Filter** (Turn yourself into an anime-style OC!).
+-   **Complete OC Generator** (Generate Name, Bio, and Image together).
+
+----------
+
+## **🛠 Installation**
+
+### **1⃣ Create and Activate a Virtual Environment**
+
+**Windows (without WSL)**: [Guide](https://mothergeo-py.readthedocs.io/en/latest/development/how-to/venv-win.html)  
+**Linux / Windows (with WSL)**: [Guide](https://www.liquidweb.com/kb/how-to-setup-a-python-virtual-environment-on-windows-10/)
+
 ```bash
-pip3 install -r requirements.txt
+python3 -m venv venv
+source venv/bin/activate  # Linux/macOS
+venv\Scripts\activate  # Windows
+
 ```
 
-## Usage example
-### Simple Image -> Name generation
+### **2⃣ Install Dependencies**
+
 ```bash
-python3 main.py --image_path example/name/example.jpg --model_path example/name/simple_average.hdf5 --maps_path example/name/maps.pkl --min_name_length 2 --diversity 1.0
-```
-### Selecting model by inputs and outputs
-```bash
-python3 main.py --inputs image --outputs name
-```
-### Train model from scratch
-```bash
-python3 main.py --train --model simple_img_name --data_path data/interim/img_name.csv --name_col eng_name --img_col image --img_dir data/raw/images --checkpoint_dir checkpoints --batch_size 16 --epochs 5 --maxlen 3 --optimizer adam
-```
-### Train model from checkpoint
-```bash
-python3 main.py --train --model simple_img_name --checkpoint example/name/simple_average.hdf5 --maps example/name/maps.pkl --data_path data/interim/img_name.csv --name_col eng_name --img_col image --img_dir data/raw/images --checkpoint_dir checkpoints --batch_size 16 --epochs 5 --maxlen 3
+pip install -r requirements.txt
+
 ```
 
-## Dataset
-The original dataset has been crawled from MyAnimeList.net using Selenium and publicly available Python wrapper for [Jikan API](https://jikan.moe/).
+----------
 
-Raw version of the dataset available [**here**](http://www.kaggle.com/dataset/37798ba55fed88400b584cd0df4e784317eb7a6708e02fd5a650559fb4598353). You can redownload it using the [download.py](https://github.com/Pythonimous/ficbot/blob/main/ficbot/data/download.py) script.
+## **🚀 Running the Application**
 
-This script requires character links to download character data. You can provide them yourself, or download them using the same script (use --help for more details)
-
-## Testing
-In order to confirm that the scripts are functional after your requirements have been installed, use:
 ```bash
-python3 -m unittest
+uvicorn src.api.main:app --reload
+
 ```
-Test coverage is not complete. You can check test coverage using [**coverage**](https://coverage.readthedocs.io/en/6.3.2/) library for Python. You can install it via
+
+Once running, access the API at:  
+📍 `http://127.0.0.1:8000/docs` (Interactive API Documentation)
+
+
+----------
+
+## **💂️ Dataset**
+
+The dataset was crawled from **MyAnimeList.net** using Selenium and the [Jikan API](https://jikan.moe/).  
+**Raw dataset** is available here: [📂 Kaggle Dataset](http://www.kaggle.com/dataset/37798ba55fed88400b584cd0df4e784317eb7a6708e02fd5a650559fb4598353).
+
+You can redownload it using the `download.py` script:
+
 ```bash
-pip3 install coverage
+python src/data/download.py
+
 ```
-Before generating the report, you need to run the tests using coverage. Current coverage is **73%** (all non-ML code and some harder to test ML code, i.e. compilation):
+
+----------
+
+## **🛠 Development & Testing**
+
+### **Running Unit Tests**
+
 ```bash
+python -m unittest
+```
+
+### **Checking Test Coverage**
+
+```bash
+pip install coverage
 coverage run -m unittest
+coverage report  # Current coverage: 79%
+
 ```
-A simple report can then be generated using:
-```bash
-coverage report
-```
+
+----------
+
+## **📌 Contributing**
+
+We welcome contributions!
+
+-   Report issues on **GitHub Issues**.
+-   Fork & submit PRs for new features.
+-   Stay tuned for roadmap updates!
+
+----------
+
+## **🐝 License**
+
+This project is **open-source** under the BSD-3-Clause license.
+
+----------
+
+## **🔗 Links**
+
+🔹 **Live Demo**: [ficbotweb.com](https://ficbotweb.com/)  
+🔹 **Dataset**: [Kaggle](http://www.kaggle.com/dataset/37798ba55fed88400b584cd0df4e784317eb7a6708e02fd5a650559fb4598353)
+
