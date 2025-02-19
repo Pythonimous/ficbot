@@ -4,8 +4,8 @@ import os
 import tensorflow as tf
 
 from src.core.name.models import Img2Name
-from src.core.name.generation import generate_name
-
+from src.core.inference import generate_name
+from test.config import current_dir
 
 class TfModelsTestCase(unittest.TestCase):
 
@@ -19,12 +19,10 @@ class TfModelsTestCase(unittest.TestCase):
 
 
     def test_generate(self):
-        
-        current_dir = os.path.dirname(os.path.abspath(__file__))
 
         image_path = os.path.join(current_dir, '../example/name/1.jpg')
-        model_path = os.path.join(current_dir, '../example/name/img2name.keras')
-        maps_path = os.path.join(current_dir, '../example/name/maps.pkl')
+        model_path = os.path.join(current_dir, '../models/img_name/tf/img2name.keras')
+        maps_path = os.path.join(current_dir, '../models/img_name/tf/maps.pkl')
 
         generated_name = generate_name(image_path, model_path, maps_path, diversity=1.2)
         self.assertIsInstance(generated_name, str)

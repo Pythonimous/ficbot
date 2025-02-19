@@ -46,7 +46,7 @@ class TokenizerTestCase(unittest.TestCase):
         self.ood_name_sequences = ["?en", "en?", "n?e"]
         self.ood_name_next = ["?", "e", "i"]
 
-        seq_example_vectors = os.path.join(self.current_dir, "test_files/features/vectorize_char.npy")
+        seq_example_vectors = os.path.join(self.current_dir, "files/features/vectorize_char.npy")
         with open(seq_example_vectors, 'rb') as f:
             self.seq_name_sequences_vector = np.load(f)
             self.seq_name_next_vector = np.load(f)

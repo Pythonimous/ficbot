@@ -1,9 +1,9 @@
 import argparse
 import sys
 
-from src.core import train
+from src.core import training
 from src.core.name.models import Img2Name
-from src.core.name.generation import generate_name
+from src.core.inference import generate_name
 from src.core import loaders
 
 
@@ -77,7 +77,7 @@ def choose_model(arguments):
 def model_train_new(model, loader, arguments):
 
     create_loader = loaders.create_loader
-    train_model = train.train_model
+    train_model = training.train_model
 
     if arguments.model == "simple_img_name":
         loader = create_loader(arguments.data_path, loader=loader, load_for=arguments.model,
@@ -91,13 +91,13 @@ def model_train_new(model, loader, arguments):
 
 
 def model_train_checkpoint(arguments):
-    model, loader = train.load_from_checkpoint(checkpoint_path=arguments.checkpoint,
+    model, loader = training.load_from_checkpoint(checkpoint_path=arguments.checkpoint,
                                                data_path=arguments.data_path,
                                                model_name=arguments.model,
                                                img_dir=arguments.img_dir, batch_size=arguments.batch_size,
                                                maps_path=arguments.maps,
                                                name_col=arguments.name_col, img_col=arguments.img_col)
-    train.train_model(model, loader, arguments.checkpoint_dir, epochs=arguments.epochs)
+    training.train_model(model, loader, arguments.checkpoint_dir, epochs=arguments.epochs)
 
 
 def model_generate(arguments):
