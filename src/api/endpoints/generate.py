@@ -9,20 +9,21 @@ from fastapi.templating import Jinja2Templates
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from src.api.models.name import NameRequest
-from src.api.utils import validate_image
+from src.api.utils import validate_image, get_local_image_path, PROJECT_DIR, FRONTEND_DIR
 
 from src.core.inference import generate_name
 
 router = APIRouter()
 
+TEMPLATE_DIR = FRONTEND_DIR / 'templates'
+
+templates = Jinja2Templates(directory=TEMPLATE_DIR)
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-template_dir = os.path.join(current_dir, '../../frontend/templates')
-
-templates = Jinja2Templates(directory=template_dir)
-
 UPLOAD_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif"}
-UPLOAD_FOLDER = os.path.join(current_dir, '../../frontend/static/images')
+UPLOAD_DIR = FRONTEND_DIR / 'static/images'
+MODEL_DIR = PROJECT_DIR / 'models/img_name/tf'
 
 @router.get("/")
 @router.post("/")
@@ -65,12 +66,15 @@ async def upload_image(file: UploadFile = File(...)):
         raise HTTPException(status_code=415, detail="Broken file: only valid .jpg, .png, .gif files are allowed. Please check your image and try again.")
 
     # Save the file
-    save_path = os.path.join(UPLOAD_FOLDER, filename)
+    save_path = UPLOAD_DIR / filename
     with open(save_path, "wb") as f:
         f.write(image_bytes)
 
     # Generate URL (assuming FastAPI serves static files from /static/)
     image_url = f"/static/images/{filename}"
+
+    # Debug print
+    print(f"Returning JSON: {{'success': True, 'imgUrl': '{image_url}'}}")
 
     return JSONResponse(content={"success": True, "imgUrl": image_url})
 
@@ -85,9 +89,9 @@ async def render_name_page(request: Request):
 async def generate_character_name(request_data: NameRequest):
     """Generates a name based on the request image."""
     # Construct file paths
-    img_path = os.path.join(current_dir, request_data.imageSrc)
-    model_path = os.path.join(current_dir, '../../../models/img_name/tf/img2name.keras')
-    maps_path = os.path.join(current_dir, '../../../models/img_name/tf/maps.pkl')
+    img_path = get_local_image_path(request_data.imageSrc)
+    model_path = MODEL_DIR / 'img2name.keras'
+    maps_path = MODEL_DIR / 'maps.pkl'
 
     # Ensure the image file exists
     if not os.path.exists(img_path):

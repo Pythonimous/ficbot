@@ -286,40 +286,51 @@ function fileUploadError(text) {
 <script>
     $(document).ready(function () {
         $('#imageSubButton').on('click', function () {
-            var formData = new FormData();
-            formData.append('file', $("#charImageFile")[0].files[0])
+            let formData = new FormData();
+            let fileInput = $("#charImageFile")[0].files[0];
+
+            if (!fileInput) {
+                alert("Please select a file first!");
+                return;
+            }
+
+            formData.append("file", fileInput);
+
             $.ajax({
                 url: '/generate/upload_image/',
                 type: 'POST',
                 data: formData,
-                processData: false,  // tell jQuery not to process the data
                 contentType: false,
+                processData: false,
                 beforeSend: function () {
                     $("#loading").show();
                 }
             })
-                .done(function (data, textStatus, jqXHR) {
-                    console.log(data);
-                    let resp = JSON.parse(data);
-                    $("#charImage").attr('src', resp.imgUrl);
+            .done(function (data, textStatus, jqXHR) {
+                console.log("Success:", data);
+
+                if (data && data.imgUrl) {
+                    $("#charImage").attr('src', data.imgUrl);
                     $("#charImageFile").val(null);
-                })
-                .fail(function (jqXHR, textStatus, errorThrown) {
-                    if (errorThrown != "BAD REQUEST") {
-                        fileUploadError(jqXHR.responseText);
-                    }
-                })
-                .always(function () {
-                    $("#loading").hide();
-                });
+                } else {
+                    console.log("Unexpected response format:", data);
+                }
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                console.log("Upload failed:", textStatus, errorThrown);
+                console.log("Response Text:", jqXHR.responseText);
+            })
+            .always(function () {
+                $("#loading").hide();
+            });
         });
 
         $('#nameGenerateButton').on('click', function () {
 
             let r = {
                 imageSrc: $("#charImage").attr('src'),
-                diversity: $("#diversity").attr('value'),
-                min_name_length: $("#min-name-length").attr('value')
+                diversity: parseFloat($("#diversity").val()),
+                min_name_length: parseInt($("#min-name-length").val(), 10)
             }
 
             $.ajax({
