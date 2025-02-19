@@ -1,19 +1,27 @@
-ImageHash
-pandas
-requests
-Pillow
-bs4
-beautifulsoup4
-selenium
+# Core Python Libraries
+setuptools
 tqdm
+
+# AI & Data Science
 numpy
+pandas
+tensorflow
+
+# NLP
 num2words
 
-tensorflow
-setuptools
-keras
+# Image Processing
+Pillow
+ImageHash
+
+# FastAPI & Backend
 fastapi
 uvicorn
 httpx
 python-multipart
 jinja2
+
+# Web Scraping & Requests
+requests
+beautifulsoup4
+selenium
