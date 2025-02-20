@@ -1,4 +1,4 @@
-# **[Ficbot](https://ficbotweb.com/generate)**  
+# **[Ficbot](https://ficbotweb.com/)**  
 
 _An AI-powered Anime Character Generator for Fan Fiction Writers_
 
@@ -121,6 +121,6 @@ This project is **open-source** under the BSD-3-Clause license.
 
 ## **🔗 Links**
 
-🔹 **Live Demo**: [ficbotweb.com](https://ficbotweb.com/generate)  
+🔹 **Live Demo**: [ficbotweb.com](https://ficbotweb.com/)  
 🔹 **Dataset**: [Kaggle](http://www.kaggle.com/dataset/37798ba55fed88400b584cd0df4e784317eb7a6708e02fd5a650559fb4598353)
 
