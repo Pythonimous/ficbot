@@ -21,7 +21,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 static_path = os.path.join(current_dir, "../frontend/static")
 app.mount("/static", StaticFiles(directory=static_path), name="static")
 
-@app.get("/health")
-def health():
+@app.get("/health", status_code=200)
+def health_check():
     """Root endpoint for API health check."""
-    return {"message": "Welcome to the Ficbot API!"}
+    return {"status": "ok"}
