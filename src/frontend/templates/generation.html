@@ -233,36 +233,85 @@
 </body>
 
 <script>
-    document.getElementById("imageSubButton").addEventListener("click", function showFileSize() {
-    // (Can't use `typeof FileReader === "function"` because apparently it
-    // comes back as "object" on some browsers. So just see if it's there
-    // at all.)
-    if (!window.FileReader) { // This is VERY unlikely, browser support is near-universal
-        console.log("The file API isn't supported on this browser yet.");
-        return;
+    document.getElementById("imageSubButton").addEventListener("click", function () {
+        let input = document.getElementById("charImageFile");
+        let errorElement = document.getElementById("imageUploadError");
+
+        // Clear previous errors
+        errorElement.textContent = "";
+
+        if (!window.FileReader) {
+            console.log("The file API isn't supported on this browser yet.");
+            return;
+        }
+
+        if (!input.files || !input.files[0]) {
+            errorElement.textContent = "Please select a file before clicking 'Upload!'";
+            return;
+        }
+
+        let file = input.files[0];
+        let allowedExtensions = [".jpg", ".png", ".gif"];
+        let fileExt = file.name.substring(file.name.lastIndexOf(".")).toLowerCase();
+        
+        if (!allowedExtensions.includes(fileExt)) {
+            errorElement.textContent = `File "${file.name}" is not of an accepted extension! Only .jpg, .png, .gif are allowed.`;
+            input.value = "";
+            return;
+        }
+        
+        if (file.size > 2 * 1024 * 1024) { // 2MB limit
+            errorElement.textContent = `File "${file.name}" is too large! (${Math.round(file.size / (1024 * 1024))} MB). It should be below 2MB in size.`;
+            input.value = "";
+            return;
+        }
+
+        uploadFile(file);
+    });
+
+    function uploadFile(file) {
+        let formData = new FormData();
+        formData.append("file", file);
+
+        $.ajax({
+            url: "/upload_image/",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $("#loading").show();
+            }
+        })
+        .done(function (data) {
+            console.log("Success:", data);
+
+            if (data && data.imgUrl) {
+                $("#charImage").attr("src", data.imgUrl);
+                $("#charImageFile").val(null);
+                $("#imageUploadError").text(""); // Clear error messages on success
+            } else {
+                $("#imageUploadError").text("Unexpected response format.").css("color", "red");
+                console.log("Unexpected response format:", data);
+            }
+        })
+        .fail(function (jqXHR) {
+            console.log("Upload failed:", jqXHR.status, jqXHR.responseText);
+
+            let errorMessage = "Upload failed.";
+            if (jqXHR.responseJSON && jqXHR.responseJSON.detail) {
+                errorMessage = jqXHR.responseJSON.detail;
+            } else if (jqXHR.responseText) {
+                errorMessage = jqXHR.responseText;
+            }
+
+            $("#imageUploadError").text(errorMessage).css("color", "red");
+        })
+        .always(function () {
+            $("#loading").hide();
+        });
     }
 
-    var input = document.getElementById('charImageFile');
-    if (!input.files) { // This is VERY unlikely, browser support is near-universal
-        console.error("This browser doesn't seem to support the `files` property of file inputs.");
-    } else if (!input.files[0]) {
-        fileUploadError("Please select a file before clicking 'Load'");
-    } else {
-        var file = input.files[0];
-        if (!(file.name.endsWith('.jpg') || file.name.endsWith('.png') || file.name.endsWith('.gif'))) {
-            fileUploadError("File " + file.name + " is not of an accepted extension! Ficbot only accepts .jpg, .png, .gif.");
-            input.value = "";
-        } else if (file.size > 2 * 1024 * 1024) {
-            fileUploadError("File '" + file.name + "' is too large! (" + Math.round(file.size / (1024 * 1024)) + "MB). It should be below 2MB in size.");
-            input.value = "";
-        } else { fileUploadError(""); }
-    }
-});
-
-function fileUploadError(text) {
-    var imgUploadError = document.getElementById("imageUploadError");
-    imgUploadError.textContent = text;
-}
 </script>
 
 <script>
@@ -285,45 +334,6 @@ function fileUploadError(text) {
 
 <script>
     $(document).ready(function () {
-        $('#imageSubButton').on('click', function () {
-            let formData = new FormData();
-            let fileInput = $("#charImageFile")[0].files[0];
-
-            if (!fileInput) {
-                alert("Please select a file first!");
-                return;
-            }
-
-            formData.append("file", fileInput);
-
-            $.ajax({
-                url: '/upload_image/',
-                type: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                beforeSend: function () {
-                    $("#loading").show();
-                }
-            })
-            .done(function (data, textStatus, jqXHR) {
-                console.log("Success:", data);
-
-                if (data && data.imgUrl) {
-                    $("#charImage").attr('src', data.imgUrl);
-                    $("#charImageFile").val(null);
-                } else {
-                    console.log("Unexpected response format:", data);
-                }
-            })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-                console.log("Upload failed:", textStatus, errorThrown);
-                console.log("Response Text:", jqXHR.responseText);
-            })
-            .always(function () {
-                $("#loading").hide();
-            });
-        });
 
         $('#nameGenerateButton').on('click', function () {
 
