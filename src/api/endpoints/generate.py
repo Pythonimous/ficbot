@@ -1,6 +1,5 @@
 import os
-
-from werkzeug.utils import secure_filename
+import uuid 
 
 from fastapi import Request, APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import PlainTextResponse, JSONResponse
@@ -9,21 +8,18 @@ from fastapi.templating import Jinja2Templates
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from src.api.models.name import NameRequest
-from src.api.utils import validate_image, get_local_image_path, PROJECT_DIR, FRONTEND_DIR
+from src.api.utils import validate_image, get_local_image_path, clean_old_images, PROJECT_DIR, UPLOAD_DIR, TEMPLATE_DIR
 
 from src.core.inference import generate_name
 
 router = APIRouter()
 
-TEMPLATE_DIR = FRONTEND_DIR / 'templates'
-
 templates = Jinja2Templates(directory=TEMPLATE_DIR)
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
+MODEL_DIR = PROJECT_DIR / 'models/img_name/tf'
 
 UPLOAD_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif"}
-UPLOAD_DIR = FRONTEND_DIR / 'static/images'
-MODEL_DIR = PROJECT_DIR / 'models/img_name/tf'
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 @router.get("/")
 @router.post("/")
@@ -53,17 +49,21 @@ async def upload_image_page(request: Request):
 async def upload_image(file: UploadFile = File(...)):
     """Saves the uploaded image and returns it to the client."""
     # Secure filename & validate extension
-    filename = secure_filename(file.filename)
-    file_ext = os.path.splitext(filename)[1].lower()
+    file_ext = os.path.splitext(file.filename)[1].lower()
 
     if file_ext not in UPLOAD_EXTENSIONS:
         raise HTTPException(status_code=415, detail="Wrong extension: only .jpg, .png, .gif files are allowed")
+    
+    filename = f"{uuid.uuid4().hex}{file_ext}"
 
     # Validate image integrity
     image_bytes = await file.read()  # Read image content
 
     if validate_image(image_bytes) not in UPLOAD_EXTENSIONS:
         raise HTTPException(status_code=415, detail="Broken file: only valid .jpg, .png, .gif files are allowed. Please check your image and try again.")
+
+    # Delete old images (except example.jpg)
+    clean_old_images(exclude=["example.jpg"])
 
     # Save the file
     save_path = UPLOAD_DIR / filename
