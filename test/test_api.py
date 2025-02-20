@@ -16,7 +16,7 @@ class TestAPI(unittest.TestCase):
         """Test the root endpoint (health check)."""
         response = client.get("/health")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"message": "Welcome to the Ficbot API!"})
+        self.assertEqual(response.json(), {"status": "ok"})
 
 
     def test_upload_image_endpoint(self):
