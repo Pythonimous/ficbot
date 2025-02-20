@@ -10,7 +10,7 @@ Ficbot is a **machine learning-based system** designed to help aspiring writers 
 
 This project includes:  
 🇽 **Backend (TensorFlow, FastAPI)**: Handles AI model inference, data processing, and API endpoints.  
-🇽 **Frontend (Bootstrap)**: Provides a web-based interface for interactive character generation.
+🇽 **Frontend (Bootstrap)**: Provides a web-based interface for interactive character generation.  
 🇽 **Docker -> AWS Lightsail**: provides stable accessible solutions for containerized deployment.
 
 
