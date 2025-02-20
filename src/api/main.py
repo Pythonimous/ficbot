@@ -15,13 +15,13 @@ instance_path = os.path.join(os.getcwd(), "instance")
 os.makedirs(instance_path, exist_ok=True)
 
 # Include endpoints
-app.include_router(generate.router, prefix="/generate", tags=["generate"])
+app.include_router(generate.router, prefix="", tags=["generate"])
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 static_path = os.path.join(current_dir, "../frontend/static")
 app.mount("/static", StaticFiles(directory=static_path), name="static")
 
-@app.get("/")
-def root():
+@app.get("/health")
+def health():
     """Root endpoint for API health check."""
     return {"message": "Welcome to the Ficbot API!"}

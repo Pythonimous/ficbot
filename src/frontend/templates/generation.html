@@ -297,7 +297,7 @@ function fileUploadError(text) {
             formData.append("file", fileInput);
 
             $.ajax({
-                url: '/generate/upload_image/',
+                url: '/upload_image/',
                 type: 'POST',
                 data: formData,
                 contentType: false,
@@ -335,7 +335,7 @@ function fileUploadError(text) {
 
             $.ajax({
                 type: 'POST',
-                url: '/generate/name/',
+                url: '/name/',
                 contentType: 'application/json;charset=UTF-8',
                 dataType: 'json',
                 data: JSON.stringify(r),

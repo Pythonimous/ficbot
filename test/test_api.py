@@ -14,7 +14,7 @@ class TestAPI(unittest.TestCase):
 
     def test_root_endpoint(self):
         """Test the root endpoint (health check)."""
-        response = client.get("/")
+        response = client.get("/health")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"message": "Welcome to the Ficbot API!"})
 
@@ -26,7 +26,7 @@ class TestAPI(unittest.TestCase):
 
         with open(img_path, "rb") as image:
             files = {"file": ("sample.jpg", image, "image/jpeg")}
-            response = client.post("/generate/upload_image/", files=files)
+            response = client.post("/upload_image/", files=files)
 
         self.assertEqual(response.status_code, 200)
         self.assertIn("imgUrl", response.json())
@@ -39,7 +39,7 @@ class TestAPI(unittest.TestCase):
 
         with open(txt_path, "rb") as text_file:
             files = {"file": ("sample.txt", text_file, "text/plain")}
-            response = client.post("/generate/upload_image/", files=files)
+            response = client.post("/upload_image/", files=files)
 
         self.assertEqual(response.status_code, 415)
         self.assertEqual(response.json()["detail"], "Wrong extension: only .jpg, .png, .gif files are allowed")
@@ -54,7 +54,7 @@ class TestAPI(unittest.TestCase):
             "diversity": 1.2,
             "min_name_length": 4
         }
-        response = client.post("/generate/name/", json=payload)
+        response = client.post("/name/", json=payload)
 
         self.assertEqual(response.status_code, 200)
         self.assertIn("name", response.json())
@@ -69,6 +69,6 @@ class TestAPI(unittest.TestCase):
             "diversity": 1.2,
             "min_name_length": 4
         }
-        response = client.post("/generate/name/", json=payload)
+        response = client.post("/name/", json=payload)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json()["detail"], "Image file not found")
