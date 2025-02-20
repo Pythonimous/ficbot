@@ -2,10 +2,8 @@ import os
 import uuid 
 
 from fastapi import Request, APIRouter, UploadFile, File, HTTPException
-from fastapi.responses import PlainTextResponse, JSONResponse
+from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
-
-from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from src.api.models.name import NameRequest
 from src.api.utils import validate_image, get_local_image_path, clean_old_images, PROJECT_DIR, UPLOAD_DIR, TEMPLATE_DIR
@@ -28,17 +26,6 @@ async def render(request: Request):
     return templates.TemplateResponse("generation.html", {"request": request})
 
 
-'''
-@router.exception_handler(StarletteHTTPException)
-async def too_large_exception_handler(request: Request, exc: StarletteHTTPException):
-    """Handles file size limit exceeded (413 Payload Too Large)."""
-    if exc.status_code == 413:
-        return PlainTextResponse(
-            "File is too large. Only .jpg, .png, .gif up to 2MB are allowed.", status_code=413
-        )
-    return await request.app.default_exception_handler(request, exc)
-'''
-
 @router.get("/upload_image/")
 async def upload_image_page(request: Request):
     """Renders the image upload page."""
@@ -58,6 +45,10 @@ async def upload_image(file: UploadFile = File(...)):
 
     # Validate image integrity
     image_bytes = await file.read()  # Read image content
+
+    # Check file size (assuming 2MB limit)
+    if len(image_bytes) > 2 * 1024 * 1024:
+        raise HTTPException(status_code=413, detail="File is too large. Only .jpg, .png, .gif up to 2MB are allowed.")
 
     if validate_image(image_bytes) not in UPLOAD_EXTENSIONS:
         raise HTTPException(status_code=415, detail="Broken file: only valid .jpg, .png, .gif files are allowed. Please check your image and try again.")

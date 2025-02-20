@@ -4,7 +4,7 @@ import time
 
 from fastapi.testclient import TestClient
 
-from src.api.main import app
+from src.main import app
 from src.api.utils import UPLOAD_DIR, clean_old_images
 
 from test.config import current_dir
@@ -70,6 +70,19 @@ class TestAPI(unittest.TestCase):
 
         self.assertEqual(response.status_code, 415)
         self.assertEqual(response.json()["detail"], "Wrong extension: only .jpg, .png, .gif files are allowed")
+
+
+    def test_upload_image_too_large(self):
+        """Test uploading a file that is too large."""
+
+        img_path = os.path.join(current_dir, "files/large.jpg")
+
+        with open(img_path, "rb") as image:
+            files = {"file": ("large.jpg", image, "image/jpeg")}
+            response = client.post("/upload_image/", files=files)
+
+        self.assertEqual(response.status_code, 413)
+        self.assertEqual(response.json()["detail"], "File is too large. Only .jpg, .png, .gif up to 2MB are allowed.")
 
     
     def test_generate_character_name(self):
