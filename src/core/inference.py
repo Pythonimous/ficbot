@@ -4,7 +4,7 @@ import numpy as np
 import tensorflow as tf
 
 from src.core.loaders import ImageLoader
-from src.core.utils import sample
+from src.core.utils import sample, get_image
 
 
 def load_image_for_model(image_path, model):
@@ -15,7 +15,7 @@ def load_image_for_model(image_path, model):
             preprocessing_algorithm = layer.name
             break
     image_dim = model.get_layer("IMAGE_INPUT").output.shape[1:]
-    image_features = ImageLoader.get_image(image_path, image_dim, preprocessing_algorithm)
+    image_features = get_image(image_path, image_dim, preprocessing_algorithm)
     image_features = np.expand_dims(image_features, axis=0)
     return image_features
 

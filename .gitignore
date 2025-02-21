@@ -135,9 +135,6 @@ dmypy.json
 # Data
 /data
 
-# Backup scripts
-/ficbot/backup
-
 # Checkpoints
 /models/name_generation/tf/checkpoints
 /example/name/simple_weights_e*
@@ -152,3 +149,7 @@ dmypy.json
 
 # Colab notebooks
 /checkpoints
+
+# Other static images except example.jpg
+/src/frontend/static/images/*
+!/src/frontend/static/images/example.jpg

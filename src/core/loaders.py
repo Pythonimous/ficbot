@@ -4,23 +4,12 @@ import numpy as np
 import os
 
 import src
+from src.core.utils import get_image
 
 
 class ImageLoader(object):
-
-    def __init__(self, *args, **kwargs):  # a mixin: a class that is DESIGNED to be used for multiple inheritance.
-        super().__init__(*args, **kwargs)  # forwards all unused arguments
-
-    @staticmethod
-    def get_image(path, target_size, preprocess_for="mobilenet"):
-
-        image = tf.keras.preprocessing.image.load_img(path)
-        image_arr = tf.keras.preprocessing.image.img_to_array(image)
-
-        image_arr = tf.image.resize(image_arr, (target_size[0], target_size[1])).numpy()
-        preprocessing = getattr(tf.keras.applications, preprocess_for, tf.keras.applications.mobilenet)
-        image_arr = preprocessing.preprocess_input(image_arr)
-        return image_arr
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 
 class NameLoader(object):
@@ -109,7 +98,7 @@ class ImgNameLoader(ImageLoader, NameLoader, tf.keras.utils.Sequence):
 
         for idx in range(len(name_batch)):
             name = name_batch.iloc[idx]
-            image = self.get_image(img_paths[idx], self.img_shape, self.transfer_net)
+            image = get_image(img_paths[idx], self.img_shape, self.transfer_net)
             X_seq, y = self._get_sequences(name, maxlen=self.maxlen)
             for sequence_idx in range(len(X_seq)):
                 X_img_batch.append(image)
