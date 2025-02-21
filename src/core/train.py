@@ -6,6 +6,8 @@ import pickle
 
 import tensorflow as tf
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+
 from src.core.loaders import create_loader
 from src.core.models.img2name.img2name import Img2Name
 
@@ -113,6 +115,8 @@ def parse_arguments():
 
     train_group = parser.add_argument_group('Train', 'Training parameters')
 
+    train_group.add_argument('--model', default='simple_img_name', choices=['simple_img_name'],
+                             help='the model you want to train')
     train_group.add_argument('--data_path', default='data/interim/img_name.csv', metavar='DATA_PATH',
                              help='the location of your tabular data')
     train_group.add_argument('--name_col', nargs='?', help='name column in your dataframe')
