@@ -71,6 +71,19 @@ class TestAPI(unittest.TestCase):
         self.assertEqual(response.status_code, 415)
         self.assertEqual(response.json()["detail"], "Wrong extension: only .jpg, .png, .gif files are allowed")
 
+    
+    def test_upload_invalid_image(self):
+        """Test uploading an invalid image."""
+
+        img_path = os.path.join(current_dir, "files/invalid.jpg")
+
+        with open(img_path, "rb") as image:
+            files = {"file": ("invalid.jpg", image, "image/jpeg")}
+            response = client.post("/upload_image/", files=files)
+
+        self.assertEqual(response.status_code, 415)
+        self.assertEqual(response.json()["detail"], "Broken file: only valid .jpg, .png, .gif files are allowed. Please check your image and try again.")
+
 
     def test_upload_image_too_large(self):
         """Test uploading a file that is too large."""
