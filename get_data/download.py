@@ -182,14 +182,14 @@ def parse_arguments():
     parser.add_argument('--get_links', action='store_false',
                         help='download character links first')
 
-    parser.add_argument('--data_path', default='../../data/interim/anime_characters.csv', metavar='DATA_PATH',
+    parser.add_argument('--data_path', default='../data/interim/anime_characters.csv', metavar='DATA_PATH',
                         help='set csv file for saving character data')
-    parser.add_argument('--img_dir', default='../../data/interim/images', metavar='IMG_PATH',
+    parser.add_argument('--img_dir', default='../data/interim/images', metavar='IMG_PATH',
                         help='set directory for saving character images')
 
-    parser.add_argument('--config_path', default='../../config/extract.json', metavar='CONFIG_PATH',
+    parser.add_argument('--config_path', default='config/extract.json', metavar='CONFIG_PATH',
                         help='set config for requests library file path')
-    parser.add_argument('--log_path', default='../../logs/get_pages.log', metavar='LOG_PATH',
+    parser.add_argument('--log_path', default='logs/get_pages.log', metavar='LOG_PATH',
                         help='set logging file path')
 
     args = parser.parse_args()

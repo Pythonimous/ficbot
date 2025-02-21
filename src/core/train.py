@@ -1,4 +1,4 @@
-from src.core.loaders import create_loader
+from loaders import create_loader
 from src.features.vectorizer import SequenceVectorizer
 import tensorflow as tf
 import os

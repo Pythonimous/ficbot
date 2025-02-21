@@ -3,7 +3,7 @@ import os
 
 import tensorflow as tf
 
-from src.core.name.models import Img2Name
+from src.core.models.img2name import Img2Name
 from src.core.inference import generate_name
 from test.config import current_dir
 

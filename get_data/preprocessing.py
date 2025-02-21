@@ -113,7 +113,7 @@ def clear_corpus_characters(corpus, exclude_threshold: int = 100):
     return corpus
 
 
-def img_name_data(df_path, save_path):
+def prepare_raw_dataset(df_path, save_path):
     mal_characters = pd.read_csv(df_path)
 
     mal_w_images = mal_characters[mal_characters.img_index != "-1"]  # only rows with images
@@ -131,7 +131,7 @@ def main():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     input_path = os.path.join(current_dir, "../../data/raw/anime_characters.csv")
     output_path = os.path.join(current_dir, "../../data/interim/img_name.csv")
-    img_name_data(input_path, output_path)
+    prepare_raw_dataset(input_path, output_path)
 
 
 if __name__ == "__main__":

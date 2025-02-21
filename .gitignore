@@ -132,8 +132,8 @@ dmypy.json
 # Pytest
 /.pytest_cache
 
-# Data
-/data
+# Flask
+/instance/
 
 # Checkpoints
 /models/name_generation/tf/checkpoints
