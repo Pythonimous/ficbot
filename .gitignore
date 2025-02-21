@@ -154,3 +154,6 @@ dmypy.json
 # Other static images except example.jpg
 /src/frontend/static/images/*
 !/src/frontend/static/images/example.jpg
+
+# Lambda
+/src/core/models/img2name/lambda

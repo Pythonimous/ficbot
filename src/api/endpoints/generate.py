@@ -1,5 +1,9 @@
 import os
 import uuid 
+import base64
+import requests
+
+from dotenv import load_dotenv
 
 from fastapi import Request, APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
@@ -9,6 +13,12 @@ from src.api.models.name import NameRequest
 from src.api.utils import validate_image, get_local_image_path, clean_old_images, MODEL_DIR, UPLOAD_DIR, TEMPLATE_DIR
 
 from src.core.inference import generate_name
+
+load_dotenv()
+
+LAMBDA_URL = os.getenv("LAMBDA_URL")
+if not LAMBDA_URL:
+    raise RuntimeError("LAMBDA_URL is not set. Please configure your .env file.")
 
 router = APIRouter()
 
@@ -76,23 +86,38 @@ async def render_name_page(request: Request):
 
 @router.post("/name/")
 async def generate_character_name(request_data: NameRequest):
-    """Generates a name based on the request image."""
+    """Generates a name from Lambda based on the request image."""
+
     # Construct file paths
     img_path = get_local_image_path(request_data.imageSrc)
-    model_path = MODEL_DIR / 'img2name/img2name.keras'
-    maps_path = MODEL_DIR / 'img2name/maps.pkl'
 
     # Ensure the image file exists
     if not os.path.exists(img_path):
-        raise HTTPException(status_code=400, detail="Image file not found")
+        raise HTTPException(status_code=404, detail="Image file not found")
+    
+    try:
+        with open(img_path, "rb") as img_file:
+            encoded_image = base64.b64encode(img_file.read()).decode()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error decoding an image: {str(e)}")
 
-    # Generate name using model inference
-    name = generate_name(
-        img_path,
-        model_path,
-        maps_path,
-        diversity=request_data.diversity,
-        min_name_length=request_data.min_name_length
+    if os.environ.get("TESTING"):
+        return JSONResponse(content={"success": True, "name": "Test Name"})
+    
+    # Send request to AWS Lambda
+    response = requests.post(
+        LAMBDA_URL,
+        json={
+            "image": encoded_image,
+            "diversity": request_data.diversity,
+            "min_name_length": request_data.min_name_length
+        }
     )
 
-    return {"success": True, "name": name}
+    # Check response
+    if response.status_code != 200:
+        raise HTTPException(status_code=500, detail="Lambda function failed")
+
+    result = response.json()
+
+    return {"success": True, "name": result.get("name", "Name generation failed")}
