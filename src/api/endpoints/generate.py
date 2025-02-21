@@ -79,8 +79,8 @@ async def generate_character_name(request_data: NameRequest):
     """Generates a name based on the request image."""
     # Construct file paths
     img_path = get_local_image_path(request_data.imageSrc)
-    model_path = MODEL_DIR / 'img2name/files/img2name.keras'
-    maps_path = MODEL_DIR / 'img2name/files/maps.pkl'
+    model_path = MODEL_DIR / 'img2name/img2name.keras'
+    maps_path = MODEL_DIR / 'img2name/maps.pkl'
 
     # Ensure the image file exists
     if not os.path.exists(img_path):
