@@ -3,8 +3,8 @@ import tensorflow as tf
 import numpy as np
 import os
 
-import src
 from src.core.utils import get_image
+from src.features.vectorizer import SequenceVectorizer
 
 
 class ImageLoader(object):
@@ -79,8 +79,7 @@ class ImgNameLoader(ImageLoader, NameLoader, tf.keras.utils.Sequence):
         self.n = len(self.df)
 
         if vectorizer is None:
-            self.vectorizer = src.features.vectorizer.SequenceVectorizer(corpus=self.df[name_col].tolist(),
-                                                                            ood_token="?")
+            self.vectorizer = SequenceVectorizer(corpus=self.df[name_col].tolist(), ood_token="?")
         else:
             self.vectorizer = vectorizer
         super().__init__(self.vectorizer)

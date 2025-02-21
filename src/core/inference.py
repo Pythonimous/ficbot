@@ -3,7 +3,6 @@ import pickle
 import numpy as np
 import tensorflow as tf
 
-from src.core.loaders import ImageLoader
 from src.core.utils import sample, get_image
 
 
