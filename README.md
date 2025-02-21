@@ -97,7 +97,9 @@ python -m unittest
 ```bash
 pip install coverage
 coverage run -m unittest
-coverage report  # Current coverage: 79%
+coverage report  # Current coverage: 73%, get_data is largely untested because requires mocking
+coverage report --omit=get_data/  # Excluding get_data scripts: 82%
+coverage html -d coverage_html --omit=get_data/  # interactive html reporting
 
 ```
 
