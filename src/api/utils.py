@@ -8,7 +8,7 @@ from PIL import Image
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 
-PROJECT_DIR = ROOT_DIR.parent
+MODEL_DIR = ROOT_DIR / "core/models"
 
 FRONTEND_DIR = ROOT_DIR / "frontend"
 TEMPLATE_DIR = FRONTEND_DIR / 'templates'

@@ -7,7 +7,7 @@ import pickle
 import tensorflow as tf
 
 from src.core.loaders import create_loader
-from src.core.models.img2name import Img2Name
+from src.core.models.img2name.img2name import Img2Name
 
 from src.features.vectorizer import SequenceVectorizer
 

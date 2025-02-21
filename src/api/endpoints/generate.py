@@ -6,15 +6,13 @@ from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
 
 from src.api.models.name import NameRequest
-from src.api.utils import validate_image, get_local_image_path, clean_old_images, PROJECT_DIR, UPLOAD_DIR, TEMPLATE_DIR
+from src.api.utils import validate_image, get_local_image_path, clean_old_images, MODEL_DIR, UPLOAD_DIR, TEMPLATE_DIR
 
 from src.core.inference import generate_name
 
 router = APIRouter()
 
 templates = Jinja2Templates(directory=TEMPLATE_DIR)
-
-MODEL_DIR = PROJECT_DIR / 'models/img_name/tf'
 
 UPLOAD_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif"}
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -81,8 +79,8 @@ async def generate_character_name(request_data: NameRequest):
     """Generates a name based on the request image."""
     # Construct file paths
     img_path = get_local_image_path(request_data.imageSrc)
-    model_path = MODEL_DIR / 'img2name.keras'
-    maps_path = MODEL_DIR / 'maps.pkl'
+    model_path = MODEL_DIR / 'img2name/files/img2name.keras'
+    maps_path = MODEL_DIR / 'img2name/files/maps.pkl'
 
     # Ensure the image file exists
     if not os.path.exists(img_path):

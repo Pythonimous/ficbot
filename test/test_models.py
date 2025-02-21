@@ -3,7 +3,7 @@ import os
 
 import tensorflow as tf
 
-from src.core.models.img2name import Img2Name
+from src.core.models.img2name.img2name import Img2Name
 from src.core.inference import generate_name
 from test.config import current_dir
 
@@ -18,11 +18,11 @@ class TfModelsTestCase(unittest.TestCase):
         self.assertEqual(simple_name_tf.get_layer("PREDICTION").output.shape, (None, 420))
 
 
-    def test_generate(self):
+    def test_generate_img2name(self):
 
         image_path = os.path.join(current_dir, '../example/name/1.jpg')
-        model_path = os.path.join(current_dir, '../models/img_name/tf/img2name.keras')
-        maps_path = os.path.join(current_dir, '../models/img_name/tf/maps.pkl')
+        model_path = os.path.join(current_dir, '../src/core/models/img2name/files/img2name.keras')
+        maps_path = os.path.join(current_dir, '../src/core/models/img2name/files/maps.pkl')
 
         generated_name = generate_name(image_path, model_path, maps_path, diversity=1.2)
         self.assertIsInstance(generated_name, str)

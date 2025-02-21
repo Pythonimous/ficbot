@@ -2,7 +2,7 @@ import argparse
 import sys
 
 from src.core import train
-from src.core.models.img2name import Img2Name
+from core.models.img2name.img2name import Img2Name
 from src.core import loaders
 
 
