@@ -11,11 +11,13 @@ from fastapi.templating import Jinja2Templates
 from src.api.models.name import NameRequest
 from src.api.utils import validate_image, get_local_image_path, clean_old_images, ROOT_DIR, UPLOAD_DIR, TEMPLATE_DIR
 
-dotenv.load_dotenv(ROOT_DIR.parent / '.env')
+env_dir = ROOT_DIR.parent / '.env'
 
-VPS_URL = os.getenv("VPS_URL")
-if not VPS_URL and not os.environ.get("TESTING"):
-    raise RuntimeError("VPS_URL is not set. Please configure your .env file.")
+if env_dir.exists():
+    dotenv.load_dotenv(env_dir)
+    VPS_URL = os.getenv("VPS_URL")
+    if not VPS_URL:
+        raise RuntimeError("VPS_URL is not set. Please configure your .env file.")
 
 router = APIRouter()
 
