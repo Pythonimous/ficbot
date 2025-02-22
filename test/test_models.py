@@ -21,8 +21,8 @@ class TfModelsTestCase(unittest.TestCase):
     def test_generate_img2name(self):
 
         image_path = os.path.join(current_dir, '../example/name/1.jpg')
-        model_path = os.path.join(current_dir, '../src/core/models/img2name/files/img2name.keras')
-        maps_path = os.path.join(current_dir, '../src/core/models/img2name/files/maps.pkl')
+        model_path = os.path.join(current_dir, '../src/core/models/img2name/img2name.keras')
+        maps_path = os.path.join(current_dir, '../src/core/models/img2name/maps.pkl')
 
         generated_name = generate_name(image_path, model_path, maps_path, diversity=1.2)
         self.assertIsInstance(generated_name, str)

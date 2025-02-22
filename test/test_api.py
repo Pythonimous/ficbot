@@ -123,6 +123,6 @@ class TestAPI(unittest.TestCase):
             "min_name_length": 4
         }
         response = client.post("/name/", json=payload)
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json()["detail"], "Image file not found")
     

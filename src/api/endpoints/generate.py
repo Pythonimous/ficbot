@@ -1,14 +1,23 @@
 import os
 import uuid 
+import base64
+import requests
+import dotenv
 
 from fastapi import Request, APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
 
 from src.api.models.name import NameRequest
-from src.api.utils import validate_image, get_local_image_path, clean_old_images, MODEL_DIR, UPLOAD_DIR, TEMPLATE_DIR
+from src.api.utils import validate_image, get_local_image_path, clean_old_images, ROOT_DIR, UPLOAD_DIR, TEMPLATE_DIR
 
-from src.core.inference import generate_name
+env_dir = ROOT_DIR.parent / '.env'
+
+if env_dir.exists():
+    dotenv.load_dotenv(env_dir)
+    VPS_URL = os.getenv("VPS_URL")
+    if not VPS_URL:
+        raise RuntimeError("VPS_URL is not set. Please configure your .env file.")
 
 router = APIRouter()
 
@@ -76,23 +85,39 @@ async def render_name_page(request: Request):
 
 @router.post("/name/")
 async def generate_character_name(request_data: NameRequest):
-    """Generates a name based on the request image."""
+    """Generates a name from Lambda based on the request image."""
+
     # Construct file paths
     img_path = get_local_image_path(request_data.imageSrc)
-    model_path = MODEL_DIR / 'img2name/files/img2name.keras'
-    maps_path = MODEL_DIR / 'img2name/files/maps.pkl'
 
     # Ensure the image file exists
     if not os.path.exists(img_path):
-        raise HTTPException(status_code=400, detail="Image file not found")
+        raise HTTPException(status_code=404, detail="Image file not found")
+    
+    try:
+        with open(img_path, "rb") as img_file:
+            encoded_image = base64.b64encode(img_file.read()).decode()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error decoding an image: {str(e)}")
 
-    # Generate name using model inference
-    name = generate_name(
-        img_path,
-        model_path,
-        maps_path,
-        diversity=request_data.diversity,
-        min_name_length=request_data.min_name_length
+    if os.environ.get("TESTING"):
+        return JSONResponse(content={"success": True, "name": "Test Name"})
+    
+    # Send request to AWS Lambda
+    payload = {
+        "image": encoded_image,
+        "diversity": request_data.diversity,
+        "min_name_length": request_data.min_name_length
+    }
+    response = requests.post(
+        VPS_URL,
+        json=payload
     )
 
-    return {"success": True, "name": name}
+    # Check response
+    if response.status_code != 200:
+        raise HTTPException(status_code=500, detail="Lambda function failed")
+
+    result = response.json()
+
+    return {"success": True, "name": result.get("name", "Name generation failed")}

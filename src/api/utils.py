@@ -1,10 +1,14 @@
 import io
 import os
+import base64
 from datetime import datetime, timezone
 from pathlib import Path
 
 from urllib.parse import urlparse
 from PIL import Image
+
+from fastapi import HTTPException
+
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,6 +24,15 @@ def get_local_image_path(imageSrc: str) -> str:
     parsed_url = urlparse(imageSrc)
     file_path = parsed_url.path.lstrip("/")  # Remove leading slash to avoid absolute path issues
     return FRONTEND_DIR / file_path
+
+
+def encode_image_to_base64(img_path):
+    """Reads an image file and converts it to base64 encoding."""
+    if not os.path.exists(img_path):
+        raise HTTPException(status_code=404, detail="Image file not found")
+
+    with open(img_path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode()
 
 
 def validate_image(image_bytes: bytes) -> str:
