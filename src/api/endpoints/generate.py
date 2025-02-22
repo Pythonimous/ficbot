@@ -14,7 +14,7 @@ from src.api.utils import validate_image, get_local_image_path, clean_old_images
 dotenv.load_dotenv(ROOT_DIR.parent / '.env')
 
 VPS_URL = os.getenv("VPS_URL")
-if not VPS_URL:
+if not VPS_URL and not os.environ.get("TESTING"):
     raise RuntimeError("VPS_URL is not set. Please configure your .env file.")
 
 router = APIRouter()
