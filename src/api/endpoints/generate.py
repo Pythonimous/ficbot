@@ -2,23 +2,20 @@ import os
 import uuid 
 import base64
 import requests
-
-from dotenv import load_dotenv
+import dotenv
 
 from fastapi import Request, APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
 
 from src.api.models.name import NameRequest
-from src.api.utils import validate_image, get_local_image_path, clean_old_images, MODEL_DIR, UPLOAD_DIR, TEMPLATE_DIR
+from src.api.utils import validate_image, get_local_image_path, clean_old_images, ROOT_DIR, UPLOAD_DIR, TEMPLATE_DIR
 
-from src.core.inference import generate_name
+dotenv.load_dotenv(ROOT_DIR.parent / '.env')
 
-load_dotenv()
-
-LAMBDA_URL = os.getenv("LAMBDA_URL")
-if not LAMBDA_URL:
-    raise RuntimeError("LAMBDA_URL is not set. Please configure your .env file.")
+VPS_URL = os.getenv("VPS_URL")
+if not VPS_URL:
+    raise RuntimeError("VPS_URL is not set. Please configure your .env file.")
 
 router = APIRouter()
 
@@ -105,13 +102,14 @@ async def generate_character_name(request_data: NameRequest):
         return JSONResponse(content={"success": True, "name": "Test Name"})
     
     # Send request to AWS Lambda
+    payload = {
+        "image": encoded_image,
+        "diversity": request_data.diversity,
+        "min_name_length": request_data.min_name_length
+    }
     response = requests.post(
-        LAMBDA_URL,
-        json={
-            "image": encoded_image,
-            "diversity": request_data.diversity,
-            "min_name_length": request_data.min_name_length
-        }
+        VPS_URL,
+        json=payload
     )
 
     # Check response

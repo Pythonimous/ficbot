@@ -1,0 +1,9 @@
+setuptools
+fastapi
+uvicorn
+httpx
+python-multipart
+jinja2
+requests
+dotenv
+pillow

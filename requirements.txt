@@ -1,6 +1,7 @@
 # Core Python Libraries
 setuptools
 tqdm
+dotenv
 
 # AI & Data Science
 numpy
