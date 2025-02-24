@@ -1,6 +1,0 @@
-fastapi
-uvicorn
-numpy
-tensorflow
-pillow
-pydantic_settings

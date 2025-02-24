@@ -4,10 +4,8 @@ import time
 
 from fastapi.testclient import TestClient
 
-from src.frontend.main import app
-from src.frontend.config import settings
-
-from src.frontend.api.paths import UPLOAD_DIR
+from src.main import app
+from src.api.config import settings, UPLOAD_DIR
 
 from tests.config import current_dir
 
