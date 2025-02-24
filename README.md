@@ -1,42 +1,67 @@
-# **[Ficbot](https://ficbotweb.com)**  
+# **[Ficbot - Frontend & API](https://ficbotweb.com)**  
 
-_An AI-powered Anime Character Generator for Fan Fiction Writers_
+_An AI-powered Anime Character Generator for Aspiring Writers_
 
 ![Anime Character Generator](https://raw.githubusercontent.com/Pythonimous/Pythonimous/main/assets/gifs/namegen.gif)
 
+---
+
 ## **📌 About the Project**
 
-Ficbot is a **machine learning-based system** designed to help aspiring writers create characters effortlessly. It leverages **deep learning and NLP** to generate names (bios + images planned) for original characters (OCs).
+Ficbot is a machine learning–powered system designed to assist writers in creating original characters effortlessly. It leverages deep learning and NLP models to generate character names from images, with planned expansions for bio and image generation.
 
-This project includes:  
-🇽 **Backend (TensorFlow, FastAPI)**: Handles AI model inference, data processing, and API endpoints.  
-🇽 **Frontend (Bootstrap)**: Provides a web-based interface for interactive character generation.  
-🇽 **Docker -> AWS Lightsail**: provides stable accessible solutions for VPS + containerized deployment.
+### **Project Structure**  
+Ficbot is now split into two repositories for better organization:
+
+- **[ficbot (this repository)](https://github.com/Pythonimous/ficbot)** – Contains:
+  - The **frontend** (user interface).
+  - The **API layer** that communicates with the backend inference service.
+  - Docker configuration for deploying the combined frontend + API container.
+
+- **[ficbot-backend](https://github.com/Pythonimous/ficbot-backend)** – Contains:
+  - The **AI inference service** that processes images and generates names.
+  - The **ML models** and related dependencies (TensorFlow, etc.).
+  - Training scripts, dataset processing, and exploratory notebooks.
+
+---
+
+#### **🖥 Technical Stack** 
+
+- **Machine Learning & Inference:**  
+  - **TensorFlow:** Powers the AI model used for generating character names from images.
+  - **FastAPI:** Also used in the backend inference service for serving predictions.
+
+- **Frontend & API:**  
+  - **FastAPI:** Serves the API endpoints used by the frontend.  
+  - **Bootstrap:** Provides a responsive and modern UI for the web interface.  
+  - **HTML5/CSS3 & JavaScript:** Standard technologies for building interactive web applications.
+
+- **Deployment & Infrastructure:**  
+  - **Docker + AWS Lightsail:** A reliable and cost-effective VPS solution.
 
 
-👉 The project originated from **anime character data** on [MyAnimeList](https://myanimelist.net/) and was later expanded for more creative writing applications.
+👉 The project originated from **anime character data** on [MyAnimeList](https://myanimelist.net/) and was later expanded to different writing applications.
 
-----------
+----
 
 ## **✨ Features**
 
 ### ✅ **Currently Available**
+- **Image → Name Generator:**  
+  Upload an image and get a character name based on AI analysis.
 
--   **Image → Name Generator**: Upload an image, and the model suggests a fitting name for your character.
+### 🚀 **Planned Enhancements**
+- **Additional Name Generators:** (Based on bios and hybrid inputs)
+- **Bio Generators:** (Generate detailed character backstories)
+- **Image Generators:** (AI-generated character visuals)
+- **Anime Filter:** (Transform images into an anime-style character)
+- **Complete OC Generator:** (Generate Name, Bio, and Image together)
 
-### 🚀 **Planned Features**
-
--   **Name Generators** (From Bio, Image + Bio).
--   **Bio Generators** (From Name, Image).
--   **Image Generators** (From scratch, Name, Bio).
--   **Anime Filter** (Turn yourself into an anime-style OC!).
--   **Complete OC Generator** (Generate Name, Bio, and Image together).
-
-----------
+---
 
 ## **🛠 Installation**
 
-### **1⃣ Create and Activate a Virtual Environment**
+### **1. Create and Activate a Virtual Environment**
 
 **Windows (without WSL)**: [Guide](https://mothergeo-py.readthedocs.io/en/latest/development/how-to/venv-win.html)  
 **Linux / Windows (with WSL)**: [Guide](https://www.liquidweb.com/kb/how-to-setup-a-python-virtual-environment-on-windows-10/)
@@ -48,7 +73,7 @@ venv\Scripts\activate  # Windows
 
 ```
 
-### **2⃣ Install Dependencies**
+### **2. Install Dependencies**
 
 ```bash
 pip install -r requirements.txt
@@ -59,60 +84,68 @@ pip install -r requirements.txt
 
 ## **🚀 Running the Application**
 
+### Locally (Without Docker)
+
+1. Ensure the backend inference service (ficbot-backend) is running.
+2. Start the frontend + API server:
+
 ```bash
-uvicorn src.api.main:app --reload
+uvicorn src.main:app --host 0.0.0.0 --port 8000
 
 ```
 
 Once running, access the API at:  
 📍 `http://127.0.0.1:8000/docs` (Interactive API Documentation)
 
+> Note: The frontend API will need to communicate with the ficbot-backend service. Make sure the correct API URL is set in the frontend configuration.
 
-----------
+## 🛠 Docker Deployment
 
-## **💂️ Dataset**
+This repository includes a Dockerfile for containerized deployment.
 
-The dataset was crawled from **MyAnimeList.net** using Selenium and the [Jikan API](https://jikan.moe/).  
-**Raw dataset** is available here: [📂 Kaggle Dataset](http://www.kaggle.com/dataset/37798ba55fed88400b584cd0df4e784317eb7a6708e02fd5a650559fb4598353).
-
-You can redownload it using the `download.py` script:
+### 1️⃣ Build the Docker Image
 
 ```bash
-python src/data/download.py
+docker build -t ficbot .
 
 ```
 
+### 2️⃣ Run the Container
+
+```bash
+docker run -p 8000:8000 ficbot
+
+```
+
+Once running, you can access Ficbot's UI and API at your server's address.
+
 ----------
 
-## **🛠 Development & Testing**
+## 💂️ Testing & Development
 
-### **Running Unit Tests**
+### Running Unit Tests
 
 ```bash
 python -m unittest
 ```
 
-### **Checking Test Coverage**
+### Checking Test Coverage
 
 ```bash
 pip install coverage
 coverage run -m unittest
-coverage report  # Current coverage: 73%, get_data is largely untested because requires mocking
-coverage report --omit=get_data/*  # Excluding get_data scripts: 83%
-coverage report --omit=get_data/*,src/core/train.py  # Excluding training script: 94%
-coverage html -d coverage_html --omit=get_data/  # interactive html reporting
+coverage report  # Current coverage: 92%
+coverage html -d coverage_html # interactive html reporting
 
 ```
-
-----------
 
 ## **📌 Contributing**
 
 We welcome contributions!
 
--   Report issues on **GitHub Issues**.
--   Fork & submit PRs for new features.
--   Stay tuned for roadmap updates!
+- Report issues or feature requests via GitHub Issues.
+- Fork the repository and submit pull requests for new features or bug fixes.
+- Check back for roadmap updates and community discussions.
 
 ----------
 
@@ -125,5 +158,5 @@ This project is **open-source** under the BSD-3-Clause license.
 ## **🔗 Links**
 
 🔹 **Live Demo**: [ficbotweb.com](https://ficbotweb.com)  
+🔹 **Ficbot Backend**: [ficbot-backend](https://github.com/Pythonimous/ficbot-backend)  
 🔹 **Dataset**: [Kaggle](http://www.kaggle.com/dataset/37798ba55fed88400b584cd0df4e784317eb7a6708e02fd5a650559fb4598353)
-
