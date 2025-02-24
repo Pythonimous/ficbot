@@ -1,4 +1,3 @@
-import os
 import numpy as np
 import tensorflow as tf
 import base64
@@ -9,8 +8,8 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from PIL import Image
 
-from .utils import sample, preprocess_image_array
 from .config import settings
+from .utils import sample, preprocess_image_array
 
 # Initialize FastAPI app
 app = FastAPI(title="Ficbot Model Inference", version="1.0")
@@ -20,6 +19,7 @@ MODEL_PATH = "/app/models/img2name/files/img2name.keras"
 MAPS_PATH = "/app/models/img2name/files/maps.pkl"
 
 if settings.testing:
+    print("IS TESTING")
     MODEL_PATH = "src/inference/models/img2name/files/img2name.keras"
     MAPS_PATH = "src/inference/models/img2name/files/maps.pkl"
 

@@ -6,9 +6,10 @@ from fastapi.testclient import TestClient
 
 from src.frontend.main import app
 from src.frontend.config import settings
+
 from src.frontend.api.paths import UPLOAD_DIR
 
-from test.config import current_dir
+from tests.config import current_dir
 
 client = TestClient(app)  # Test client for simulating API requests
 

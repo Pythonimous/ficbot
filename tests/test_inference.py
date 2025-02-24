@@ -4,22 +4,23 @@ import base64
 
 from fastapi.testclient import TestClient
 
-from src.inference.main import app
 from src.inference.config import settings
 
-from test.config import current_dir
+from tests.config import current_dir
 
 
-class ContainerTestCase(unittest.TestCase):
+
+class TestInference(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
         settings.testing = True
 
-    def test_img2name_container(self):
+    def test_image_to_name(self):
 
+        from src.inference.main import app
         client = TestClient(app)
-
+        
         response = client.get("/health/")
         self.assertEqual(response.status_code, 200)
         

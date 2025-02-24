@@ -4,7 +4,7 @@ import tensorflow as tf
 
 from src.training.models.img2name import Img2Name
 
-class TfModelsTestCase(unittest.TestCase):
+class TestModels(unittest.TestCase):
 
     def test_compile(self):
         simple_name_tf = Img2Name(maxlen=3, vocab_size=420)

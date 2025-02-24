@@ -6,7 +6,7 @@ import numpy as np
 from src.training.vectorizer import Mapper, SequenceVectorizer
 
 
-class TokenizerTestCase(unittest.TestCase):
+class TestTokenizer(unittest.TestCase):
     """ Tests for tokenizer functions """
 
     def setUp(self):

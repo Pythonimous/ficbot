@@ -6,7 +6,7 @@ import pandas as pd
 from src.training.loaders import ImgNameLoader
 
 
-class TfLoadersTestCase(unittest.TestCase):
+class TestLoaders(unittest.TestCase):
     """ Tests for tensorflow loaders """
 
     def setUp(self):

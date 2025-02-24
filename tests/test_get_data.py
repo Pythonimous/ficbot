@@ -2,7 +2,7 @@ import unittest
 from scripts.data import download, preprocessing
 
 
-class DownloadTestCase(unittest.TestCase):
+class TestDownload(unittest.TestCase):
     """ Tests for link and character page download functions """
     def setUp(self):
         self.descriptions_dirty = [
@@ -23,7 +23,7 @@ class DownloadTestCase(unittest.TestCase):
         self.assertEqual(descriptions_beautified, self.descriptions_clean, 'Bios not beautified as expected.')
 
 
-class PreprocessTestCase(unittest.TestCase):
+class TestPreprocess(unittest.TestCase):
     """ Tests for different preprocessing functions """
     def setUp(self):
         self.corpus_dirty = [
