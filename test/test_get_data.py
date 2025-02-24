@@ -1,5 +1,5 @@
 import unittest
-from get_data import download, preprocessing
+from scripts.data import download, preprocessing
 
 
 class DownloadTestCase(unittest.TestCase):

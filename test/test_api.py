@@ -4,8 +4,9 @@ import time
 
 from fastapi.testclient import TestClient
 
-from src.main import app
-from src.api.utils import UPLOAD_DIR, clean_old_images
+from src.frontend.main import app
+from src.frontend.config import settings
+from src.frontend.api.paths import UPLOAD_DIR
 
 from test.config import current_dir
 
@@ -15,7 +16,7 @@ class TestAPI(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        os.environ["TESTING"] = "1"
+        settings.testing = True
 
     def test_root_endpoint(self):
         """Test the root endpoint (health check)."""

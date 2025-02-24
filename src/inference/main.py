@@ -9,16 +9,19 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from PIL import Image
 
+from .utils import sample, preprocess_image_array
+from .config import settings
+
 # Initialize FastAPI app
-app = FastAPI(title="Ficbot Model API", version="1.0")
+app = FastAPI(title="Ficbot Model Inference", version="1.0")
 
 # Define model paths
-MODEL_PATH = "/app/models/img2name.keras"
-MAPS_PATH = "/app/models/maps.pkl"
+MODEL_PATH = "/app/models/img2name/files/img2name.keras"
+MAPS_PATH = "/app/models/img2name/files/maps.pkl"
 
-if os.environ.get("TESTING"):
-    MODEL_PATH = "src/core/models/img2name/img2name.keras"
-    MAPS_PATH = "src/core/models/img2name/maps.pkl"
+if settings.testing:
+    MODEL_PATH = "src/inference/models/img2name/files/img2name.keras"
+    MAPS_PATH = "src/inference/models/img2name/files/maps.pkl"
 
 # Load TensorFlow model on startup
 print("Loading model...")
@@ -39,19 +42,14 @@ def sample(preds, temperature=1.0):
     probas = np.random.multinomial(1, preds, 1)
     return np.argmax(probas)
 
-def preprocess_image(image_bytes):
-    """ Converts base64 image bytes into a processed feature vector. """
-    target_size = (224, 224)  # Model expected input size
-    image = Image.open(BytesIO(image_bytes)).convert("RGB")
-    image = image.resize(target_size)
-    image_array = np.array(image, dtype=np.float32) / 255.0  # Normalize
-    return np.expand_dims(image_array, axis=0)  # Add batch dimension
-
 def generate_name(image_bytes, min_name_length=2, diversity=1.2,
                   start_token="@", end_token="$", ood_token="?"):
     """ Generates a name using the model inside the container. """
-    
-    image_features = preprocess_image(image_bytes)
+
+    image = Image.open(BytesIO(image_bytes)).convert("RGB")
+    image_array = np.array(image, dtype=np.float32)
+    image_features = np.expand_dims(preprocess_image_array(image_array), axis=0)
+
     maxlen = model.get_layer("NAME_INPUT").output.shape[1]
 
     generated = ""

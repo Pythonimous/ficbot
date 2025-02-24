@@ -3,7 +3,7 @@ import os
 
 import pandas as pd
 
-from src.core.loaders import ImgNameLoader
+from src.training.loaders import ImgNameLoader
 
 
 class TfLoadersTestCase(unittest.TestCase):

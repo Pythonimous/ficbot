@@ -11,12 +11,7 @@ def sample(preds, temperature=1.0):
     return np.argmax(probas)
 
 
-def get_image(path, target_size, preprocess_for="mobilenet"):
-
-    image = tf.keras.preprocessing.image.load_img(path)
-    image_arr = tf.keras.preprocessing.image.img_to_array(image)
-
-    image_arr = tf.image.resize(image_arr, (target_size[0], target_size[1])).numpy()
+def preprocess_image_array(image_array, target_size=(224, 224), preprocess_for="mobilenet"):
+    image_array = tf.image.resize(image_array, (target_size[0], target_size[1])).numpy()
     preprocessing = getattr(tf.keras.applications, preprocess_for, tf.keras.applications.mobilenet)
-    image_arr = preprocessing.preprocess_input(image_arr)
-    return image_arr
+    return preprocessing.preprocess_input(image_array)

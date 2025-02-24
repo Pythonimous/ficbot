@@ -3,7 +3,7 @@ import unittest
 
 import numpy as np
 
-import src
+from src.training.vectorizer import Mapper, SequenceVectorizer
 
 
 class TokenizerTestCase(unittest.TestCase):
@@ -15,7 +15,7 @@ class TokenizerTestCase(unittest.TestCase):
         """
         self.current_dir = os.path.dirname(__file__)
 
-        self.char_mapper = src.features.vectorizer.Mapper(char_level=True)
+        self.char_mapper = Mapper(char_level=True)
 
         self.char_example = "José Raúl Capablanca$"
 
@@ -51,7 +51,7 @@ class TokenizerTestCase(unittest.TestCase):
             self.seq_name_sequences_vector = np.load(f)
             self.seq_name_next_vector = np.load(f)
 
-        self.char_sequenizer = src.features.vectorizer.SequenceVectorizer(corpus=self.seq_name_corpus,
+        self.char_sequenizer = SequenceVectorizer(corpus=self.seq_name_corpus,
                                                                              char_level=True)
 
     def test_tokenize_characters(self):

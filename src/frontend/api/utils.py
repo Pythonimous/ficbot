@@ -2,28 +2,21 @@ import io
 import os
 import base64
 from datetime import datetime, timezone
-from pathlib import Path
 
 from urllib.parse import urlparse
 from PIL import Image
 
 from fastapi import HTTPException
 
-
-ROOT_DIR = Path(__file__).resolve().parent.parent
-
-MODEL_DIR = ROOT_DIR / "core/models"
-
-FRONTEND_DIR = ROOT_DIR / "frontend"
-TEMPLATE_DIR = FRONTEND_DIR / 'templates'
-UPLOAD_DIR = FRONTEND_DIR / 'static/images'
+from .paths import ROOT_DIR, UPLOAD_DIR
+from ..config import settings
 
 
 def get_local_image_path(imageSrc: str) -> str:
     """Extracts the local file path from the provided imageSrc URL."""
     parsed_url = urlparse(imageSrc)
     file_path = parsed_url.path.lstrip("/")  # Remove leading slash to avoid absolute path issues
-    return FRONTEND_DIR / file_path
+    return ROOT_DIR / file_path
 
 
 def encode_image_to_base64(img_path):
@@ -68,7 +61,7 @@ def clean_old_images(exclude: list, max_age_seconds: int = 300):
     :param max_age_seconds: Maximum age of files to keep (default: 5 minutes)
 
     """
-    if os.environ.get("TESTING"):
+    if settings.testing:
         max_age_seconds = 2  # Set a shorter timeout for testing
 
     now = datetime.now(timezone.utc).timestamp()

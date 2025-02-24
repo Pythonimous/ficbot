@@ -4,6 +4,7 @@ uvicorn
 httpx
 python-multipart
 jinja2
+pydantic_settings
 requests
 dotenv
 pillow

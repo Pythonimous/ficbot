@@ -8,10 +8,12 @@ from fastapi import Request, APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
 
-from src.api.models.name import NameRequest
-from src.api.utils import validate_image, get_local_image_path, clean_old_images, ROOT_DIR, UPLOAD_DIR, TEMPLATE_DIR
+from ..models.name import NameRequest
+from ..utils import validate_image, get_local_image_path, clean_old_images
+from ..paths import ROOT_DIR, TEMPLATE_DIR, UPLOAD_DIR
+from ...config import settings
 
-env_dir = ROOT_DIR.parent / '.env'
+env_dir = ROOT_DIR / '.env'
 
 if env_dir.exists():
     dotenv.load_dotenv(env_dir)
@@ -100,7 +102,7 @@ async def generate_character_name(request_data: NameRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error decoding an image: {str(e)}")
 
-    if os.environ.get("TESTING"):
+    if settings.testing:
         return JSONResponse(content={"success": True, "name": "Test Name"})
     
     # Send request to AWS Lambda

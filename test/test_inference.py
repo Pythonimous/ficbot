@@ -1,27 +1,29 @@
 import unittest
 import os
-
-import json
 import base64
-from test.config import current_dir
 
 from fastapi.testclient import TestClient
+
+from src.inference.main import app
+from src.inference.config import settings
+
+from test.config import current_dir
+
 
 class ContainerTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        os.environ["TESTING"] = "1"
+        settings.testing = True
 
     def test_img2name_container(self):
-        from src.core.models.img2name.container import app
 
         client = TestClient(app)
 
         response = client.get("/health/")
         self.assertEqual(response.status_code, 200)
         
-        image_path = os.path.join(current_dir, '../example/name/1.jpg')
+        image_path = os.path.join(current_dir, 'files/sample.jpg')
 
         # Load and encode test image
         with open(image_path, "rb") as img_file:

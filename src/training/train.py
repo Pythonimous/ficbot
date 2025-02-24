@@ -8,10 +8,9 @@ import tensorflow as tf
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
-from src.core.loaders import create_loader
-from src.core.models.img2name.img2name import Img2Name
-
-from src.features.vectorizer import SequenceVectorizer
+from loaders import create_loader
+from models.img2name import Img2Name
+from vectorizer import SequenceVectorizer
 
 
 def get_model_class(model_key):
