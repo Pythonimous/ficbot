@@ -25,7 +25,7 @@ Ficbot is now split into two repositories for better organization:
 
 ---
 
-#### **🖥 Technical Stack** 
+## **🖥 Technical Stack** 
 
 - **Machine Learning & Inference:**  
   - **TensorFlow:** Powers the AI model used for generating character names from images.
@@ -39,8 +39,16 @@ Ficbot is now split into two repositories for better organization:
 - **Deployment & Infrastructure:**  
   - **Docker + AWS Lightsail:** A reliable and cost-effective VPS solution.
 
+---
 
-👉 The project originated from **anime character data** on [MyAnimeList](https://myanimelist.net/) and was later expanded to different writing applications.
+## 📊 Dataset & Exploratory Notebook  
+
+Ficbot's AI models were trained using a **public dataset** of anime characters, which I compiled and explored in depth.  
+
+🔹 **Dataset on Kaggle:** [Anime Character Dataset](http://www.kaggle.com/dataset/37798ba55fed88400b584cd0df4e784317eb7a6708e02fd5a650559fb4598353)  
+🔹 **Exploratory Data Analysis Notebook:** [View on Kaggle](https://www.kaggle.com/your-kaggle-profile/notebook-link)  
+
+This dataset includes **over 106,000 characters**, with names, bios, and images, making it a valuable resource for training NLP models.  
 
 ----
 
