@@ -20,7 +20,7 @@ Ficbot is now split into two repositories for better organization:
 
 - **[ficbot-backend](https://github.com/Pythonimous/ficbot-backend)** – Contains:
   - The **AI inference service** that processes images and generates names.
-  - The **ML models** and related dependencies (TensorFlow, etc.).
+  - The **ML models** and related dependencies (PyTorch, etc.).
   - Training scripts, dataset processing, and exploratory notebooks.
 
 ---
@@ -28,7 +28,7 @@ Ficbot is now split into two repositories for better organization:
 #### **🖥 Technical Stack** 
 
 - **Machine Learning & Inference:**  
-  - **TensorFlow:** Powers the AI model used for generating character names from images.
+  - **PyTorch:** Powers the AI model used for generating character names from images.
   - **FastAPI:** Also used in the backend inference service for serving predictions.
 
 - **Frontend & API:**  
