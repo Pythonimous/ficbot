@@ -33,13 +33,13 @@ async def render(request: Request):
     return templates.TemplateResponse("generation.html", {"request": request})
 
 
-@router.get("/upload_image/")
+@router.get("/upload_image")
 async def upload_image_page(request: Request):
     """Renders the image upload page."""
     return templates.TemplateResponse("generation.html", {"request": request})
 
 
-@router.post("/upload_image/")
+@router.post("/upload_image")
 async def upload_image(file: UploadFile = File(...)):
     """Saves the uploaded image and returns it to the client."""
     # Secure filename & validate extension
@@ -77,13 +77,13 @@ async def upload_image(file: UploadFile = File(...)):
     return JSONResponse(content={"success": True, "imgUrl": image_url})
 
 
-@router.get("/name/")
+@router.get("/generate")
 async def render_name_page(request: Request):
     """Renders the name generation page."""
     return templates.TemplateResponse("generation.html", {"request": request})
 
 
-@router.post("/name/")
+@router.post("/generate")
 async def generate_character_name(request_data: NameRequest):
     """Generates a name from Lambda based on the request image."""
 

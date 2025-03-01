@@ -19,27 +19,28 @@ Ficbot is now split into two repositories for better organization:
   - Docker configuration for deploying the combined frontend + API container.
 
 - **[ficbot-backend](https://github.com/Pythonimous/ficbot-backend)** – Contains:
-  - The **AI inference service** that processes images and generates names.
-  - The **ML models** and related dependencies (PyTorch, etc.).
+  - The **AI inference service** that processes images and generates names and bios.
+  - The **ML models** and related dependencies (Torch, Transformers).
   - Training scripts, dataset processing, and exploratory notebooks.
 
+
 ---
+## **🖥 Technical Stack**
 
-## **🖥 Technical Stack** 
-
-- **Machine Learning & Inference:**  
+- **Machine Learning & Inference:**
   - **PyTorch:** Powers the AI model used for generating character names from images.
+  - **Transformers:** Provides state-of-the-art NLP models for text generation.
+  - **Llama.cpp:** Enables efficient CPU-based inference for quantized language models.
   - **FastAPI:** Also used in the backend inference service for serving predictions.
 
-- **Frontend & API:**  
-  - **FastAPI:** Serves the API endpoints used by the frontend.  
-  - **Bootstrap:** Provides a responsive and modern UI for the web interface.  
+- **Frontend & API:**
+  - **FastAPI:** Serves the API endpoints used by the frontend.
+  - **Bootstrap:** Provides a responsive and modern UI for the web interface.
   - **HTML5/CSS3 & JavaScript:** Standard technologies for building interactive web applications.
 
-- **Deployment & Infrastructure:**  
+- **Deployment & Infrastructure:**
   - **Docker + AWS Lightsail:** A reliable and cost-effective VPS solution.
 
----
 
 ## 📊 Dataset & Exploratory Notebook  
 
@@ -55,15 +56,21 @@ This dataset includes **over 106,000 characters**, with names, bios, and images,
 ## **✨ Features**
 
 ### ✅ **Currently Available**
-- **Image → Name Generator:**  
-  Upload an image and get a character name based on AI analysis.
+
+- **🔹 Image → Name Generator**  
+  Upload an image, and the AI will generate a character name based on visual analysis.  
+  ✨ *Powered by MobileNetV3 + Bidirectional LSTM.*
+- **🔹 Bio Generator**  
+  Provide a name, and the AI will generate a detailed character bio.  
+  ✨ *Built on DistilGPT2 with sliding window chunking (50–200 tokens) and optimized for CPU inference via LlamaCPP.*
+
+---
 
 ### 🚀 **Planned Enhancements**
-- **Additional Name Generators:** (Based on bios and hybrid inputs)
-- **Bio Generators:** (Generate detailed character backstories)
-- **Image Generators:** (AI-generated character visuals)
-- **Anime Filter:** (Transform images into an anime-style character)
-- **Complete OC Generator:** (Generate Name, Bio, and Image together)
+- **🔹 Advanced Name Generators** – Generate names based on bios and hybrid inputs.  
+- **🔹 AI-Powered Image Generation** – Create AI-generated character visuals.  
+- **🔹 Anime Filter** – Transform images into an anime-style character.  
+- **🔹 Complete OC Generator** – Generate a full original character with Name, Bio,
 
 ---
 
