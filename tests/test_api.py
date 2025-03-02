@@ -107,7 +107,7 @@ class TestAPI(unittest.TestCase):
             "diversity": 1.2,
             "min_name_length": 4
         }
-        response = client.post("/name/", json=payload)
+        response = client.post("generate/name", json=payload)
 
         self.assertEqual(response.status_code, 200)
         self.assertIn("name", response.json())
@@ -122,7 +122,21 @@ class TestAPI(unittest.TestCase):
             "diversity": 1.2,
             "min_name_length": 4
         }
-        response = client.post("/name/", json=payload)
+        response = client.post("/name", json=payload)
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json()["detail"], "Image file not found")
+        self.assertEqual(response.json()["detail"], "Not Found")
     
+
+    def test_generate_character_bio(self):
+        """Test the name generation API with valid parameters."""
+        
+        payload = {
+            "name": "Jane Doe",
+            "diversity": 1.2,
+            "max_bio_length": 200
+        }
+        response = client.post("generate/bio", json=payload)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("bio", response.json())
+        self.assertIsInstance(response.json()["bio"], str)
