@@ -2,7 +2,7 @@ import os
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from src.api.endpoints import generate
+from src.api.endpoints import generate, page
 
 # Initialize FastAPI app
 app = FastAPI(title="Ficbot API", version="1.1")
@@ -12,7 +12,8 @@ instance_path = os.path.join(os.getcwd(), "instance")
 os.makedirs(instance_path, exist_ok=True)
 
 # Include endpoints
-app.include_router(generate.router, prefix="", tags=["generate"])
+app.include_router(page.router, prefix="", tags=["page"])
+app.include_router(generate.router, prefix="/generate", tags=["generate"])
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 static_path = os.path.join(current_dir, "static")

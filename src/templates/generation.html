@@ -98,11 +98,11 @@
                         <h5 class="text-center">Diversity</h5>
                     </div>
                     <div class="col-md-8">
-                        <input type="range" class="form-range" min="0" max="2" value="1.0" step="0.1" id="diversity"
+                        <input type="range" class="form-range" min="0.1" max="2" value="1.0" step="0.1" id="diversity"
                                oninput="changeDivField();">
                     </div>
                     <div class="col-md-3">
-                        <input type="number" id=divField min="0" max="2" value="1.0" step="0.1"
+                        <input type="number" id=divField min="0.1" max="2" value="1.0" step="0.1"
                                oninput="changeDivSlider();">
                     </div>
                 </div>
@@ -137,7 +137,7 @@
                 </div>
                 <div class="row d-flex">
                     <div class="col-md-9">
-          <textarea class="form-control" rows=10 style="height:100%;" disabled>
+          <textarea class="form-control" id="bioField" rows=10 style="height:100%;">
             Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque
             penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.
             Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut,
@@ -152,18 +152,16 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="dropdownBioGen" class="form-label">Generate bio from:</label>
-                                    <select id="dropdownBioGen" class="form-select" disabled>
+                                    <select id="dropdownBioGen" class="form-select">
                                         <!-- <option>Random</option> -->
                                         <!--  <option>Image</option> -->
                                         <!-- <option>Name</option> -->
-                                        <option>Image+Name</option>
+                                        <option>Name</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <button type="button" class="btn btn-light mt-4" disabled>
-                                    Generate!
-                                </button>
+                                <button type="button" class="btn btn-success mt-4" id="bioGenerateButton">Generate!</button>
                             </div>
                         </div>
                     </div>
@@ -190,7 +188,7 @@
                 </div>
                 <div class="row d-flex mt-3">
                     <div class="col-md-5">
-                        <p class="text-left">Minimum Name Length</p>
+                        <p class="text-left">Minimum Name Length (Words)</p>
                     </div>
                     <div class="col-md-7">
                         <input type="number" min="1" value="2" id="min-name-length"
@@ -204,8 +202,14 @@
                         Biography
                     </h3>
                 </div>
-                <div class="row d-flex text-center">
-                    <h5><br>To be developed</h5>
+                <div class="row d-flex mt-3">
+                    <div class="col-md-5">
+                        <p class="text-left">Maximum Biography Length (Tokens)</p>
+                    </div>
+                    <div class="col-md-7">
+                        <input type="number" min="50" max="512" value="200" id="max-bio-length"
+                    onchange="changeMaxBioLenField();">
+                    </div>
                 </div>
             </div>
         </div>
@@ -274,7 +278,7 @@
         formData.append("file", file);
 
         $.ajax({
-            url: "/upload_image/",
+            url: "/upload_image",
             type: "POST",
             data: formData,
             contentType: false,
@@ -322,6 +326,13 @@
 </script>
 
 <script>
+    var input = document.getElementById("max-bio-length")
+    function changeMaxBioLenField(){
+        input.setAttribute('value', input.value);
+    }
+</script>
+
+<script>
     var divSlider = document.getElementById("diversity");
     var divField = document.getElementById("divField");
     function changeDivSlider(){
@@ -345,7 +356,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '/generate',
+                url: '/generate/name',
                 contentType: 'application/json;charset=UTF-8',
                 dataType: 'json',
                 data: JSON.stringify(r),
@@ -356,7 +367,40 @@
             }).done(function (data, textStatus, jqXHR) {
                 console.log(data);
                 // let resp = JSON.parse(data);
-                $("#nameField").attr('value', data.name);
+                $("#nameField").val(data.name);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                // alert("error: " + jqXHR + '_' + textStatus);
+            }).always(function (jqXHR) {
+                $("#loading").hide();
+            })
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#bioGenerateButton').on('click', function () {
+
+            let r = {
+                name: $("#nameField").val(),
+                diversity: parseFloat($("#diversity").val()),
+                max_bio_length: parseInt($("#max-bio-length").val(), 10)
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '/generate/bio',
+                contentType: 'application/json;charset=UTF-8',
+                dataType: 'json',
+                data: JSON.stringify(r),
+                processData: false,  // tell jQuery not to process the data
+                beforeSend: function () {
+                    $("#loading").show();
+                }
+            }).done(function (data, textStatus, jqXHR) {
+                console.log(data);
+                // let resp = JSON.parse(data);
+                $("#bioField").val(data.bio);
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 // alert("error: " + jqXHR + '_' + textStatus);
             }).always(function (jqXHR) {
