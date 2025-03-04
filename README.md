@@ -63,13 +63,15 @@ This dataset includes **over 106,000 characters**, with names, bios, and images,
 - **🔹 Bio Generator**  
   Provide a name, and the AI will generate a detailed character bio.  
   ✨ *Built on DistilGPT2 with sliding window chunking (50–200 tokens) and optimized for CPU inference via LlamaCPP.*
+- **🔹 Anime Filter**
+  With a press of a button (**stylize**), transforms your image into an anime style!
+  ✨ *Uses Bryandlee's PyTorch implementation of AnimeGAN2. [Check it out!](https://github.com/bryandlee/animegan2-pytorch)*
 
 ---
 
 ### 🚀 **Planned Enhancements**
 - **🔹 Advanced Name Generators** – Generate names based on bios and hybrid inputs.  
 - **🔹 AI-Powered Image Generation** – Create AI-generated character visuals.  
-- **🔹 Anime Filter** – Transform images into an anime-style character.  
 - **🔹 Complete OC Generator** – Generate a full original character with Name, Bio,
 
 ---
