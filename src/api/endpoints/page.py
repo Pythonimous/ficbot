@@ -147,7 +147,7 @@ async def convert_to_anime(request_data: ImageRequest):
         raise HTTPException(status_code=500, detail=f"Error saving anime image: {str(e)}")
 
     # Clean up old images
-    clean_old_images(exclude=[original_filename, anime_filename])
+    clean_old_images(exclude=["example.jpg", original_filename, anime_filename])
 
     # Generate public URL for the anime image
     anime_image_url = f"static/images/{anime_filename}"
