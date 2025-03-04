@@ -4,18 +4,18 @@ import base64
 import requests
 import dotenv
 
+from urllib.parse import urljoin
+
 from fastapi import Request, APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
 
 from src.api.models.generate import NameRequest, BioRequest
 from src.api.utils import get_local_image_path
-from src.api.config import settings, ROOT_DIR, TEMPLATE_DIR, UPLOAD_DIR
+from src.api.config import settings, TEMPLATE_DIR, UPLOAD_DIR, ENV_DIR
 
-env_dir = ROOT_DIR.parent / '.env'
-
-if env_dir.exists():
-    dotenv.load_dotenv(env_dir)
+if ENV_DIR.exists():
+    dotenv.load_dotenv(ENV_DIR)
     VPS_URL = os.getenv("VPS_URL")
     if not VPS_URL:
         raise RuntimeError("VPS_URL is not set. Please configure your .env file.")
@@ -61,7 +61,7 @@ async def generate_character_name(request_data: NameRequest):
         "min_name_length": request_data.min_name_length
     }
     response = requests.post(
-        VPS_URL,
+        urljoin(VPS_URL, "generate"),
         json=payload
     )
 
@@ -93,8 +93,10 @@ async def generate_character_bio(request_data: BioRequest):
         "diversity": request_data.diversity,
         "max_bio_length": request_data.max_bio_length
     }
+    url = urljoin(VPS_URL, "generate")
+    print(url)
     response = requests.post(
-        VPS_URL,
+        urljoin(VPS_URL, "generate"),
         json=payload
     )
 

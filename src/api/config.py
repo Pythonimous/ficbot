@@ -11,5 +11,7 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = ROOT_DIR / 'templates'
 UPLOAD_DIR = ROOT_DIR / 'static/images'
 
+ENV_DIR = ROOT_DIR.parent / '.env'
+
 UPLOAD_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif"}
 MAX_CONTENT_LENGTH = 2 * 1024 * 1024  # 2MB limit

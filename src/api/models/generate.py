@@ -1,5 +1,8 @@
 from pydantic import BaseModel
 
+class ImageRequest(BaseModel):
+    image: str  # base64 encoded image
+
 class NameRequest(BaseModel):
     imageSrc: str
     diversity: float

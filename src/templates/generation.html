@@ -82,13 +82,13 @@
                         <input type="file" accept=".jpg,.png,.gif" class="form-control-file" id="charImageFile">
                         <input id="imageSubButton" type="button" value="Upload!">
                         <p id="imageUploadError"></p>
+                        <input id="imageAnimefyButton" type="button" value="Stylize!">
+                        <p id="imageAnimefyError"></p>
                     </div>
                 </div>
                 <div class="row d-flex justify-content-center">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-light" disabled>Randomize</button>
                         <button type="button" class="btn btn-light" disabled>Generate</button>
-                        <button type="button" class="btn btn-light" disabled>Selfie!</button>
                     </div>
                 </div>
             </div>
@@ -302,6 +302,81 @@
             }
 
             $("#imageUploadError").text(errorMessage).css("color", "red");
+        })
+        .always(function () {
+            $("#loading").hide();
+        });
+    }
+
+</script>
+
+<script>
+    document.getElementById("imageAnimefyButton").addEventListener("click", function () {
+        let imgElement = document.getElementById("charImage");
+        let errorElement = document.getElementById("imageAnimefyError");
+
+        // Clear previous errors
+        errorElement.textContent = "";
+
+        if (!imgElement.src || imgElement.src === window.location.href) {
+            errorElement.textContent = "No image uploaded. Please upload an image first.";
+            return;
+        }
+
+        // Convert image to base64
+        fetch(imgElement.src)
+            .then(response => response.blob())
+            .then(blob => {
+                let reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = function () {
+                    let base64Image = reader.result.split(',')[1]; // Remove metadata part
+                    sendImageForAnimefy(base64Image);
+                };
+            })
+            .catch(error => {
+                errorElement.textContent = "Failed to process image.";
+                console.error("Error fetching image:", error);
+            });
+    });
+
+    function sendImageForAnimefy(base64Image) {
+        let errorElement = document.getElementById("imageAnimefyError");
+
+        $.ajax({
+            url: "/convert_to_anime",
+            type: "POST",
+            contentType: "application/json",
+            dataType: "json", // Force response to be parsed as JSON
+            data: JSON.stringify({ image: base64Image }),
+            beforeSend: function () {
+                $("#loading").show();
+            }
+        })
+        .done(function (data) {
+            // Log the entire response for debugging
+            console.log("Server response:", data);
+
+            // Try both possible property names if necessary
+            let animeUrl = data.animeImgUrl || data.anime_img_url;
+            
+            if (animeUrl) {
+                $("#charImage").attr("src", animeUrl);
+                $("#imageAnimefyError").text(""); // Clear any errors on success
+            } else {
+                errorElement.textContent = "Unexpected response format. Check console for details.";
+                console.error("Unexpected response format:", data);
+            }
+        })
+        .fail(function (jqXHR) {
+            console.error("Anime conversion failed:", jqXHR.status, jqXHR.responseText);
+            let errorMessage = "Anime conversion failed.";
+            if (jqXHR.responseJSON && jqXHR.responseJSON.detail) {
+                errorMessage = jqXHR.responseJSON.detail;
+            } else if (jqXHR.responseText) {
+                errorMessage = jqXHR.responseText;
+            }
+            errorElement.textContent = errorMessage;
         })
         .always(function () {
             $("#loading").hide();
