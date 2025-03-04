@@ -1,6 +1,7 @@
 import os
 import unittest
 import time
+import base64
 
 from fastapi.testclient import TestClient
 
@@ -140,3 +141,17 @@ class TestAPI(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("bio", response.json())
         self.assertIsInstance(response.json()["bio"], str)
+
+
+    def test_animefy_character_image(self):
+        """Test animefication API with valid parameters"""
+
+        # Read and encode the image as base64
+        img_path = os.path.join(current_dir, "files/sample.jpg")
+        with open(img_path, "rb") as image:
+            base64_image = base64.b64encode(image.read()).decode('utf-8')
+        
+        # Send the image as JSON
+        response = client.post("/convert_to_anime", json={"image": base64_image})
+        assert response.status_code == 200
+        assert "animeImgUrl" in response.json()
