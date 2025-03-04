@@ -110,6 +110,10 @@ async def convert_to_anime(request_data: ImageRequest):
     payload = {
         "image": encoded_image
     }
+
+    # AnimeGAN2 PyTorch implementation sourced from:
+    # https://github.com/bryandlee/animegan2-pytorch
+
     response = requests.post(
         urljoin(VPS_URL, "convert_to_anime"),
         json=payload

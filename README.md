@@ -170,6 +170,16 @@ This project is **open-source** under the BSD-3-Clause license.
 
 ----------
 
+## Acknowledgements
+
+This project utilizes [AnimeGANv2](https://github.com/bryandlee/animegan2-pytorch) for anime-style image transformation.
+
+- **AnimeGAN2-PyTorch** by [bryandlee](https://github.com/bryandlee)  
+  - Repository: [AnimeGAN2-PyTorch](https://github.com/bryandlee/animegan2-pytorch)
+  - License: [MIT](https://opensource.org/licenses/MIT).
+
+----------
+
 ## **🔗 Links**
 
 🔹 **Live Demo**: [ficbotweb.com](https://ficbotweb.com)  
