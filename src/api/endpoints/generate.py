@@ -91,7 +91,8 @@ async def generate_character_bio(request_data: BioRequest):
         "type": "bio",
         "name": request_data.name,
         "diversity": request_data.diversity,
-        "max_bio_length": request_data.max_bio_length
+        "max_bio_length": request_data.max_bio_length,
+        "nsfw_on": False
     }
     url = urljoin(VPS_URL, "generate")
     print(url)
