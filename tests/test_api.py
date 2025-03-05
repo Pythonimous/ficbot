@@ -106,7 +106,8 @@ class TestAPI(unittest.TestCase):
         payload = {
             "imageSrc": img_path,
             "diversity": 1.2,
-            "min_name_length": 4
+            "min_name_length": 4,
+            "max_name_length": 6
         }
         response = client.post("generate/name", json=payload)
 
