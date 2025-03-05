@@ -14,41 +14,40 @@
     <meta name="author" content="Kirill Nikolaev">
     <title>FicbotWeb · Generate your OC!</title>
 
-
-    <!-- Bootstrap core CSS -->
+    <!-- Bootstrap core CSS and JS -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Include noUiSlider CSS and JS (from CDN) -->
+    <!-- noUiSlider CSS and JS (from CDN) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.js"></script>
 
     <style>
+        /* Loading Overlay Styles */
         #loading {
-          position: absolute;
-          display: none;
-          width: 100%;
-          height: 100%;
-          top: 0;
-          left: 0;
-          text-align: center;
-          opacity: 0.95;
-          background-color: #fff;
-          z-index: 1;
+            position: absolute;
+            display: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            text-align: center;
+            opacity: 0.95;
+            background-color: #fff;
+            z-index: 1;
         }
 
         #loading-image {
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          background-color: transparent;
-          opacity: 1;
-          mix-blend-mode: multiply;
-          transform: translate(-50%, -50%);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            background-color: transparent;
+            opacity: 1;
+            mix-blend-mode: multiply;
+            transform: translate(-50%, -50%);
         }
     </style>
-
 </head>
 <body>
 
@@ -69,12 +68,14 @@
             <li class="nav-item ml-2">
                 <a class="nav-item nav-link active" href="https://github.com/Pythonimous/ficbot/blob/main/README.md">About</a>
             </li>
+        </ul>
     </div>
 </nav>
 
 <form>
     <div class="container-fluid">
 
+        <!-- Top Row: Character Image & Controls -->
         <div class="row d-flex mt-3">
             <div class="col-md-2">
                 <div class="row d-flex justify-content-center">
@@ -95,6 +96,7 @@
                 </div>
             </div>
             <div class="col-md-10">
+                <!-- Creativity Control -->
                 <div class="row d-flex mt-3">
                     <div class="col-md-1">
                         <h5 class="text-center">Creativity</h5>
@@ -104,11 +106,12 @@
                                oninput="changeDivField();">
                     </div>
                     <div class="col-md-3">
-                        <input type="number" id=divField min="0.1" max="2" value="1.0" step="0.1"
+                        <input type="number" id="divField" min="0.1" max="2" value="1.0" step="0.1"
                                oninput="changeDivSlider();">
                     </div>
                 </div>
 
+                <!-- Name Generation Controls -->
                 <div class="row d-flex mt-5">
                     <div class="col-md-3"></div>
                     <div class="col-md-3">
@@ -137,10 +140,12 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Biography Section -->
                 <div class="row d-flex">
                     <div class="col-md-9">
-            <textarea class="form-control" id="bioField" rows=10 style="height:100%;">Goku is an adventurous warrior with an insatiable hunger for training, fighting strong opponents, and pushing his limits. Cheerful, pure-hearted, and endlessly determined, he travels across worlds in search of new challenges. Though carefree in nature, he fiercely protects his friends and the place he calls home.</textarea>
-                </div>
+                        <textarea class="form-control" id="bioField" rows="10" style="height:100%;">Goku is an adventurous warrior with an insatiable hunger for training, fighting strong opponents, and pushing his limits. Cheerful, pure-hearted, and endlessly determined, he travels across worlds in search of new challenges. Though carefree in nature, he fiercely protects his friends and the place he calls home.</textarea>
+                    </div>
                     <div class="col-md-3">
                         <div class="row d-flex">
                             <div class="col-md-6">
@@ -163,12 +168,11 @@
             </div>
         </div>
 
+        <!-- Bottom Row: Image, Name, and Biography Sections -->
         <div class="row d-flex mt-3">
             <div class="col-md-4">
                 <div class="row d-flex">
-                    <h3 class="text-center">
-                        Image
-                    </h3>
+                    <h3 class="text-center">Image</h3>
                 </div>
                 <div class="row d-flex text-center">
                     <h5><br>To be developed</h5>
@@ -176,86 +180,81 @@
             </div>
             <div class="col-md-4">
                 <div class="row d-flex">
-                    <h3 class="text-center">
-                        Name
-                    </h3>
+                    <h3 class="text-center">Name</h3>
                 </div>
                 <div class="row d-flex mt-3">
                     <div class="col-md-5">
-                      <p class="text-left">Name Length (Words)</p>
+                        <p class="text-left">Name Length (Words)</p>
                     </div>
                     <div class="col-md-7">
-                      <div id="name-length-slider"></div>
+                        <div id="name-length-slider"></div>
                     </div>
                 </div>                            
             </div>
             <div class="col-md-4">
                 <div class="row d-flex">
-                    <h3 class="text-center">
-                        Biography
-                    </h3>
+                    <h3 class="text-center">Biography</h3>
                 </div>
                 <div class="row d-flex mt-3">
                     <div class="col-md-5">
-                      <p class="text-left">Bio Length (Tokens)</p>
+                        <p class="text-left">Bio Length (Tokens)</p>
                     </div>
                     <div class="col-md-7">
-                      <div id="bio-length-slider"></div>
+                        <div id="bio-length-slider"></div>
                     </div>
                 </div> 
             </div>
         </div>
+
+        <!-- Generate Character Button -->
         <div class="row d-flex">
-            <button type="button" class="btn btn-light mt-4" disabled>
-                Generate Character!
-            </button>
+            <button type="button" class="btn btn-light mt-4" disabled>Generate Character!</button>
         </div>
 
+        <!-- Footer -->
         <footer class="footer py-3 bg-light">
-            <div class="footer-copyright text-center py-3">© 2025 Copyright:
+            <div class="footer-copyright text-center py-3">
+                © 2025 Copyright:
                 <a href="https://github.com/Pythonimous/ficbot">Kirill Nikolaev</a>
             </div>
         </footer>
-
     </div>
 </form>
 
+<!-- Loading Overlay -->
 <div id="loading">
     <div class="slds-is-relative">
         <img id="loading-image" src="{{ url_for('static', path='gifs/loading.gif') }}" alt="Loading..." />
     </div>
 </div>
 
-</body>
+<!-- **********************************************************************
+     SCRIPTS
+     ********************************************************************** -->
 
+<!-- 1. Image Upload and Compression -->
 <script>
     document.getElementById("charImageFile").addEventListener("change", function () {
         let input = this;
         let errorElement = document.getElementById("imageUploadError");
-
         // Clear previous errors
         errorElement.textContent = "";
-
         if (!window.FileReader) {
             console.log("The file API isn't supported on this browser yet.");
             return;
         }
-
         if (!input.files || !input.files[0]) {
             errorElement.textContent = "Please select a file.";
             return;
         }
-
         let file = input.files[0];
         let allowedExtensions = [".jpg", ".png", ".gif"];
         let fileExt = file.name.substring(file.name.lastIndexOf(".")).toLowerCase();
-
         if (!allowedExtensions.includes(fileExt)) {
             errorElement.textContent = `File "${file.name}" is not an accepted format! Only .jpg, .png, .gif are allowed.`;
             input.value = "";
             return;
         }
-
         // If file is too large, compress before uploading
         if (file.size > 2 * 1024 * 1024) {
             compressImage(file, function (compressedBlob) {
@@ -281,10 +280,8 @@
                 }
                 canvas.width = width;
                 canvas.height = height;
-
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
-
                 // Compress the image (70% quality)
                 canvas.toBlob(function (blob) {
                     callback(blob);
@@ -298,7 +295,6 @@
     function uploadFile(file) {
         let formData = new FormData();
         formData.append("file", file);
-
         $.ajax({
             url: "/upload_image",
             type: "POST",
@@ -311,7 +307,6 @@
         })
         .done(function (data) {
             console.log("Success:", data);
-
             if (data && data.imgUrl) {
                 $("#charImage").attr("src", data.imgUrl);
                 $("#charImageFile").val(null);
@@ -323,36 +318,31 @@
         })
         .fail(function (jqXHR) {
             console.log("Upload failed:", jqXHR.status, jqXHR.responseText);
-
             let errorMessage = "Upload failed.";
             if (jqXHR.responseJSON && jqXHR.responseJSON.detail) {
                 errorMessage = jqXHR.responseJSON.detail;
             } else if (jqXHR.responseText) {
                 errorMessage = jqXHR.responseText;
             }
-
             $("#imageUploadError").text(errorMessage).css("color", "red");
         })
         .always(function () {
             $("#loading").hide();
         });
     }
-
 </script>
 
+<!-- 2. Image Animefy -->
 <script>
     document.getElementById("imageAnimefyButton").addEventListener("click", function () {
         let imgElement = document.getElementById("charImage");
         let errorElement = document.getElementById("imageAnimefyError");
-
         // Clear previous errors
         errorElement.textContent = "";
-
         if (!imgElement.src || imgElement.src === window.location.href) {
             errorElement.textContent = "No image uploaded. Please upload an image first.";
             return;
         }
-
         // Convert image to base64
         fetch(imgElement.src)
             .then(response => response.blob())
@@ -372,27 +362,22 @@
 
     function sendImageForAnimefy(base64Image) {
         let errorElement = document.getElementById("imageAnimefyError");
-
         $.ajax({
             url: "/convert_to_anime",
             type: "POST",
             contentType: "application/json",
-            dataType: "json", // Force response to be parsed as JSON
+            dataType: "json",
             data: JSON.stringify({ image: base64Image }),
             beforeSend: function () {
                 $("#loading").show();
             }
         })
         .done(function (data) {
-            // Log the entire response for debugging
             console.log("Server response:", data);
-
-            // Try both possible property names if necessary
             let animeUrl = data.animeImgUrl || data.anime_img_url;
-            
             if (animeUrl) {
                 $("#charImage").attr("src", animeUrl);
-                $("#imageAnimefyError").text(""); // Clear any errors on success
+                $("#imageAnimefyError").text("");
             } else {
                 errorElement.textContent = "Unexpected response format. Check console for details.";
                 console.error("Unexpected response format:", data);
@@ -412,62 +397,57 @@
             $("#loading").hide();
         });
     }
-
 </script>
 
+<!-- 3. Sliders Initialization -->
 <script>
-    // Get the slider element
+    // Initialize Name Length Slider (two handles)
     var nameLengthSlider = document.getElementById('name-length-slider');
-
     noUiSlider.create(nameLengthSlider, {
-      start: [2, 4], // initial values for min and max name length
-      connect: true,
-      step: 1,
-      range: {
-        'min': 1,
-        'max': 6
-      },
-      // Display current values above each handle
-      tooltips: [true, true],
-      // Add scale markers along the slider
-      pips: {
-        mode: 'steps',
-        stepped: true,
-        density: 20
-      }
+        start: [2, 4],
+        connect: true,
+        step: 1,
+        range: {
+            'min': 1,
+            'max': 6
+        },
+        tooltips: [true, true],
+        pips: {
+            mode: 'steps',
+            stepped: true,
+            density: 20
+        }
     });
-
     nameLengthSlider.noUiSlider.on('update', function (values) {
-      var minNameLen = parseInt(values[0], 10);
-      var maxNameLen = parseInt(values[1], 10);
-      console.log('Min Name Length: ' + minNameLen, 'Max Name Length: ' + maxNameLen);
+        var minNameLen = parseInt(values[0], 10);
+        var maxNameLen = parseInt(values[1], 10);
+        console.log('Min Name Length: ' + minNameLen, 'Max Name Length: ' + maxNameLen);
     });
 
+    // Initialize Bio Length Slider (single handle)
     var bioLengthSlider = document.getElementById('bio-length-slider');
-
     noUiSlider.create(bioLengthSlider, {
-        start: 200,              // initial value for max bio length
-        connect: 'lower',        // fill from the min up to the handle
+        start: 200,
+        connect: 'lower',
         step: 50,
         range: {
             'min': 50,
             'max': 500
         },
-        tooltips: true,          // display the current value above the handle
+        tooltips: true,
         pips: {
             mode: 'steps',
             stepped: true,
             density: 10
         }
     });
-
     bioLengthSlider.noUiSlider.on('update', function (values) {
         var maxBioLen = parseInt(values[0], 10);
         console.log('Max Bio Length: ' + maxBioLen);
     });
-
 </script>
 
+<!-- 4. Diversity Slider Synchronization -->
 <script>
     var divSlider = document.getElementById("diversity");
     var divField = document.getElementById("divField");
@@ -475,83 +455,76 @@
         divSlider.value = divField.value;
     }
     function changeDivField(){
-        divField.value = divSlider.value
+        divField.value = divSlider.value;
     }
 </script>
 
+<!-- 5. AJAX Requests for Name and Bio Generation -->
 <script>
+    // Generate Name AJAX
     $(document).ready(function () {
-
         $('#nameGenerateButton').on('click', function () {
-
             var sliderValues = nameLengthSlider.noUiSlider.get();
             var minValue = parseInt(sliderValues[0], 10);
             var maxValue = parseInt(sliderValues[1], 10);
-
             let r = {
                 imageSrc: $("#charImage").attr('src'),
                 diversity: parseFloat($("#diversity").val()),
                 min_name_length: minValue,
                 max_name_length: maxValue
             };
-
             $.ajax({
                 type: 'POST',
                 url: '/generate/name',
                 contentType: 'application/json;charset=UTF-8',
                 dataType: 'json',
                 data: JSON.stringify(r),
-                processData: false,  // tell jQuery not to process the data
+                processData: false,
                 beforeSend: function () {
                     $("#loading").show();
                 }
-            }).done(function (data, textStatus, jqXHR) {
+            }).done(function (data) {
                 console.log(data);
-                // let resp = JSON.parse(data);
                 $("#nameField").val(data.name);
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                // alert("error: " + jqXHR + '_' + textStatus);
-            }).always(function (jqXHR) {
+            }).fail(function (jqXHR) {
+                // Handle error if needed
+            }).always(function () {
                 $("#loading").hide();
-            })
+            });
         });
     });
-</script>
 
-<script>
+    // Generate Bio AJAX
     $(document).ready(function () {
         $('#bioGenerateButton').on('click', function () {
-
             var sliderValue = bioLengthSlider.noUiSlider.get();
             var maxValue = parseInt(sliderValue, 10);
-
             let r = {
                 name: $("#nameField").val(),
                 diversity: parseFloat($("#diversity").val()),
                 max_bio_length: maxValue
-            }
-
+            };
             $.ajax({
                 type: 'POST',
                 url: '/generate/bio',
                 contentType: 'application/json;charset=UTF-8',
                 dataType: 'json',
                 data: JSON.stringify(r),
-                processData: false,  // tell jQuery not to process the data
+                processData: false,
                 beforeSend: function () {
                     $("#loading").show();
                 }
-            }).done(function (data, textStatus, jqXHR) {
+            }).done(function (data) {
                 console.log(data);
-                // let resp = JSON.parse(data);
                 $("#bioField").val(data.bio);
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                // alert("error: " + jqXHR + '_' + textStatus);
-            }).always(function (jqXHR) {
+            }).fail(function (jqXHR) {
+                // Handle error if needed
+            }).always(function () {
                 $("#loading").hide();
-            })
+            });
         });
     });
 </script>
 
+</body>
 </html>
