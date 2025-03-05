@@ -7,6 +7,7 @@ class NameRequest(BaseModel):
     imageSrc: str
     diversity: float
     min_name_length: int
+    max_name_length: int
 
 
 class BioRequest(BaseModel):

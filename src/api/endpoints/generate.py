@@ -58,7 +58,8 @@ async def generate_character_name(request_data: NameRequest):
         "type": "name",
         "image": encoded_image,
         "diversity": request_data.diversity,
-        "min_name_length": request_data.min_name_length
+        "min_name_length": request_data.min_name_length,
+        "max_name_length": request_data.max_name_length
     }
     response = requests.post(
         urljoin(VPS_URL, "generate"),
