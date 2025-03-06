@@ -68,11 +68,10 @@
             mix-blend-mode: multiply;
             transform: translate(-50%, -50%);
         }
-        /* Character image styling */
         .img-char {
             max-width: 100%;
-            height: auto;
-            border-radius: 5px;
+            max-height: 400px;  /* Limit tall images to 400px height */
+            object-fit: contain; /* Ensures the entire image is visible */
         }
 
         .noUi-tooltip {
@@ -137,7 +136,7 @@
     <div class="container-fluid my-3">
         <div class="row">
             <!-- Left Column: Expanded Image Upload -->
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="card mb-3">
                     <div class="card-header">Character Image</div>
                     <div class="card-body text-center">
@@ -160,7 +159,7 @@
             </div>
 
             <!-- Right Column -->
-            <div class="col-lg-6">
+            <div class="col-lg-8">
                 <!-- Name Generation Card -->
                 <div class="card mb-3">
                     <div class="card-header bg-secondary text-white">Name</div>
