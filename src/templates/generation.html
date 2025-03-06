@@ -263,6 +263,25 @@ Though carefree in nature, he fiercely protects his friends and the place he cal
     </div>
 </div>
 
+<!-- Global AJAX Handlers for Random Loading GIFs -->
+<script>
+
+// Global event: Before any AJAX call, select a random GIF and show the overlay
+    $(document).ajaxSend(function (event, jqXHR, settings) {
+        // Generate a random integer between 1 and 10
+        var randomNumber = Math.floor(Math.random() * 10) + 1;
+        // Build the GIF URL using the random number
+        var randomGif = "{{ url_for('static', path='gifs') }}/" + randomNumber + ".gif";
+        $("#loading-image").attr("src", randomGif);
+        $("#loading").show();
+    });
+
+    // Global event: When any AJAX call completes, hide the overlay
+    $(document).ajaxComplete(function (event, jqXHR, settings) {
+        $("#loading").hide();
+    });
+</script>
+
 <!-- Sliders Initialization -->
 <script>
     // Name Length Slider (two handles)
@@ -457,9 +476,6 @@ Though carefree in nature, he fiercely protects his friends and the place he cal
             data: formData,
             contentType: false,
             processData: false,
-            beforeSend: function () {
-                $("#loading").show();
-            }
         })
         .done(function (data) {
             console.log("Success:", data);
@@ -481,9 +497,6 @@ Though carefree in nature, he fiercely protects his friends and the place he cal
                 errorMessage = jqXHR.responseText;
             }
             $("#imageUploadError").text(errorMessage).css("color", "red");
-        })
-        .always(function () {
-            $("#loading").hide();
         });
     }
 </script>
@@ -523,10 +536,7 @@ Though carefree in nature, he fiercely protects his friends and the place he cal
             type: "POST",
             contentType: "application/json",
             dataType: "json",
-            data: JSON.stringify({ image: base64Image }),
-            beforeSend: function () {
-                $("#loading").show();
-            }
+            data: JSON.stringify({ image: base64Image })
         })
         .done(function (data) {
             console.log("Server response:", data);
@@ -548,9 +558,6 @@ Though carefree in nature, he fiercely protects his friends and the place he cal
                 errorMessage = jqXHR.responseText;
             }
             errorElement.textContent = errorMessage;
-        })
-        .always(function () {
-            $("#loading").hide();
         });
     }
 </script>
@@ -574,17 +581,12 @@ Though carefree in nature, he fiercely protects his friends and the place he cal
                 contentType: 'application/json;charset=UTF-8',
                 dataType: 'json',
                 data: JSON.stringify(r),
-                processData: false,
-                beforeSend: function () {
-                    $("#loading").show();
-                }
+                processData: false
             }).done(function (data) {
                 console.log(data);
                 $("#nameField").val(data.name);
             }).fail(function (jqXHR) {
                 // Handle error if needed
-            }).always(function () {
-                $("#loading").hide();
             });
         });
     });
@@ -604,17 +606,12 @@ Though carefree in nature, he fiercely protects his friends and the place he cal
                 contentType: 'application/json;charset=UTF-8',
                 dataType: 'json',
                 data: JSON.stringify(r),
-                processData: false,
-                beforeSend: function () {
-                    $("#loading").show();
-                }
+                processData: false
             }).done(function (data) {
                 console.log(data);
                 $("#bioField").val(data.bio);
             }).fail(function (jqXHR) {
                 // Handle error if needed
-            }).always(function () {
-                $("#loading").hide();
             });
         });
     });
