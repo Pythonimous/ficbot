@@ -30,6 +30,10 @@
         /* Navbar in a standard Bootstrap blue (bg-primary) */
         .navbar {
             border-bottom: none;
+            font-weight: 500;
+        }
+        .btn {
+            font-weight: 500; /* or 700 for even bolder text */
         }
         /* Cards with slight shadow */
         .card {
@@ -70,6 +74,35 @@
             height: auto;
             border-radius: 5px;
         }
+
+        .noUi-tooltip {
+            transform: translateY(-120%);
+            font-size: 0.85rem;
+        }
+
+        #nameField {
+            font-size: 1.3rem;  /* Adjust to taste */
+            font-weight: 550;   
+        }
+        #bioField {
+            font-weight: 500;
+        }
+
+        #nameField,
+        #bioField {
+            background-color: #fefefe;         /* Slightly off-white */
+            border: 2px solid #ced4da;         /* Soft gray border */
+            border-radius: 4px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+            transition: box-shadow 0.2s ease;
+        }
+
+        #nameField:focus,
+        #bioField:focus {
+            outline: none;
+            border-color: #80bdff;
+            box-shadow: 0 0 0 .15rem rgba(0,123,255,.25);
+        }
     </style>
 </head>
 
@@ -103,9 +136,8 @@
 <form>
     <div class="container-fluid my-3">
         <div class="row">
-            <!-- Left Column -->
-            <div class="col-lg-4">
-                <!-- Character Image & Upload Card -->
+            <!-- Left Column: Expanded Image Upload -->
+            <div class="col-lg-6">
                 <div class="card mb-3">
                     <div class="card-header">Character Image</div>
                     <div class="card-body text-center">
@@ -125,30 +157,22 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Sliders Card for Lengths -->
-                <div class="card">
-                    <div class="card-header">Sliders</div>
-                    <div class="card-body">
-                        <!-- Name Length Slider -->
-                        <h5 class="mb-2">Name Length (Words)</h5>
-                        <div id="name-length-slider" class="mb-4"></div>
-                        <!-- Bio Length Slider -->
-                        <h5 class="mb-2">Bio Length (Tokens)</h5>
-                        <div id="bio-length-slider"></div>
-                    </div>
-                </div>
             </div>
 
             <!-- Right Column -->
-            <div class="col-lg-8">
+            <div class="col-lg-6">
                 <!-- Name Generation Card -->
                 <div class="card mb-3">
                     <div class="card-header bg-secondary text-white">Name</div>
                     <div class="card-body">
+                        <!-- Name Length Slider -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Name Length (Words)</label>
+                            <div id="name-length-slider"></div>
+                        </div>
                         <!-- Name Creativity Slider (noUiSlider) -->
                         <div class="mb-3">
-                            <label class="form-label">Name Creativity</label>
+                            <label class="form-label fw-bold">Name Creativity</label>
                             <div id="name-creativity-slider"></div>
                         </div>
                         <!-- Name Field -->
@@ -179,16 +203,22 @@
                 <div class="card mb-3">
                     <div class="card-header bg-secondary text-white">Biography</div>
                     <div class="card-body">
+                        <!-- Bio Length Slider -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Bio Length (Tokens)</label>
+                            <div id="bio-length-slider"></div>
+                        </div>
                         <!-- Bio Creativity Slider (noUiSlider) -->
                         <div class="mb-3">
-                            <label class="form-label">Bio Creativity</label>
+                            <label class="form-label fw-bold">Bio Creativity</label>
                             <div id="bio-creativity-slider"></div>
                         </div>
                         <!-- Bio Textarea -->
                         <div class="mb-3">
                             <textarea class="form-control" id="bioField" rows="6" style="height:100%;">
-Goku is an adventurous warrior with an insatiable hunger for training, fighting strong opponents, and pushing his limits. Cheerful, pure-hearted, and endlessly determined, he travels across worlds in search of new challenges. Though carefree in nature, he fiercely protects his friends and the place he calls home.
-                            </textarea>
+Goku is an adventurous warrior with an insatiable hunger for training, fighting strong opponents, and pushing his limits.
+Cheerful, pure-hearted, and endlessly determined, he travels across worlds in search of new challenges.
+Though carefree in nature, he fiercely protects his friends and the place he calls home.</textarea>
                         </div>
                         <!-- Bio Generation Options -->
                         <div class="row g-2">
@@ -245,12 +275,18 @@ Goku is an adventurous warrior with an insatiable hunger for training, fighting 
             'min': 1,
             'max': 6
         },
-        tooltips: [true, true],
-        pips: {
-            mode: 'steps',
-            stepped: true,
-            density: 20
-        }
+        tooltips: [
+            {
+            to: function(value) {
+                return Math.round(value);
+            }
+            },
+            {
+            to: function(value) {
+                return Math.round(value);
+            }
+            }
+        ]
     });
     nameLengthSlider.noUiSlider.on('update', function (values) {
         console.log('Name Length:', values);
@@ -266,12 +302,11 @@ Goku is an adventurous warrior with an insatiable hunger for training, fighting 
             'min': 50,
             'max': 500
         },
-        tooltips: true,
-        pips: {
-            mode: 'steps',
-            stepped: true,
-            density: 10
-        }
+        tooltips: {
+            to: function(value) {
+                return Math.round(value);
+            }
+        },
     });
     bioLengthSlider.noUiSlider.on('update', function (values) {
         console.log('Bio Length:', values[0]);
@@ -291,7 +326,7 @@ Goku is an adventurous warrior with an insatiable hunger for training, fighting 
             to: function (value) {
                 if (value < 0.7) {
                     return "John Smith";
-                } else if (value < 1.3) {
+                } else if (value < 1.2) {
                     return "Naruto Uzumaki";
                 } else if (value < 1.7)  {
                     return "Grzegorz Brzęczyszczykiewicz";
@@ -317,11 +352,11 @@ Goku is an adventurous warrior with an insatiable hunger for training, fighting 
         tooltips: {
             to: function (value) {
                 if (value < 0.7) {
-                    return "Dry Wikipedia Article";
+                    return "Wikipedia Article";
                 } else if (value < 1.4) {
                     return "Aspiring Novelist";
                 } else {
-                    return "Essay Due at 3 AM";
+                    return "Homework Due at 3 AM";
                 }
             }
         }
