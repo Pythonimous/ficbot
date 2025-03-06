@@ -102,7 +102,7 @@ class TestAPI(unittest.TestCase):
     def test_generate_character_name(self):
         """Test the name generation API with valid parameters."""
         
-        img_path = os.path.join("http://127.0.0.1:8000/static/images/example.jpg")
+        img_path = os.path.join("https://127.0.0.1:8000/static/images/example.jpg")
         payload = {
             "imageSrc": img_path,
             "diversity": 1.2,

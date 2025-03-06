@@ -74,4 +74,4 @@ def clean_old_images(exclude: list, max_age_seconds: int = 300):
 
 
 if __name__ == '__main__':
-    print(get_local_image_path("http://127.0.0.1:8000/static/images/example.jpg"))
+    print(get_local_image_path("https://127.0.0.1:8000/static/images/example.jpg"))

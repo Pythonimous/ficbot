@@ -112,7 +112,7 @@ uvicorn src.main:app --host 0.0.0.0 --port 8000
 ```
 
 Once running, access the API at:  
-📍 `http://127.0.0.1:8000/docs` (Interactive API Documentation)
+📍 `https://127.0.0.1:8000/docs` (Interactive API Documentation)
 
 > Note: The frontend API will need to communicate with the ficbot-backend service. Make sure the correct API URL is set in the frontend configuration.
 
@@ -186,5 +186,5 @@ This project utilizes [AnimeGANv2](https://github.com/bryandlee/animegan2-pytorc
 
 🔹 **Live Demo**: [ficbotweb.com](https://ficbotweb.com)  
 🔹 **Ficbot Backend**: [ficbot-backend](https://github.com/Pythonimous/ficbot-backend)  
-🔹 **Dataset**: [Kaggle](http://www.kaggle.com/dataset/37798ba55fed88400b584cd0df4e784317eb7a6708e02fd5a650559fb4598353)  
+🔹 **Dataset**: [Kaggle](https://www.kaggle.com/dataset/37798ba55fed88400b584cd0df4e784317eb7a6708e02fd5a650559fb4598353)  
 🔹 **Exploratory Data Analysis Notebook:** [Kaggle](https://www.kaggle.com/code/ophelion/myanimelist-dataset-exploratory-notebook)  
