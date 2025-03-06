@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <!-- Favicon & Meta -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', path='favicon/apple-touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', path='favicon/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', path='favicon/favicon-16x16.png') }}">
-    <link rel="manifest" href="{{ url_for('static', path='favicon/site.webmanifest') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="static/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="static/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="static/favicon/favicon-16x16.png">
+    <link rel="manifest" href="static/favicon/site.webmanifest">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
@@ -140,7 +140,7 @@
                 <div class="card mb-3">
                     <div class="card-header">Character Image</div>
                     <div class="card-body text-center">
-                        <img src="{{ url_for('static', path='images/example.jpg') }}" 
+                        <img src="static/images/example.jpg" 
                              id="charImage"
                              class="img-char mb-3"
                              alt="Character Image">
@@ -258,7 +258,7 @@ Though carefree in nature, he fiercely protects his friends and the place he cal
 <!-- Loading Overlay -->
 <div id="loading">
     <div class="slds-is-relative">
-        <img id="loading-image" src="{{ url_for('static', path='gifs/1.gif') }}" alt="Loading..." />
+        <img id="loading-image" src="static/gifs/1.gif" alt="Loading..." />
     </div>
 </div>
 
@@ -270,7 +270,7 @@ Though carefree in nature, he fiercely protects his friends and the place he cal
         // Generate a random integer between 1 and 10
         var randomNumber = Math.floor(Math.random() * 10) + 1;
         // Build the GIF URL using the random number
-        var randomGif = "{{ url_for('static', path='gifs') }}/" + randomNumber + ".gif";
+        var randomGif = "static/gifs/" + randomNumber + ".gif";
         $("#loading-image").attr("src", randomGif);
         $("#loading").show();
     });
