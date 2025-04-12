@@ -43,7 +43,7 @@ Ficbot is now split into two repositories for better organization:
 - **AWS Lightsail:** Provides a cost-effective VPS solution for hosting the full application stack.
 
 ### 🧠 RAG-Inspired Pipeline
-Character names are vectorized and compared to the dataset of 100,000+ characters. The top-matching entries are used to extract genres and themes, which then guide bio generation. This retrieval-enhanced approach grounds outputs in contextually relevant tropes and improves narrative coherence.
+Character names are vectorized and compared to the dataset of top-1000 most popular characters from MyAnimeList.net. The top-matching entries are used to extract genres and themes, which then guide bio generation. This retrieval-enhanced approach grounds outputs in contextually relevant tropes and improves narrative coherence.
 
 
 ## 📊 Dataset & Exploratory Notebook  
@@ -66,7 +66,7 @@ This dataset includes **over 106,000 characters**, with names, bios, and images,
   ✨ *Powered by MobileNetV3 + Bidirectional LSTM.*
 - **🔹 Bio Generator**  
   Provide a name, and the AI will generate a detailed character bio.  
-  ✨ *Built on DistilGPT2 with sliding window chunking (50–200 tokens) and optimized for CPU inference via LlamaCPP. Uses a lightweight RAG-inspired approach: vectorizes the input name, retrieves the most similar characters from the training set, and injects their anime genres and themes to ground the output in believable character types.*
+  ✨ *Built on DistilGPT2 with sliding window chunking (50–200 tokens) and optimized for CPU inference via LlamaCPP. Uses a lightweight RAG-inspired approach: vectorizes the input name, retrieves the most similar characters from the popular characters' set, and injects their anime genres and themes to ground the output in believable character types.*
 - **🔹 Anime Filter**
   With a press of a button (**stylize**), transforms your image into an anime style!
   ✨ *Uses Bryandlee's PyTorch implementation of AnimeGAN2. [Check it out!](https://github.com/bryandlee/animegan2-pytorch)*
