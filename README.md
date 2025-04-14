@@ -8,7 +8,7 @@ _An AI-powered Anime Character Generator for Aspiring Writers_
 
 ## **📌 About the Project**
 
-Ficbot is a machine learning–powered system designed to assist writers in creating original characters effortlessly. It leverages deep learning and NLP models to generate character names from images, with planned expansions for bio and image generation.
+Ficbot is a machine learning–powered system designed to assist writers in creating original characters effortlessly. It leverages deep learning and NLP models to generate character names from images, with planned expansions for image generation.
 
 ### **Project Structure**  
 Ficbot is now split into two repositories for better organization:
@@ -27,20 +27,19 @@ Ficbot is now split into two repositories for better organization:
 ---
 ## **🖥 Technical Stack**
 
-- **Machine Learning & Inference:**
-  - **PyTorch:** Powers the AI model used for generating character names from images.
-  - **Transformers:** Provides state-of-the-art NLP models for text generation.
-  - **Llama.cpp:** Enables efficient CPU-based inference for quantized language models.
-  - **FastAPI:** Also used in the backend inference service for serving predictions.
+### 🔹 Machine Learning & Inference
+- **PyTorch:** Powers the name generation model, which maps image embeddings to plausible character names.  
+- **Transformers:** Used for bio generation with modern NLP architectures, fine-tuned on character metadata.  
+- **Llama.cpp:** Enables fast, CPU-efficient inference of quantized language models for resource-constrained environments.  
+- **FastAPI:** Serves the backend inference API and provides a lightweight, async-compatible framework for handling requests.
 
-- **Frontend & API:**
-  - **FastAPI:** Serves the API endpoints used by the frontend.
-  - **Bootstrap:** Provides a responsive and modern UI for the web interface.
-  - **HTML5/CSS3 & JavaScript:** Standard technologies for building interactive web applications.
+### 🔹 Frontend & Interface
+- **HTML5/CSS3 & JavaScript:** Core technologies for the interactive user interface.  
+- **Bootstrap:** Ensures responsive, mobile-friendly layouts.  
+- **FastAPI (Frontend API layer):** Also serves static assets and API endpoints consumed by the frontend.
 
-- **Deployment & Infrastructure:**
-  - **Docker + AWS Lightsail:** A reliable and cost-effective VPS solution.
-
+### 🧠 RAG-Inspired Pipeline
+Character names are vectorized and compared to the dataset of top-1000 most popular characters from MyAnimeList.net. The top-matching entries are used to extract genres and themes, which then guide bio generation. This retrieval-enhanced approach grounds outputs in contextually relevant tropes and improves narrative coherence.
 
 ## 📊 Dataset & Exploratory Notebook  
 
@@ -62,7 +61,7 @@ This dataset includes **over 106,000 characters**, with names, bios, and images,
   ✨ *Powered by MobileNetV3 + Bidirectional LSTM.*
 - **🔹 Bio Generator**  
   Provide a name, and the AI will generate a detailed character bio.  
-  ✨ *Built on DistilGPT2 with sliding window chunking (50–200 tokens) and optimized for CPU inference via LlamaCPP.*
+  ✨ *Built on DistilGPT2 with sliding window chunking (50–200 tokens) and optimized for CPU inference via LlamaCPP. Uses a lightweight RAG-inspired approach: vectorizes the input name, retrieves the most similar characters from the popular characters' set, and injects their anime genres and themes to ground the output in believable character types.*
 - **🔹 Anime Filter**
   With a press of a button (**stylize**), transforms your image into an anime style!
   ✨ *Uses Bryandlee's PyTorch implementation of AnimeGAN2. [Check it out!](https://github.com/bryandlee/animegan2-pytorch)*
@@ -70,9 +69,10 @@ This dataset includes **over 106,000 characters**, with names, bios, and images,
 ---
 
 ### 🚀 **Planned Enhancements**
-- **🔹 Advanced Name Generators** – Generate names based on bios and hybrid inputs.  
-- **🔹 AI-Powered Image Generation** – Create AI-generated character visuals.  
-- **🔹 Complete OC Generator** – Generate a full original character with Name, Bio,
+- **🔹 Advanced Name Generator** – Enable name generation based on bios or hybrid inputs for more coherent character design.
+- **🔹 Customizable Themes & Genres** – Allow users to manually input preferred themes or genres (e.g., action, pirates, magical girl) to influence bio generation, instead of relying solely on automatic RAG retrieval.
+- **🔹 AI-Powered Image Generation** – Generate character portraits based on the outputted name and bio using image synthesis models.
+- **🔹 Complete OC Generator** – One-click generation of complete original characters, including name, bio, and image.
 
 ---
 
