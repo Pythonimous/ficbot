@@ -37,12 +37,6 @@ Ficbot is now split into two repositories for better organization:
 - **HTML5/CSS3 & JavaScript:** Core technologies for the interactive user interface.  
 - **Bootstrap:** Ensures responsive, mobile-friendly layouts.  
 - **FastAPI (Frontend API layer):** Also serves static assets and API endpoints consumed by the frontend.
-<<<<<<< HEAD
-=======
-
-### 🧠 RAG-Inspired Pipeline
-Character names are vectorized and compared to the dataset of top-1000 most popular characters from MyAnimeList.net. The top-matching entries are used to extract genres and themes, which then guide bio generation. This retrieval-enhanced approach grounds outputs in contextually relevant tropes and improves narrative coherence.
->>>>>>> c7f9ecd3e520ac6966fc9ea5a970c9fa2a5c03c1
 
 ### 🧠 RAG-Inspired Pipeline
 Character names are vectorized and compared to the dataset of top-1000 most popular characters from MyAnimeList.net. The top-matching entries are used to extract genres and themes, which then guide bio generation. This retrieval-enhanced approach grounds outputs in contextually relevant tropes and improves narrative coherence.
