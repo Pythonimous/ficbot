@@ -8,7 +8,7 @@ _An AI-powered Anime Character Generator for Aspiring Writers_
 
 ## **📌 About the Project**
 
-Ficbot is a machine learning–powered system designed to assist writers in creating original characters effortlessly. It leverages deep learning and NLP models to generate character names from images, with planned expansions for bio and image generation.
+Ficbot is a machine learning–powered system designed to assist writers in creating original characters effortlessly. It leverages deep learning and NLP models to generate character names from images, with planned expansions for image generation.
 
 ### **Project Structure**  
 Ficbot is now split into two repositories for better organization:
@@ -37,10 +37,6 @@ Ficbot is now split into two repositories for better organization:
 - **HTML5/CSS3 & JavaScript:** Core technologies for the interactive user interface.  
 - **Bootstrap:** Ensures responsive, mobile-friendly layouts.  
 - **FastAPI (Frontend API layer):** Also serves static assets and API endpoints consumed by the frontend.
-
-### 🔹 Deployment & Infrastructure
-- **Docker:** Used for containerizing both the frontend and backend services.  
-- **AWS Lightsail:** Provides a cost-effective VPS solution for hosting the full application stack.
 
 ### 🧠 RAG-Inspired Pipeline
 Character names are vectorized and compared to the dataset of top-1000 most popular characters from MyAnimeList.net. The top-matching entries are used to extract genres and themes, which then guide bio generation. This retrieval-enhanced approach grounds outputs in contextually relevant tropes and improves narrative coherence.
