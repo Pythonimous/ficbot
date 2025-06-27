@@ -85,6 +85,13 @@
         }
         #bioField {
             font-weight: 500;
+            height: 320px; /* Increase height */
+            min-height: 220px;
+            max-height: 500px;
+            resize: vertical; /* Allow user to resize if desired */
+        }
+        .card-body > .mb-3 {
+            margin-bottom: 0.75rem !important; /* Reduce space between elements */
         }
 
         #nameField,
@@ -136,7 +143,7 @@
     <div class="container-fluid my-3">
         <div class="row">
             <!-- Left Column: Expanded Image Upload -->
-            <div class="col-lg-4">
+            <div class="col-lg-3 col-md-12">
                 <div class="card mb-3">
                     <div class="card-header">Character Image</div>
                     <div class="card-body text-center">
@@ -159,7 +166,7 @@
             </div>
 
             <!-- Right Column -->
-            <div class="col-lg-8">
+            <div class="col-lg-9 col-md-12">
                 <!-- Name Generation Card -->
                 <div class="card mb-3">
                     <div class="card-header bg-secondary text-white">Name</div>
@@ -214,7 +221,7 @@
                         </div>
                         <!-- Bio Textarea -->
                         <div class="mb-3">
-                            <textarea class="form-control" id="bioField" rows="6" style="height:100%;">
+                            <textarea class="form-control" id="bioField" style="height:320px;">
 Class: Wanderer
 Origin: Zarinsk, Siberia
 Blood Group: AB+
