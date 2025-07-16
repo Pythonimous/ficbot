@@ -96,9 +96,8 @@ async def generate_character_bio(request_data: BioRequest):
         "nsfw_on": False
     }
     url = urljoin(VPS_URL, "generate")
-    print(url)
     response = requests.post(
-        urljoin(VPS_URL, "generate"),
+        url,
         json=payload
     )
 

@@ -3,6 +3,9 @@ import uuid
 import base64
 import requests
 import dotenv
+import logging
+
+logger = logging.getLogger(__name__)
 
 from urllib.parse import urljoin
 
@@ -62,7 +65,7 @@ async def upload_image(file: UploadFile = File(...)):
         raise HTTPException(status_code=415, detail="Broken file: only valid .jpg, .png, .gif files are allowed. Please check your image and try again.")
 
     # Delete old images (except example.jpg)
-    clean_old_images(exclude=["example.jpg"])
+    clean_old_images(exclude=["example.jpg", "me_20250627.jpg"])
 
     # Save the file
     save_path = UPLOAD_DIR / filename
@@ -72,8 +75,7 @@ async def upload_image(file: UploadFile = File(...)):
     # Generate URL (assuming FastAPI serves static files from /static/)
     image_url = f"/static/images/{filename}"
 
-    # Debug print
-    print(f"Returning JSON: {{'success': True, 'imgUrl': '{image_url}'}}")
+    logger.info(f"Returning JSON: {{'success': True, 'imgUrl': '{image_url}'}}")
 
     return JSONResponse(content={"success": True, "imgUrl": image_url})
 
@@ -147,7 +149,7 @@ async def convert_to_anime(request_data: ImageRequest):
         raise HTTPException(status_code=500, detail=f"Error saving anime image: {str(e)}")
 
     # Clean up old images
-    clean_old_images(exclude=["example.jpg", original_filename, anime_filename])
+    clean_old_images(exclude=["example.jpg", "me_20250627.jpg", original_filename, anime_filename])
 
     # Generate public URL for the anime image
     anime_image_url = f"static/images/{anime_filename}"
